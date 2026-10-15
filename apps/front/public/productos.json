@@ -1,0 +1,1033 @@
+{
+    "productos": [
+        {
+            "id": 1,
+            "name": "Alienware m16 R2",
+            "price": 1800,
+            "description": [
+                "Procesador: Intel Core Ultra 7 155H.",
+                "Tarjeta Gráfica: Nvidia GeForce RTX 4070 Laptop GPU.",
+                "Pantalla: 16 pulgadas, QHD+ (2560 x 1600), 240 Hz, G-Sync.",
+                "Memoria RAM: 16 GB.",
+                "Almacenamiento: SSD de 1 TB."
+            ],
+            "img": "https://m.media-amazon.com/images/I/71onZNUqUEL._AC_UY218_.jpg",
+            "categoria": {
+                "name": "laptops",
+                "Subcategoria": "gaming"
+            }
+        },
+        {
+            "id": 2,
+            "name": "Asus ROG Strix Scar 18",
+            "price": 3300,
+            "description": [
+            "Procesador: Intel Core i9-14900HX.",
+            "Tarjeta Gráfica: NVIDIA RTX 5090.",
+            "Pantalla: 18″ Mini-LED, 240 Hz.",
+            "RAM: 32 GB DDR5.",
+            "Almacenamiento: SSD NVMe."
+            ],
+            "img": "https://m.media-amazon.com/images/I/71shKXvCIEL._AC_UY218_.jpg",
+            "categoria": {
+            "name": "laptops",
+            "Subcategoria": "gaming"
+            }
+        },
+        {
+            "id": 3,
+            "name": "Razer Blade 16",
+            "price": 3500,
+            "description": [
+            "Procesador: AMD Ryzen AI 9 HX 370.",
+            "Tarjeta Gráfica: NVIDIA RTX 5090.",
+            "Pantalla: 16″ OLED, 240 Hz.",
+            "RAM: 32 GB LPDDR5x.",
+            "Almacenamiento: SSD NVMe."
+            ],
+            "img": "https://m.media-amazon.com/images/I/71WH7jtyWpL._AC_UY218_.jpg",
+            "categoria": {
+            "name": "laptops",
+            "Subcategoria": "gaming"
+            }
+        },
+        {
+            "id": 4,
+            "name": "Lenovo Legion Pro 7i Gen 9",
+            "price": 2299,
+            "description": [
+            "Procesador: Intel Core i9-14900HX.",
+            "Tarjeta Gráfica: RTX 5080.",
+            "Pantalla: 16″ QHD+, 240 Hz.",
+            "RAM: 32 GB DDR5.",
+            "Almacenamiento: SSD de 1 TB."
+            ],
+            "img": "https://m.media-amazon.com/images/I/71KE9aKFg+L._AC_UY218_.jpg",
+            "categoria": {
+            "name": "laptops",
+            "Subcategoria": "gaming"
+            }
+        },
+        {
+            "id": 5,
+            "name": "MSI Titan 18 HX AI",
+            "price": 5799,
+            "description": [
+            "Procesador: Intel Core Ultra 9 285HX.",
+            "Tarjeta Gráfica: RTX 5090.",
+            "Pantalla: 18″ 4K Mini-LED, 120 Hz.",
+            "RAM: 96 GB DDR5.",
+            "Almacenamiento: SSD varios con RAID-5."
+            ],
+            "img": "https://m.media-amazon.com/images/I/71MMe+kOxSL._AC_UY218_.jpg",
+            "categoria": {
+            "name": "laptops",
+            "Subcategoria": "gaming"
+            }
+        },
+        {
+            "id": 6,
+            "name": "Dell XPS 13",
+            "price": 1200,
+            "description": [
+                "Procesador: Intel Core i7-1360P.",
+                "Pantalla: 13.4″ Full HD+ (1920 x 1200).",
+                "RAM: 16 GB LPDDR5.",
+                "Almacenamiento: SSD de 512 GB.",
+                "Batería de larga duración."
+            ],
+            "img": "https://m.media-amazon.com/images/I/71NJ4yGVDxL._AC_UY218_.jpg",
+            "categoria": {
+                "name": "laptops",
+                "Subcategoria": "otras"
+            }
+        },
+        {
+            "id": 7,
+            "name": "HP Pavilion 15",
+            "price": 850,
+            "description": [
+                "Procesador: AMD Ryzen 7 7730U.",
+                "Pantalla: 15.6″ Full HD (1920 x 1080).",
+                "RAM: 16 GB DDR4.",
+                "Almacenamiento: SSD de 512 GB.",
+                "Gráficos integrados AMD Radeon."
+            ],
+            "img": "https://m.media-amazon.com/images/I/71aTEZOda0L._AC_UY218_.jpg",
+            "categoria": {
+                "name": "laptops",
+                "Subcategoria": "otras"
+            }
+        },
+        {
+            "id": 8,
+            "name": "Acer Aspire 5",
+            "price": 700,
+            "description": [
+                "Procesador: Intel Core i5-1335U.",
+                "Pantalla: 15.6″ Full HD IPS.",
+                "RAM: 8 GB DDR4.",
+                "Almacenamiento: SSD de 512 GB.",
+                "Teclado retroiluminado."
+            ],
+            "img": "https://m.media-amazon.com/images/I/71kmViEHobL._AC_UY218_.jpg",
+            "categoria": {
+                "name": "laptops",
+                "Subcategoria": "otras"
+            }
+        },
+        {
+            "id": 9,
+            "name": "Lenovo IdeaPad 3",
+            "price": 600,
+            "description": [
+                "Procesador: Intel Core i3-1315U.",
+                "Pantalla: 15.6″ Full HD.",
+                "RAM: 8 GB DDR4.",
+                "Almacenamiento: SSD de 256 GB.",
+                "Ideal para estudiantes y oficina."
+            ],
+            "img": "https://m.media-amazon.com/images/I/61eFMUYS+HL._AC_UY218_.jpg",
+            "categoria": {
+                "name": "laptops",
+                "Subcategoria": "otras"
+            }
+        },
+        {
+            "id": 10,
+            "name": "Apple MacBook Air M2",
+            "price": 1400,
+            "description": [
+                "Procesador: Apple M2 Chip.",
+                "Pantalla: 13.6″ Liquid Retina.",
+                "RAM: 8 GB unificada.",
+                "Almacenamiento: SSD de 512 GB.",
+                "Autonomía de hasta 18 horas."
+            ],
+            "img": "https://m.media-amazon.com/images/I/71f5Eu5lJSL._AC_UY218_.jpg",
+            "categoria": {
+                "name": "laptops",
+                "Subcategoria": "otras"
+            }
+        },
+        {
+            "id": 11,
+            "name": "Combo Gamer Intel i3 + GTX 1660",
+            "price": 950,
+            "description": [
+                "Procesador Intel Core i3-12100F de 12 hilos a 4.4 GHz.",
+                "16 GB de RAM DDR4 3200 MHz.",
+                "Tarjeta gráfica NVIDIA GeForce GTX 1660 6 GB.",
+                "SSD de 512 GB NVMe.",
+                "Gabinete ATX con panel lateral de vidrio templado."
+            ],
+            "img": "https://m.media-amazon.com/images/I/81EoVwSOLHL._AC_UY218_.jpg",
+            "categoria": {
+                "name": "pc",
+                "Subcategoria": "combos"
+            }
+        },
+        {
+            "id": 12,
+            "name": "Combo AMD Ryzen 5 + RTX 3060",
+            "price": 1350,
+            "description": [
+                "Procesador AMD Ryzen 5 5600X de 6 núcleos a 4.6 GHz.",
+                "16 GB de RAM DDR4 3600 MHz.",
+                "Tarjeta gráfica NVIDIA GeForce RTX 3060 12 GB.",
+                "SSD de 1 TB NVMe.",
+                "Fuente de poder 650W certificada 80 Plus Bronze."
+            ],
+            "img": "https://m.media-amazon.com/images/I/81pEuqNbRcL._AC_UY218_.jpg",
+            "categoria": {
+                "name": "pc",
+                "Subcategoria": "combos"
+            }
+        },
+        {
+            "id": 13,
+            "name": "Combo Intel i5 + RTX 4060 Ti",
+            "price": 1650,
+            "description": [
+                "Procesador Intel Core i5-13400F de 10 núcleos a 4.6 GHz.",
+                "32 GB de RAM DDR4 3200 MHz.",
+                "Tarjeta gráfica NVIDIA GeForce RTX 4060 Ti 8 GB.",
+                "SSD de 1 TB NVMe Gen4.",
+                "Refrigeración líquida de 240 mm."
+            ],
+            "img": "https://m.media-amazon.com/images/I/716wDn2WNKL._AC_UY218_.jpg",
+            "categoria": {
+                "name": "pc",
+                "Subcategoria": "combos"
+            }
+        },
+        {
+            "id": 14,
+            "name": "Combo Ryzen 7 + RX 6700 XT",
+            "price": 1750,
+            "description": [
+                "Procesador AMD Ryzen 7 5800X de 8 núcleos a 4.7 GHz.",
+                "32 GB de RAM DDR4 3600 MHz.",
+                "Tarjeta gráfica AMD Radeon RX 6700 XT 12 GB.",
+                "SSD de 1 TB NVMe Gen4.",
+                "Gabinete mid-tower con RGB."
+            ],
+            "img": "https://m.media-amazon.com/images/I/71LUB+bXzTL._AC_UY218_.jpg",
+            "categoria": {
+                "name": "pc",
+                "Subcategoria": "combos"
+            }
+        },
+        {
+            "id": 15,
+            "name": "Combo Intel i7 + RTX 4070",
+            "price": 2100,
+            "description": [
+                "Procesador Intel Core i7-13700F de 16 núcleos a 5.2 GHz.",
+                "32 GB de RAM DDR5 5200 MHz.",
+                "Tarjeta gráfica NVIDIA GeForce RTX 4070 12 GB.",
+                "SSD de 2 TB NVMe Gen4.",
+                "Fuente de poder 750W certificada 80 Plus Gold."
+            ],
+            "img": "https://m.media-amazon.com/images/I/71JzcUE-kTL._AC_UY218_.jpg",
+            "categoria": {
+                "name": "pc",
+                "Subcategoria": "combos"
+            }
+        },
+        {
+    "id": 16,
+    "name": "Workstation Intel Xeon W5",
+    "price": 4500,
+    "description": [
+      "Procesador Intel Xeon W5 de 16 núcleos",
+      "64 GB de RAM DDR5 ECC",
+      "2 TB SSD NVMe Gen4",
+      "Tarjeta gráfica NVIDIA RTX A4000",
+      "Chasis profesional de 480 x 210 x 450 mm"
+    ],
+    "img": "https://m.media-amazon.com/images/I/61TNgEm61OL._AC_UY218_.jpg",
+    "categoria": {
+      "name": "pc",
+      "Subcategoria": "profesional"
+    }
+  },
+  {
+    "id": 17,
+    "name": "Workstation AMD Threadripper Pro",
+    "price": 7200,
+    "description": [
+      "Procesador AMD Ryzen Threadripper Pro 24 núcleos",
+      "128 GB de RAM DDR5 ECC",
+      "2 TB SSD + 4 TB HDD",
+      "Gráficos NVIDIA RTX A5000",
+      "Fuente certificada Platinum 1000W"
+    ],
+    "img": "https://m.media-amazon.com/images/I/71nzQJEHXDL._AC_UY218_.jpg",
+    "categoria": {
+      "name": "pc",
+      "Subcategoria": "profesional"
+    }
+  },
+  {
+    "id": 18,
+    "name": "Dell Precision Tower",
+    "price": 3900,
+    "description": [
+      "Procesador Intel Core i9 13900K",
+      "64 GB de RAM DDR5",
+      "2 TB SSD NVMe",
+      "NVIDIA RTX 4070 Ti 12 GB",
+      "Gabinete robusto de torre con refrigeración líquida"
+    ],
+    "img": "https://m.media-amazon.com/images/I/71Fhr3YH4KL._AC_UY218_.jpg",
+    "categoria": {
+      "name": "pc",
+      "Subcategoria": "profesional"
+    }
+  },
+  {
+    "id": 19,
+    "name": "HP Z4 G5 Workstation",
+    "price": 5200,
+    "description": [
+      "Procesador Intel Xeon Gold 20 núcleos",
+      "96 GB de RAM DDR5 ECC",
+      "SSD 2 TB NVMe Gen4",
+      "GPU NVIDIA RTX A4500",
+      "Diseño con refrigeración silenciosa"
+    ],
+    "img": "https://m.media-amazon.com/images/I/51K15PMSinL._AC_UY218_.jpg",
+    "categoria": {
+      "name": "pc",
+      "Subcategoria": "profesional"
+    }
+  },
+  {
+    "id": 20,
+    "name": "Lenovo ThinkStation P620",
+    "price": 6100,
+    "description": [
+      "Procesador AMD Ryzen Threadripper Pro 3975WX",
+      "128 GB de RAM DDR4 ECC",
+      "SSD 1 TB NVMe + 4 TB HDD",
+      "NVIDIA RTX A6000 48 GB",
+      "Gabinete optimizado para flujo de aire"
+    ],
+    "img": "https://m.media-amazon.com/images/I/51eUCP9KeML._AC_UY218_.jpg",
+    "categoria": {
+      "name": "pc",
+      "Subcategoria": "profesional"
+    }
+  },
+  
+{
+  "id": 21,
+  "name": "PC Oficina Intel i3",
+  "price": 1200,
+  "description": [
+    "Procesador Intel Core i3 12100 a 4.3 GHz",
+    "8 GB de RAM DDR4",
+    "SSD de 480 GB",
+    "Gráficos integrados Intel UHD",
+    "Gabinete compacto 350 x 180 x 400mm"
+  ],
+  "img": "https://m.media-amazon.com/images/I/71BBaZSgS4L._AC_UY218_.jpg",
+  "categoria": {
+    "name": "pc",
+    "Subcategoria": "oficinas"
+  }
+},
+{
+  "id": 22,
+  "name": "PC Oficina Ryzen 3",
+  "price": 1350,
+  "description": [
+    "Procesador AMD Ryzen 3 4100 a 4.0 GHz",
+    "8 GB de RAM DDR4",
+    "SSD de 512 GB NVMe",
+    "Gráficos integrados Vega 7",
+    "Gabinete micro-ATX silencioso"
+  ],
+  "img": "https://m.media-amazon.com/images/I/61LtrQX1E4L._AC_UY218_.jpg",
+  "categoria": {
+    "name": "pc",
+    "Subcategoria": "oficinas"
+  }
+},
+{
+  "id": 23,
+  "name": "PC Oficina Intel i5",
+  "price": 1600,
+  "description": [
+    "Procesador Intel Core i5 12400 a 4.4 GHz",
+    "16 GB de RAM DDR4",
+    "SSD de 1 TB",
+    "Gráficos integrados Intel UHD 730",
+    "Fuente 500W certificada 80+"
+  ],
+  "img": "https://m.media-amazon.com/images/I/81rApDu5lXL._AC_UY218_.jpg",
+  "categoria": {
+    "name": "pc",
+    "Subcategoria": "oficinas"
+  }
+},
+{
+  "id": 24,
+  "name": "PC Oficina Ryzen 5",
+  "price": 1750,
+  "description": [
+    "Procesador AMD Ryzen 5 5600G a 4.4 GHz",
+    "16 GB de RAM DDR4",
+    "SSD de 1 TB NVMe",
+    "Gráficos integrados Radeon Vega 7",
+    "Gabinete compacto con ventilación optimizada"
+  ],
+  "img": "https://m.media-amazon.com/images/I/711H3GLWD+L._AC_UY218_.jpg",
+  "categoria": {
+    "name": "pc",
+    "Subcategoria": "oficinas"
+  }
+},
+{
+  "id": 25,
+  "name": "PC Oficina Premium",
+  "price": 2000,
+  "description": [
+    "Procesador Intel Core i7 12700 a 4.9 GHz",
+    "32 GB de RAM DDR4",
+    "SSD de 1 TB + HDD 2 TB",
+    "Gráficos integrados Intel UHD 770",
+    "Gabinete elegante con diseño profesional"
+  ],
+  "img": "https://m.media-amazon.com/images/I/71JQ2SxtKyL._AC_UY218_.jpg",
+  "categoria": {
+    "name": "pc",
+    "Subcategoria": "oficinas"
+  }
+},
+{
+  "id": 26,
+  "name": "Monitor Gamer 24'' Full HD 144Hz",
+  "price": 750,
+  "description": [
+    "Pantalla de 24 pulgadas Full HD",
+    "Frecuencia de actualización 144Hz",
+    "Tiempo de respuesta 1 ms",
+    "Tecnología FreeSync",
+    "Conexiones HDMI y DisplayPort"
+  ],
+  "img": "https://m.media-amazon.com/images/I/71V-+tAJfdL._AC_UY218_.jpg",
+  "categoria": {
+    "name": "componentes",
+    "Subcategoria": "monitores"
+  }
+},
+{
+  "id": 27,
+  "name": "Monitor Curvo 27'' QHD 165Hz",
+  "price": 1200,
+  "description": [
+    "Pantalla curva de 27 pulgadas QHD",
+    "Frecuencia de actualización 165Hz",
+    "Panel VA con gran contraste",
+    "Compatibilidad con G-Sync",
+    "Conectividad HDMI, DisplayPort y USB"
+  ],
+  "img": "https://m.media-amazon.com/images/I/71112BEzdCL._AC_UY218_.jpg",
+  "categoria": {
+    "name": "componentes",
+    "Subcategoria": "monitores"
+  }
+},
+{
+  "id": 28,
+  "name": "Monitor IPS 24'' Profesional",
+  "price": 680,
+  "description": [
+    "Pantalla IPS de 24 pulgadas Full HD",
+    "Colores 100% sRGB calibrados",
+    "Ángulos de visión de 178°",
+    "Tecnología Flicker-Free",
+    "Entradas HDMI y VGA"
+  ],
+  "img": "https://m.media-amazon.com/images/I/71RozKNn4mL._AC_UY218_.jpg",
+  "categoria": {
+    "name": "componentes",
+    "Subcategoria": "monitores"
+  }
+},
+{
+  "id": 29,
+  "name": "Monitor 32'' 4K UHD",
+  "price": 1500,
+  "description": [
+    "Pantalla de 32 pulgadas UHD 4K",
+    "HDR10 para mejor calidad de imagen",
+    "Panel IPS de alta precisión",
+    "Diseño sin bordes en 3 lados",
+    "Conectividad HDMI 2.0 y DisplayPort"
+  ],
+  "img": "https://m.media-amazon.com/images/I/81tizzS173L._AC_UY218_.jpg",
+  "categoria": {
+    "name": "componentes",
+    "Subcategoria": "monitores"
+  }
+},
+{
+  "id": 30,
+  "name": "Monitor UltraWide 34'' WQHD",
+  "price": 2200,
+  "description": [
+    "Pantalla UltraWide de 34 pulgadas WQHD",
+    "Relación de aspecto 21:9",
+    "Ideal para multitarea y edición",
+    "Soporte ajustable en altura",
+    "Puertos HDMI, DisplayPort y USB-C"
+  ],
+  "img": "https://m.media-amazon.com/images/I/71sPOWyMwVL._AC_UY218_.jpg",
+  "categoria": {
+    "name": "componentes",
+    "Subcategoria": "monitores"
+  }
+},
+{
+  "id": 31,
+  "name": "Case ATX Gamer con RGB",
+  "price": 350,
+  "description": [
+    "Chasis ATX de acero resistente",
+    "Panel lateral de vidrio templado",
+    "Incluye 3 ventiladores RGB frontales",
+    "Espacio para tarjetas gráficas largas",
+    "Gestión de cables optimizada"
+  ],
+  "img": "https://m.media-amazon.com/images/I/91f1zzxQH8L._AC_UY218_.jpg",
+  "categoria": {
+    "name": "componentes",
+    "Subcategoria": "cases"
+  }
+},
+{
+  "id": 32,
+  "name": "Case Micro-ATX Compacto",
+  "price": 250,
+  "description": [
+    "Formato Micro-ATX compacto",
+    "Panel lateral acrílico transparente",
+    "Soporte para refrigeración líquida",
+    "Incluye 2 ventiladores silenciosos",
+    "Compatible con fuentes ATX"
+  ],
+  "img": "https://m.media-amazon.com/images/I/71KDNCOQrkL._AC_UY218_.jpg",
+  "categoria": {
+    "name": "componentes",
+    "Subcategoria": "cases"
+  }
+},
+{
+  "id": 33,
+  "name": "Case Full Tower Profesional",
+  "price": 600,
+  "description": [
+    "Torre completa de alto rendimiento",
+    "Soporte para placas E-ATX",
+    "Amplio espacio para refrigeración líquida",
+    "Panel lateral de vidrio templado",
+    "Filtros de polvo desmontables"
+  ],
+  "img": "https://m.media-amazon.com/images/I/81Jm7SYdf3L._AC_UY218_.jpg",
+  "categoria": {
+    "name": "componentes",
+    "Subcategoria": "cases"
+  }
+},
+{
+  "id": 34,
+  "name": "Case Mini-ITX Compacto",
+  "price": 200,
+  "description": [
+    "Diseño pequeño Mini-ITX",
+    "Chasis ligero de aluminio",
+    "Soporte para GPU de hasta 30cm",
+    "Incluye ventilador trasero de 120mm",
+    "Optimizado para PCs de oficina"
+  ],
+  "img": "https://m.media-amazon.com/images/I/81pP1UXyyeL._AC_UY218_.jpg",
+  "categoria": {
+    "name": "componentes",
+    "Subcategoria": "cases"
+  }
+},
+{
+  "id": 35,
+  "name": "Case Gamer Mid Tower RGB",
+  "price": 420,
+  "description": [
+    "Formato Mid Tower con diseño moderno",
+    "4 ventiladores ARGB preinstalados",
+    "Panel lateral de vidrio templado",
+    "Soporte para radiadores de 360mm",
+    "Gestión interna de cables mejorada"
+  ],
+  "img": "https://m.media-amazon.com/images/I/81SGqDs1HTL._AC_UY218_.jpg",
+  "categoria": {
+    "name": "componentes",
+    "Subcategoria": "cases"
+  }
+},
+{
+  "id": 36,
+  "name": "Motherboard ATX Intel Z790",
+  "price": 950,
+  "description": [
+    "Chipset Intel Z790 de última generación",
+    "Soporte para procesadores Intel 12ª y 13ª gen",
+    "4 ranuras DDR5 hasta 128GB",
+    "PCIe 5.0 para GPU de alto rendimiento",
+    "Conectividad WiFi 6E integrada"
+  ],
+  "img": "https://m.media-amazon.com/images/I/81qkkPe4pBL._AC_UY218_.jpg",
+  "categoria": {
+    "name": "componentes",
+    "Subcategoria": "mb"
+  }
+},
+{
+  "id": 37,
+  "name": "Motherboard Micro-ATX AMD B550",
+  "price": 550,
+  "description": [
+    "Chipset AMD B550 optimizado para Ryzen",
+    "Soporte para procesadores Ryzen 3000 y 5000",
+    "2 ranuras PCIe 4.0 para GPU y SSD",
+    "Hasta 128GB DDR4 a 4733MHz",
+    "Conectores M.2 con disipador incluido"
+  ],
+  "img": "https://m.media-amazon.com/images/I/51ZUnFrLVVL._AC_UY218_.jpg",
+  "categoria": {
+    "name": "componentes",
+    "Subcategoria": "mb"
+  }
+},
+{
+  "id": 38,
+  "name": "Motherboard ATX AMD X670E",
+  "price": 1200,
+  "description": [
+    "Chipset AMD X670E para máxima compatibilidad",
+    "Diseñada para procesadores Ryzen serie 7000",
+    "4 ranuras DDR5 hasta 128GB",
+    "Soporte PCIe 5.0 para GPU y almacenamiento",
+    "VRM reforzado para overclocking estable"
+  ],
+  "img": "https://m.media-amazon.com/images/I/81ohPDfik0L._AC_UY218_.jpg",
+  "categoria": {
+    "name": "componentes",
+    "Subcategoria": "mb"
+  }
+},
+{
+  "id": 39,
+  "name": "Motherboard Mini-ITX Intel B660",
+  "price": 480,
+  "description": [
+    "Formato compacto Mini-ITX",
+    "Chipset Intel B660 con soporte 12ª gen",
+    "2 ranuras DDR4 hasta 64GB",
+    "Un puerto PCIe 4.0 x16 para GPU",
+    "WiFi 6 y Bluetooth integrados"
+  ],
+  "img": "https://m.media-amazon.com/images/I/81lh6NT6T6L._AC_UY218_.jpg",
+  "categoria": {
+    "name": "componentes",
+    "Subcategoria": "mb"
+  }
+},
+{
+  "id": 40,
+  "name": "Motherboard ATX Gaming Z690",
+  "price": 870,
+  "description": [
+    "Chipset Intel Z690 optimizado para gaming",
+    "Compatible con DDR5 hasta 128GB",
+    "Conectividad 2.5G LAN y WiFi 6E",
+    "Soporte para múltiples GPU",
+    "Iluminación RGB personalizable"
+  ],
+  "img": "https://m.media-amazon.com/images/I/81xl402VUuL._AC_UY218_.jpg",
+  "categoria": {
+    "name": "componentes",
+    "Subcategoria": "mb"
+  }
+},
+{
+  "id": 41,
+  "name": "Corsair Vengeance LPX 16GB DDR4",
+  "price": 280,
+  "description": [
+    "Capacidad de 16GB en un solo módulo",
+    "Velocidad de 3200MHz optimizada para gaming",
+    "Compatible con plataformas Intel y AMD",
+    "Diseño de perfil bajo para mejor disipación",
+    "XMP 2.0 para overclocking automático"
+  ],
+  "img": "https://m.media-amazon.com/images/I/61wCOVcyvFL._AC_UY218_.jpg",
+  "categoria": {
+    "name": "componentes",
+    "Subcategoria": "ram"
+  }
+},
+{
+  "id": 42,
+  "name": "Kingston Fury Beast 32GB DDR5",
+  "price": 480,
+  "description": [
+    "Módulo DDR5 de 32GB de última generación",
+    "Velocidad de 5200MHz para alto rendimiento",
+    "Compatible con Intel Alder Lake y posteriores",
+    "Disipador negro de bajo perfil",
+    "Optimizado para multitarea y gaming extremo"
+  ],
+  "img": "https://m.media-amazon.com/images/I/717cPftxQgL._AC_UY218_.jpg",
+  "categoria": {
+    "name": "componentes",
+    "Subcategoria": "ram"
+  }
+},
+{
+  "id": 43,
+  "name": "G.Skill Trident Z RGB 16GB (2x8GB) DDR4",
+  "price": 350,
+  "description": [
+    "Kit dual channel 16GB (2x8GB)",
+    "Velocidad de 3600MHz con latencias bajas",
+    "Iluminación RGB personalizable",
+    "Disipador de aluminio premium",
+    "Compatibilidad con Intel XMP 2.0"
+  ],
+  "img": "https://m.media-amazon.com/images/I/61l4EStxhnL._AC_UY218_.jpg",
+  "categoria": {
+    "name": "componentes",
+    "Subcategoria": "ram"
+  }
+},
+{
+  "id": 44,
+  "name": "Crucial Ballistix 8GB DDR4",
+  "price": 150,
+  "description": [
+    "Módulo DDR4 de 8GB para actualización básica",
+    "Velocidad de 2666MHz estable",
+    "Diseño sencillo con disipador negro",
+    "Compatibilidad universal con placas DDR4",
+    "Ideal para equipos de oficina y gaming ligero"
+  ],
+  "img": "https://m.media-amazon.com/images/I/61FsaYbk3UL._AC_UY218_.jpg",
+  "categoria": {
+    "name": "componentes",
+    "Subcategoria": "ram"
+  }
+},
+{
+  "id": 45,
+  "name": "TeamGroup T-Force Delta RGB 32GB (2x16GB) DDR5",
+  "price": 620,
+  "description": [
+    "Kit de 32GB DDR5 (2x16GB)",
+    "Velocidad de 6000MHz de alto rendimiento",
+    "Iluminación RGB sincronizable",
+    "Disipador de aluminio de diseño gamer",
+    "Compatibilidad con plataformas Intel y AMD modernas"
+  ],
+  "img": "https://m.media-amazon.com/images/I/81ov4cFmdaL._AC_UY218_.jpg",
+  "categoria": {
+    "name": "componentes",
+    "Subcategoria": "ram"
+  }
+},{
+  "id": 46,
+  "name": "Intel Core i5-12400F",
+  "price": 780,
+  "description": [
+    "6 núcleos y 12 hilos de rendimiento",
+    "Frecuencia base de 2.5GHz, turbo hasta 4.4GHz",
+    "Compatible con socket LGA1700",
+    "Tecnología Intel Turbo Boost 2.0",
+    "Ideal para gaming y productividad"
+  ],
+  "img": "https://m.media-amazon.com/images/I/51EwtPjHkIL._AC_UY218_.jpg",
+  "categoria": {
+    "name": "componentes",
+    "Subcategoria": "cpus"
+  }
+},
+{
+  "id": 47,
+  "name": "AMD Ryzen 5 5600X",
+  "price": 820,
+  "description": [
+    "6 núcleos y 12 hilos con arquitectura Zen 3",
+    "Frecuencia base 3.7GHz, boost hasta 4.6GHz",
+    "Compatible con socket AM4",
+    "TDP de 65W con gran eficiencia",
+    "Incluye cooler Wraith Stealth"
+  ],
+  "img": "https://m.media-amazon.com/images/I/51ld6RR8IrL._AC_UY218_.jpg",
+  "categoria": {
+    "name": "componentes",
+    "Subcategoria": "cpus"
+  }
+},
+{
+  "id": 48,
+  "name": " Intel Core i7-13700K",
+  "price": 1650,
+  "description": [
+    "16 núcleos (8 Performance + 8 Efficient)",
+    "Frecuencia turbo de hasta 5.4GHz",
+    "Socket LGA1700 de 13ª generación",
+    "Soporte para DDR4 y DDR5",
+    "Desbloqueado para overclocking"
+  ],
+  "img": "https://m.media-amazon.com/images/I/513c8GtpBBL._AC_UL320_.jpg",
+  "categoria": {
+    "name": "componentes",
+    "Subcategoria": "cpus"
+  }
+},
+{
+  "id": 49,
+  "name": "AMD Ryzen 7 7700X",
+  "price": 1550,
+  "description": [
+    "8 núcleos y 16 hilos con arquitectura Zen 4",
+    "Velocidad base 4.5GHz, boost hasta 5.4GHz",
+    "Compatible con socket AM5",
+    "Soporta DDR5 y PCIe 5.0",
+    "Optimizado para gaming de alto rendimiento"
+  ],
+  "img": "https://m.media-amazon.com/images/I/51W1KKnnbSL._AC_UL320_.jpg",
+  "categoria": {
+    "name": "componentes",
+    "Subcategoria": "cpus"
+  }
+},
+{
+  "id": 50,
+  "name": "Intel Core i9-13900KS",
+  "price": 2500,
+  "description": [
+    "24 núcleos (8P + 16E) y 32 hilos",
+    "Frecuencia turbo de hasta 6.0GHz",
+    "Compatible con socket LGA1700",
+    "Soporte DDR5 y PCIe 5.0",
+    "Diseñado para entusiastas y creadores"
+  ],
+  "img": "https://m.media-amazon.com/images/I/51CsbchCa-L._AC_UL320_.jpg",
+  "categoria": {
+    "name": "componentes",
+    "Subcategoria": "cpus"
+  }
+},
+{
+    "id": 51,
+    "name": "Kingston DataTraveler Exodia 128GB",
+    "price": 25.99,
+    "description": [
+      "Memoria USB 3.2 Gen 1",
+      "Capacidad de 128 GB",
+      "Velocidad de transferencia hasta 100 MB/s",
+      "Diseño con tapa protectora",
+      "Compatible con Windows, Mac y Linux"
+    ],
+    "img": "https://m.media-amazon.com/images/I/61PUsY6E8UL._AC_UL320_.jpg",
+    "categoria": {
+      "name": "componentes",
+      "Subcategoria": "memorias"
+    }
+  },
+  {
+    "id": 52,
+    "name": "SanDisk Ultra microSDXC 256GB",
+    "price": 39.99,
+    "description": [
+      "Tarjeta microSDXC Clase 10 UHS-I",
+      "Capacidad de 256 GB",
+      "Velocidad de lectura hasta 120 MB/s",
+      "Ideal para smartphones y cámaras",
+      "Incluye adaptador SD"
+    ],
+    "img": "https://m.media-amazon.com/images/I/71nZXIVl6CL._AC_UL320_.jpg",
+    "categoria": {
+      "name": "componentes",
+      "Subcategoria": "memorias"
+    }
+  },
+  {
+    "id": 53,
+    "name": "Samsung EVO Plus microSD 512GB",
+    "price": 79.99,
+    "description": [
+      "Memoria microSDXC UHS-I U3",
+      "Capacidad de 512 GB",
+      "Velocidad de lectura 130 MB/s",
+      "Resistente al agua, temperatura y rayos X",
+      "Incluye adaptador SD"
+    ],
+    "img": "https://m.media-amazon.com/images/I/610Z9eH6PfL._AC_UL320_.jpg",
+    "categoria": {
+      "name": "componentes",
+      "Subcategoria": "memorias"
+    }
+  },
+  {
+    "id": 54,
+    "name": "Corsair Flash Voyager GTX 1TB",
+    "price": 199.99,
+    "description": [
+      "Memoria USB 3.1 de alto rendimiento",
+      "Capacidad de 1 TB",
+      "Velocidades de lectura/escritura hasta 440 MB/s",
+      "Carcasa de aluminio resistente",
+      "Plug and Play sin software adicional"
+    ],
+    "img": "https://m.media-amazon.com/images/I/71nP2JXSHuL._AC_UL320_.jpg",
+    "categoria": {
+      "name": "componentes",
+      "Subcategoria": "memorias"
+    }
+  },
+  {
+    "id": 55,
+    "name": "Lexar Professional CFexpress 128GB",
+    "price": 149.99,
+    "description": [
+      "Tarjeta de memoria CFexpress Tipo B",
+      "Capacidad de 128 GB",
+      "Velocidad de lectura hasta 1750 MB/s",
+      "Diseñada para cámaras 4K y 8K",
+      "Alta durabilidad y resistencia"
+    ],
+    "img": "https://m.media-amazon.com/images/I/71bbfrXfIXL._AC_UL320_.jpg",
+    "categoria": {
+      "name": "componentes",
+      "Subcategoria": "memorias"
+    }
+  },
+  {
+    "id": 56,
+    "name": "Logitech G203 Lightsync",
+    "price": 29.99,
+    "description": [
+      "Sensor óptico de 8000 DPI",
+      "Iluminación RGB personalizable",
+      "6 botones programables",
+      "Diseño compacto y ligero",
+      "Compatible con Logitech G HUB"
+    ],
+    "img": "https://m.media-amazon.com/images/I/61oE1NouXuL._AC_UL320_.jpg",
+    "categoria": {
+      "name": "componentes",
+      "Subcategoria": "otros"
+    }
+  },
+  {
+    "id": 57,
+    "name": "Corsair K55 RGB Pro Teclado",
+    "price": 49.99,
+    "description": [
+      "Teclado de membrana con retroiluminación RGB",
+      "6 teclas macro programables",
+      "Resistente a salpicaduras",
+      "Controles multimedia dedicados",
+      "Reposamuñecas desmontable"
+    ],
+    "img": "https://m.media-amazon.com/images/I/81raLP0s2oL._AC_UL320_.jpg",
+    "categoria": {
+      "name": "componentes",
+      "Subcategoria": "otros"
+    }
+  },
+  {
+    "id": 58,
+    "name": "EVGA 650W 80 Plus bronze",
+    "price": 59.99,
+    "description": [
+      "Fuente de poder de 650W",
+      "Certificación 80 Plus bronze",
+      "Protecciones OVP, UVP, OCP y SCP",
+      "Ventilador silencioso de 120mm",
+      "Compatible con sistemas ATX"
+    ],
+    "img": "https://m.media-amazon.com/images/I/51KCB0x5XfL._AC_UL320_.jpg",
+    "categoria": {
+      "name": "componentes",
+      "Subcategoria": "otros"
+    }
+  },
+  {
+    "id": 59,
+    "name": "Logitech C920 HD Pro Webcam",
+    "price": 69.99,
+    "description": [
+      "Resolución Full HD 1080p a 30 fps",
+      "Lentes de vidrio con enfoque automático",
+      "Micrófonos estéreo integrados",
+      "Corrección automática de iluminación",
+      "Compatibilidad con Windows, Mac y Linux"
+    ],
+    "img": "https://m.media-amazon.com/images/I/71eGb1FcyiL._AC_UL320_.jpg",
+    "categoria": {
+      "name": "componentes",
+      "Subcategoria": "otros"
+    }
+  },
+  {
+    "id": 60,
+    "name": "SteelSeries QcK Gaming Mousepad",
+    "price": 14.99,
+    "description": [
+      "Superficie de tela microtexturizada",
+      "Optimizado para sensores ópticos y láser",
+      "Base de goma antideslizante",
+      "Dimensiones medianas 320x270 mm",
+      "Diseño duradero y lavable"
+    ],
+    "img": "https://m.media-amazon.com/images/I/51qtafoaixL._AC_UL320_.jpg",
+    "categoria": {
+      "name": "componentes",
+      "Subcategoria": "otros"
+    }
+  }
+
+
+
+    ],
+
+    "categorias": [
+        { "id": 1, "name": "electronics" },
+        { "id": 2, "name": "furniture" }
+    ]   
+
+}

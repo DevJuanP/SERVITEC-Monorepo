@@ -1,0 +1,44 @@
+
+main h1 {
+    text-align: center;
+    font-size: 50px;
+    font-weight: 900;
+}
+
+.img-pago{
+    width: 300px;
+    height: 170px;
+    overflow: hidden;
+}
+.img-pago img{
+    object-fit: cover;
+    width: 300px;
+}
+.section{
+    display: flex;
+    /*border: 1px solid black;*/
+    height: 260PX;
+    align-items: center;
+}
+.section p{
+    font-size: 20px;
+    width: 220px;
+    margin: auto auto;
+}
+.dato{
+    background-color: #6D2323;
+    color: white;
+    width: 320px;
+    height: 100px;
+    display: flex;
+    align-items: center;
+    margin: auto;
+}
+.dato-banco{
+    width: 330px;
+    height: 120px;
+}
+
+.dato-banco p{
+    width: 255px;
+}

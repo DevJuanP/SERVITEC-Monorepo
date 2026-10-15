@@ -1,0 +1,150 @@
+.admin-citas-container {
+  padding: 32px 20px;
+  max-width: 1200px;
+  margin: 40px auto;
+}
+
+.admin-citas-card {
+  background: #f7e9dc;
+  border-radius: 16px;
+  padding: 24px;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
+}
+
+.admin-citas-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 16px;
+  margin-bottom: 20px;
+  flex-wrap: wrap;
+}
+
+.admin-citas-title {
+  margin: 0;
+  color: #6e1616;
+  font-size: 1.7rem;
+}
+
+.admin-citas-subtitle {
+  margin: 4px 0 0;
+  color: #5a4b42;
+}
+
+.admin-citas-search {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  min-width: 220px;
+}
+
+.admin-citas-search label {
+  font-size: 0.9rem;
+  color: #4f3f37;
+  font-weight: 600;
+}
+
+.admin-citas-search input {
+  padding: 10px 12px;
+  border: 1px solid #d8c2b1;
+  border-radius: 8px;
+  background: #fff;
+}
+
+.admin-citas-grid {
+  display: grid;
+  grid-template-columns: 1fr 1.2fr;
+  gap: 20px;
+  align-items: start;
+}
+
+.admin-citas-form {
+  background: #fff8f2;
+  padding: 18px;
+  border-radius: 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.admin-citas-form input,
+.admin-citas-form select,
+.admin-citas-form textarea {
+  padding: 10px 12px;
+  border: 1px solid #d8c2b1;
+  border-radius: 8px;
+  font-size: 14px;
+  background: #fff;
+}
+
+.admin-citas-form textarea {
+  min-height: 90px;
+  resize: vertical;
+}
+
+.admin-citas-btn {
+  background: #8b1e1e;
+  color: #fff;
+  border: none;
+  border-radius: 8px;
+  padding: 10px 14px;
+  cursor: pointer;
+  font-weight: 600;
+}
+
+.admin-citas-btn:hover {
+  background: #6e1616;
+}
+
+.admin-citas-list {
+  overflow-x: auto;
+}
+
+.admin-citas-table {
+  width: 100%;
+  border-collapse: collapse;
+  background: #fff;
+  border-radius: 10px;
+  overflow: hidden;
+}
+
+.admin-citas-table th,
+.admin-citas-table td {
+  padding: 10px 12px;
+  border-bottom: 1px solid #eadfd8;
+  text-align: left;
+}
+
+.admin-citas-table th {
+  background: #e8ccb9;
+  color: #4a2f25;
+}
+
+.admin-citas-table tr:nth-child(even) {
+  background: #fcf5ee;
+}
+
+.admin-citas-delete {
+  background: #d9534f;
+  border: none;
+  color: #fff;
+  padding: 8px 10px;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+.admin-citas-delete:hover {
+  background: #b52b27;
+}
+
+.admin-citas-empty {
+  padding: 16px;
+  text-align: center;
+  color: #6f5d52;
+}
+
+@media (max-width: 900px) {
+  .admin-citas-grid {
+    grid-template-columns: 1fr;
+  }
+}

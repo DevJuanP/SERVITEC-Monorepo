@@ -1,0 +1,203 @@
+/* Todo aislado dentro de contenedorcc para evitar conflictos */
+
+.contenedorcc {
+  background-color: #eee0d1; /* marrón elegante */
+  padding: 40px;
+  border-radius: 16px;
+  /* permitir ocupar un porcentaje amplio del viewport */
+  width: 95%;
+  max-width: 1200px;
+  margin: 60px auto;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+  display: flex;
+  gap: 2rem;
+  flex-wrap: wrap;
+}
+
+/* tabla de citas */
+.tabla-citas {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 10px;
+  font-size: 14px;
+}
+
+.tabla-citas th,
+.tabla-citas td {
+  border: 1px solid #ccc;
+  padding: 6px 8px;
+  text-align: left;
+  word-break: break-word;
+}
+
+/* columnas fijas más anchas */
+/* hacer la tabla más compacta: columnas con menos min-width */
+.tabla-citas th:nth-child(2),
+.tabla-citas td:nth-child(2),
+.tabla-citas th:nth-child(4),
+.tabla-citas td:nth-child(4),
+.tabla-citas th:nth-child(5),
+.tabla-citas td:nth-child(5) {
+  min-width: 100px;
+}
+
+/* hacer la columna 'Asesor' más estrecha */
+.tabla-citas th:nth-child(3),
+.tabla-citas td:nth-child(3) {
+  min-width: 90px;
+  max-width: 140px;
+}
+
+.tabla-citas th:nth-child(6),
+.tabla-citas td:nth-child(6),
+.tabla-citas th:nth-child(7),
+.tabla-citas td:nth-child(7),
+.tabla-citas th:nth-child(8),
+.tabla-citas td:nth-child(8) {
+  min-width: 120px;
+}
+
+.tabla-citas th {
+  background-color: #2b0b0b; /* fondo oscuro rojizo */
+  color: #fff;
+  border-color: rgba(255,255,255,0.08);
+}
+
+.tabla-citas tr:nth-child(even) {
+  background-color: #f7e9e7; /* suave tintado rojizo */
+}
+
+.tabla-citas tr:hover {
+  background-color: #f2d6d5; /* resaltar fila en hover */
+}
+
+/* área del reporte: scroll si la tabla es más ancha que el contenedor */
+.reporte {
+  display: flex;
+  flex-direction: column;
+}
+.reporte-wrapper {
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+}
+
+/* tabla responsive: permitir que quepa y evitar rotación/encoger texto */
+.tabla-citas {
+  min-width: 0; /* dejar que el wrapper controle el scroll */
+  table-layout: auto;
+}
+
+.tabla-citas th,
+.tabla-citas td {
+  white-space: nowrap; /* evitar que el texto salte a vertical */
+  vertical-align: middle;
+  writing-mode: horizontal-tb !important;
+  transform: none !important;
+}
+
+/* acciones en la tabla */
+.tabla-citas .accion-btn {
+  padding: 6px 8px;
+  border-radius: 6px;
+  border: none;
+  cursor: pointer;
+  font-size: 13px;
+}
+
+.tabla-citas .accion-btn.cancel {
+  background: #c0392b;
+  color: #fff;
+}
+
+/* botón de PDF en sección de citas */
+.btn-pdf {
+  background-color: #0056b3;
+  color: #fff;
+  border: none;
+  padding: 8px 16px;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 14px;
+  margin-bottom: 8px;
+  transition: background-color 0.3s;
+}
+
+.btn-pdf:hover {
+  background-color: #003f8a;
+}
+
+.titulo-cc {
+   color: #000000; 
+  text-align: center;
+  margin-bottom: 25px;
+}
+
+.formulario-cc {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  /* limitar ancho del formulario para que no empuje al reporte */
+  max-width: 420px;
+  width: 100%;
+}
+
+.formulario-cc input,
+.formulario-cc select {
+  padding: 10px;
+  border-radius: 8px;
+  border: 1px solid #ccc;
+  font-size: 14px;
+  transition: 0.3s;
+}
+
+.formulario-cc input:focus,
+.formulario-cc select:focus {
+  outline: none;
+  border-color: #007bff;
+  box-shadow: 0 0 5px rgba(0, 123, 255, 0.3);
+}
+
+.formulario-cc button {
+    background-color: #8B1E1E; 
+  color: white;
+  border: none;
+  padding: 12px;
+  border-radius: 8px;
+  cursor: pointer;
+  font-weight: bold;
+  transition: 0.3s;
+}
+
+.formulario-cc button:hover {
+ background-color: #6E1616; 
+}
+
+/* Estilos sencillos para el acordeón de citas */
+.citas-accordion {
+  width: 100%;
+}
+.citas-accordion summary {
+  list-style: none;
+  padding: 10px 14px;
+  border-radius: 8px;
+  border: 1px solid #d0c0b0;
+  background: rgba(0,0,0,0.03);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.citas-accordion summary::-webkit-details-marker {
+  display: none;
+}
+.citas-accordion summary:after {
+  content: '▾';
+  font-size: 16px;
+  transition: transform 0.18s ease;
+}
+details[open] .citas-accordion summary:after,
+details[open] summary:after {
+  transform: rotate(180deg);
+}
+.citas-accordion[open] {
+  padding: 12px 0 0 0;
+}

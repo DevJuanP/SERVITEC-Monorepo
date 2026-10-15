@@ -1,0 +1,24 @@
+# --- Node / Front ---
+node_modules/
+dist/
+*.local
+
+# --- Variables de entorno ---
+.env
+.env.*
+!.env.example
+
+# --- Java / Maven ---
+target/
+*.class
+
+# --- IDE / Sistema operativo ---
+.idea/
+.vscode/
+*.iml
+.DS_Store
+Thumbs.db
+
+# --- Logs ---
+*.log
+npm-debug.log*

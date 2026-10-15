@@ -1,0 +1,65 @@
+.modelo-container {
+  width: 80%;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 20px;
+}
+
+.modelo-container h2 {
+    text-align: center;
+    margin-bottom: 20px;
+    font-size: 2em;
+    color: #333;
+}
+
+.modelo-container h1 {
+    text-align: center;
+    margin-bottom: 20px;
+    font-size: 2.5em;
+    color: #333;
+}
+
+.video-container {
+  text-align: center;
+  margin-top: 20px;
+}
+
+.modelo-container p {
+  text-align: left;
+  margin-bottom: 20px;
+}
+
+.button-container {
+    display: flex;
+    justify-content: right;
+    margin-top: 20px;
+}
+
+.button-container  a {
+    width: 200px;
+    height: 40px;
+    color:white;
+    background-color: #0d4923;
+    /*padding: 10px 20px;*/
+    border-radius: 5px;
+    border: none;
+    cursor: pointer;
+    font-size: larger;
+    border-radius: 20px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.button-container button {
+    width: 98%;
+    height: 95%;
+    background-color: #25D366;
+    border-radius: 20px;
+    text-decoration: none;
+    transition: background-color 0.3s ease;
+    &:hover {
+        cursor: pointer;
+        background-color: #00ff48;
+    }
+}
