@@ -46,7 +46,7 @@ FROM flyway_schema_history ORDER BY installed_rank;
 - Front: consola del navegador (`npm run dev` en la terminal).
 
 ## Gestión de datos
-- **Alta de usuarios**: por el endpoint público de registro (siempre rol `cliente`). Roles `admin`/`asesor` se asignan por BD o por un endpoint administrativo (fuera del alcance actual).
+- **Alta de usuarios**: el registro público crea clientes (R-5); el admin da de alta asesores mediante `POST /api/user/asesores` (HU-11). Los usuarios `admin` se asignan por BD o semilla (fuera del alcance de la aplicación).
 - **Desactivar usuario**: `UPDATE usuarios SET activo = false WHERE correo = '...';` (no borrar).
 - **Semilla**: se re-aplica de forma idempotente al reiniciar (migraciones repetibles `R__seed_*.sql`).
 

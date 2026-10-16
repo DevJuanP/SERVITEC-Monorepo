@@ -62,6 +62,7 @@ cd apps/api
 ./mvnw spring-boot:run     # Windows: mvnw.cmd spring-boot:run
 ```
 - Escucha en `http://localhost:8080`.
+- El entorno local usa **HTTP**; HTTPS (dominio y certificados) se configura en el despliegue productivo, fuera del alcance actual.
 - Aplica automáticamente las migraciones Flyway de `db/migrations`.
 - Verificar: `curl http://localhost:8080/api/productos`.
 
@@ -77,9 +78,27 @@ npm run dev                # http://localhost:5173
 |---|---|---|
 | admin | `admin@servitec.pe` | `Servitec123` |
 | asesor | `asesor@servitec.pe` | `Servitec123` |
+| asesor | `asesor2@servitec.pe` | `Servitec123` |
+| asesor | `asesor3@servitec.pe` | `Servitec123` |
 | cliente | `cliente@servitec.pe` | `Servitec123` |
 
 > Estas credenciales son **solo para desarrollo local**.
+
+## Versiones del stack (referencia para el informe)
+
+| Componente | Versión |
+|---|---|
+| Java (JDK) | **21 (LTS)** |
+| Spring Boot | **4.1.x** |
+| Spring Framework / Security | 7.x (Resource Server, JWT HS256) |
+| PostgreSQL | **18** |
+| Flyway | gestionado por Spring Boot (`flyway-core` + `flyway-database-postgresql`) |
+| Maven | wrapper `mvnw` |
+| Node.js / npm | 20+ (recomendado 24) / 10+ |
+| React / Vite | 19 / 7 |
+| Git | cualquiera reciente |
+
+> El equipo trabaja hoy con JDK 17: el backend exige **21** (ver §1). Esta tabla es la fuente para declarar versiones en los entregables.
 
 ## Checklist de verificación
 - [ ] `java -version` → 21.x

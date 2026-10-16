@@ -80,6 +80,7 @@ Configuración por entorno (ver `.env.example`): `SPRING_DATASOURCE_URL`,
 | `docs/specs/06-front-adaptation.md` | Adaptación del front y backlog de deuda técnica |
 | `docs/specs/07-install-guide.md` | Guía de instalación |
 | `docs/specs/08-ops-manual.md` | Manual técnico de operación |
+| `docs/actualizaciones-word/cambios-para-el-word.md` | Cambios pendientes de redacción en el documento Word |
 
 ## Convenciones
 

@@ -27,18 +27,19 @@ Reglas:
 | Versión | Contenido |
 |---|---|
 | `V1__esquema_inicial.sql` | `roles`, `usuarios` (+ FK, UNIQUE correo) |
-| `V2__catalogo.sql` | `categorias`, `subcategorias`, `productos`, `caracteristicas` (+ FKs, checks) |
-| `V3__citas.sql` | `tipos_cita`, `citas` (+ FKs, CHECK estado, índices, índice único parcial) |
+| `V2__catalogo.sql` | `categorias`, `subcategorias`, `productos` (incluye `stock` con CHECK ≥ 0), `caracteristicas` (+ FKs, checks) |
+| `V3__citas.sql` | `tipos_cita`, `citas` (+ FKs, CHECK estado con los cuatro valores, columna `observacion`, índices, índice único parcial) |
 | `R__seed_roles.sql` | Roles `admin`, `asesor`, `cliente` |
 | `R__seed_catalogo.sql` | 3 categorías, 12 subcategorías, 60 productos + características, 2 tipos de cita |
 | `R__seed_usuarios.sql` | Usuarios demo (`@servitec.pe`) |
-| `R__seed_citas.sql` | Citas demo cubriendo los tres estados |
+| `R__seed_citas.sql` | Citas demo cubriendo los cuatro estados |
 
 Dependencias de orden: `roles` → `usuarios`; `categorias` → `subcategorias` → `productos` → `caracteristicas`; `tipos_cita` + `usuarios` → `citas`.
 
 ## Reglas de la semilla
 - La semilla es **idempotente**: `INSERT ... ON CONFLICT DO NOTHING` (o `DO UPDATE` donde corresponda).
 - El catálogo conserva los **IDs originales** (categorías 1–3, subcategorías 101–112, productos 1–60, tipos de cita 1–2).
+- La semilla de productos asigna `stock` inicial variado (con al menos un agotado) para poder ejecutar P08.
 - Tras insertar catálogo con IDs fijos, se debe **reajustar la secuencia de identidad** si la tabla usa identity (`setval`), para no chocar con futuros inserts.
 - Las contraseñas de la semilla se insertan ya hasheadas con BCrypt.
 
@@ -62,6 +63,7 @@ Dependencias de orden: `roles` → `usuarios`; `categorias` → `subcategorias` 
 |---|---|
 | P06 | El catálogo sembrado coincide con lo que devuelve `GET /api/productos` |
 | P07 | Si la BD no responde, el arranque/migración falla de forma controlada y queda en el log |
+| P08 | El `stock` sembrado respeta `CHECK (stock >= 0)` y los agotados no aparecen en `GET /api/productos` |
 
 - Reaplicar la semilla dos veces no duplica filas.
 - `V1`–`V3` + semilla aplican sin error en una base vacía.

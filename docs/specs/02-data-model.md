@@ -46,6 +46,7 @@ erDiagram
         bigint id PK
         varchar name
         numeric price
+        int stock
         varchar img
         bigint subcategoria_id FK
     }
@@ -68,6 +69,7 @@ erDiagram
         timestamptz fecha_creacion
         timestamptz fecha_cita
         text descripcion
+        text observacion
     }
 ```
 
@@ -113,10 +115,12 @@ Semilla: `1=admin`, `2=asesor`, `3=cliente`.
 | `id` | `bigint` | PK, sin identity (1–60) |
 | `name` | `varchar(150)` | NOT NULL |
 | `price` | `numeric(10,2)` | NOT NULL, CHECK `price >= 0` |
+| `stock` | `int` | NOT NULL, DEFAULT `0`, CHECK `stock >= 0` |
 | `img` | `varchar(500)` | |
 | `subcategoria_id` | `bigint` | NOT NULL, FK → `subcategorias(id)` |
 
 > La categoría **no** se duplica en `productos`; se deriva por `subcategoria_id → subcategorias.categoria_id`.
+> `stock = 0` significa **agotado**: el producto permanece en la tabla (se repone), pero no se ofrece en el catálogo público (R-10, HU-08).
 
 ### `caracteristicas`
 | Columna | Tipo | Restricciones |
@@ -142,10 +146,11 @@ Semilla: `1=admin`, `2=asesor`, `3=cliente`.
 | `cliente_id` | `bigint` | NOT NULL, FK → `usuarios(id)` |
 | `asesor_id` | `bigint` | NOT NULL, FK → `usuarios(id)` |
 | `tipo_cita_id` | `bigint` | NOT NULL, FK → `tipos_cita(id)` |
-| `estado` | `varchar(20)` | NOT NULL, DEFAULT `'Pendiente'`, CHECK `estado IN ('Pendiente','Realizada','Cancelada')` |
+| `estado` | `varchar(20)` | NOT NULL, DEFAULT `'Pendiente'`, CHECK `estado IN ('Pendiente','Aprobada','Realizada','Cancelada')` |
 | `fecha_creacion` | `timestamptz` | NOT NULL, DEFAULT `now()` |
 | `fecha_cita` | `timestamptz` | NOT NULL |
 | `descripcion` | `text` | |
+| `observacion` | `text` | | Observación de cierre (HU-10, R-13) |
 
 Índices y restricciones:
 - `UNIQUE (asesor_id, fecha_cita) WHERE estado <> 'Cancelada'` → **regla R-3** (HU-07).
@@ -168,16 +173,18 @@ Semilla: `1=admin`, `2=asesor`, `3=cliente`.
 | `usuarios.rol` (string) | `usuarios.rol_id` → `roles` | `admin`/`cliente` → +`asesor` |
 | `usuarios.citas[]` | *(eliminado)* | Redundante: relación por `citas.cliente_id` |
 | `tiposCitas.type` | `tipos_cita.nombre` (JSON: `type`) | |
-| `citas.estado` (`Realizada`/`cancelado`) | `citas.estado` (CHECK) | Normalizado a `Pendiente/Realizada/Cancelada` |
+| `citas.estado` (`Realizada`/`cancelado`) | `citas.estado` (CHECK) | Normalizado a `Pendiente/Aprobada/Realizada/Cancelada` |
 | `citas.fechaCita` (Date) | `citas.fecha_cita` (timestamptz UTC) | |
 
 ## Datos semilla (repetible)
-- 3 categorías, 12 subcategorías, 60 productos + sus características, 2 tipos de cita.
-- Usuarios demo con correos `@servitec.pe` (admin, asesor, cliente) y credenciales documentadas en `07-install-guide.md`.
-- Unas pocas citas cubriendo los tres estados.
+- 3 categorías, 12 subcategorías, 60 productos (con `stock` inicial variado, incluido al menos un agotado) + sus características, 2 tipos de cita.
+- Usuarios demo con correos `@servitec.pe` (admin, 3 asesores, cliente) y credenciales documentadas en `07-install-guide.md`.
+- Unas pocas citas cubriendo los cuatro estados.
 
 ## Criterios de aceptación
-- **P06** — el catálogo consultado por categoría coincide exactamente con las filas de `productos`.
+- **P06** — el catálogo consultado por categoría coincide exactamente con las filas de `productos` (solo los disponibles).
+- **P08** — un producto con `stock = 0` no aparece en `GET /api/productos` y sí en `GET /api/productos/admin`.
+- Toda `fecha_cita` sembrada cae en una franja válida (R-11) y el CHECK de `estado` admite los cuatro valores.
 - Todo `producto` tiene `subcategoria_id` válido; toda `cita` tiene cliente, asesor y tipo válidos.
 - Intentar insertar dos citas no canceladas del mismo asesor en el mismo instante **falla a nivel de BD**.
 

@@ -54,6 +54,8 @@ El front depende de estas formas: `categoria.Subcategoria` (S mayúscula), `_id`
 | B13 | Doble fuente de productos (API vs `public/productos.json` del chatbot) | Media | Consistencia |
 | B14 | Sin tests ni CI en el front | Media | Calidad |
 | B15 | `console.log` restantes en otras zonas | Baja | Ruido |
+| B16 | Formulario de citas por franjas (consumir `GET /api/cita/disponibilidad` y elegir franja) y dashboard del asesor para aprobar/concluir con observación (HU-09/HU-10) | Alta | Módulo de citas incompleto en el front |
+| B17 | Pantalla admin para alta de asesores (`POST /api/user/asesores`, HU-11) | Media | Gestión de usuarios solo por API |
 
 > Cada ítem puede convertirse en un plan de ejecución propio cuando se decida abordarlo.
 

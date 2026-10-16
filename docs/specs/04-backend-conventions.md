@@ -51,10 +51,11 @@ com.servitec
 - **Password encoder**: `BCryptPasswordEncoder` (strength por defecto 10).
 - **Reglas de acceso**:
   - Público: `POST /api/auth/**`, `GET /api/productos`, `GET /api/cita/tipoCita`.
-  - `ROLE_ADMIN`: `/api/user` (listado), `/api/user/clientesPorCorreo/**`, escrituras de productos, `agregarCitaAdmin`, `completarCita`.
-  - Autenticado: `myInfo`, `asesores`, `GET /api/cita` (admin/asesor), `agregarCita`, `cancelarCita`.
-  - Propiedad: un `cliente` solo puede cancelar/consultar sus propias citas (verificar en servicio → `403`).
+  - `ROLE_ADMIN`: `/api/user` (listado), `POST /api/user/asesores`, `/api/user/clientesPorCorreo/**`, escrituras de productos, `GET /api/productos/admin`, `agregarCitaAdmin`.
+  - Autenticado: `myInfo`, `asesores`, `GET /api/cita` (admin/asesor), `disponibilidad`, `agregarCita`, `aprobarCita`, `cancelarCita`, `completarCita`.
+  - Propiedad: un `cliente` solo puede cancelar/consultar sus propias citas; un `asesor` solo aprueba/concluye citas de su agenda (verificar en servicio → `403`).
 - **CORS**: origen `http://localhost:5173`, métodos y cabeceras estándar, `Authorization` permitido.
+- **Transporte**: el prototipo local usa HTTP; HTTPS es requisito de despliegue productivo (fuera del alcance actual).
 
 ## Validación y manejo de errores
 - Validación declarativa con `jakarta.validation` (`@NotBlank`, `@Email`, `@Positive`, etc.) + `@Valid`.
@@ -101,7 +102,7 @@ app:
 
 ## Pruebas
 - `@SpringBootTest` + `MockMvc` (perfil `test`, BD `servitec_test`).
-- Cobertura mínima: **P01–P07** de `01-functional.md`.
+- Cobertura mínima: **P01–P12** de `01-functional.md`.
 - `mvn test` debe pasar en verde.
 
 ## Tareas derivables
@@ -109,7 +110,7 @@ app:
 2. Crear `SecurityConfig`, `CorsConfig`, `TokenService`, `JwtAuthoritiesConverter`.
 3. Crear `GlobalExceptionHandler` y `ApiException`.
 4. Implementar capas por módulo (auth, user, producto, cita).
-5. Configurar el perfil `test` y las pruebas P01–P07.
+5. Configurar el perfil `test` y las pruebas P01–P12.
 
 ## Dependencias
 - Contrato: `03-api-contract.md`. Modelo: `02-data-model.md`. Migraciones: `05-db-migrations.md`.
