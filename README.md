@@ -11,7 +11,7 @@ SERVITEC-Monorepo/
 ├─ apps/
 │  ├─ front/          Frontend público React 19 + Vite (reutilizado y adaptado)
 │  ├─ admin/          Panel de administración React 19 + Vite (segundo front, planificado)
-│  └─ api/            Backend Spring Boot 4.1.x + Java 21  (placeholder)
+│  └─ api/            Backend Spring Boot 4.1.x + Java 21  (implementado)
 ├─ db/
 │  └─ migrations/     Migraciones Flyway (esquema + semilla implementados)
 ├─ docs/
@@ -39,7 +39,7 @@ SERVITEC-Monorepo/
 
 - `apps/front` → **copiado y adaptado mínimamente** (cliente axios único con `VITE_API_URL`, contrato alineado).
 - `apps/admin` → **especificado** (`docs/specs/09-admin-panel.md`); pendiente de implementación.
-- `apps/api` → **placeholder** (pendiente de implementación).
+- `apps/api` → **implementado** (API REST completa, P01–P13 en verde con `mvnw.cmd test`).
 - `db/migrations` → **implementado** (esquema `V1`–`V4` + semilla `R__01`–`R__04`).
 - `docs/specs` → **especificaciones escritas** (plan-ready), incluida `10-front-publico-citas.md`.
 - `docs/plans` → **planes de implementación** (roadmap + backend + fronts + trazabilidad).
@@ -64,13 +64,14 @@ El panel de administración será un segundo front (`apps/admin`, puerto `5174`)
 `docs/specs/09-admin-panel.md`. Ambos apuntan a la API definida en `VITE_API_URL`
 (por defecto `http://localhost:8080`).
 
-## Cómo levantar el backend *(pendiente)*
+## Cómo levantar el backend
 
-Se implementará en `apps/api`. Pasos previstos:
+Implementado en `apps/api` (requiere JDK 21 en `JAVA_HOME`):
 
 ```bash
 cd apps/api
-./mvnw spring-boot:run    # http://localhost:8080, aplica migraciones Flyway de db/migrations
+./mvnw spring-boot:run    # Windows: mvnw.cmd spring-boot:run · http://localhost:8080, aplica Flyway de db/migrations
+./mvnw test               # Windows: mvnw.cmd test · P01–P13
 ```
 
 Configuración por entorno (ver `.env.example`): `SPRING_DATASOURCE_URL`,
@@ -107,3 +108,9 @@ Configuración por entorno (ver `.env.example`): `SPRING_DATASOURCE_URL`,
 
 - **Specs** en español; **JSON y base de datos** en español (contrato existente); **código Java** en inglés.
 - Commits en [Conventional Commits](https://www.conventionalcommits.org/).
+
+## Changelog
+
+| Fecha | Cambio |
+|---|---|
+| 2026-10-17 | **F1 Backend ✅** — `apps/api` implementado (Spring Boot 4.1 / Java 21): seguridad JWT HS256 + CORS `:5173`/`:5174`, auth/usuarios, catálogo, citas, notificaciones y `GlobalExceptionHandler`. `mvnw.cmd test` en verde con P01–P13. `plan-backend.md` normalizado a la plantilla del contrato y cerrado. |

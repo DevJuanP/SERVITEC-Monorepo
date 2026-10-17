@@ -107,8 +107,8 @@ F0 Migraciones ──► F1 Backend (apps/api) ──► F2 Front público (apps
 - La deuda diferida (`06` B1–B18, `09` A1–A4, B-MONO) queda **fuera** salvo lo indicado por fase.
 
 ## Checklist de ejecución
-- [ ] F0 — Migraciones aplicadas y verificadas *(hecho)*
-- [ ] F1 — `apps/api` con `mvn test` verde (P01–P13)
+- [x] F0 — Migraciones aplicadas y verificadas *(hecho)*
+- [x] F1 — `apps/api` con `mvn test` verde (P01–P13)
 - [ ] F2 — Front público cierra B16, `/admin` retirado y `VITE_ADMIN_URL` enlazado
 - [ ] F3 — `apps/admin` funcional en `:5174`
 
