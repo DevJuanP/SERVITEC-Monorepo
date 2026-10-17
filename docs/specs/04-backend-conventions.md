@@ -28,7 +28,7 @@ com.servitec
 ├─ config/        SecurityConfig, CorsConfig, JacksonConfig
 ├─ security/      TokenService (emisión JWT), JwtAuthoritiesConverter
 ├─ controller/    AuthController, ProductoController, UserController, CitaController, NotificacionController
-├─ service/       AuthService, ProductoService, UserService, CitaService (lógica + reglas)
+├─ service/       AuthService, ProductoService, UserService, CitaService, NotificacionService (lógica + reglas)
 ├─ repository/    interfaces JpaRepository
 ├─ model/         entidades JPA
 ├─ dto/           request/response (records o clases con Lombok)
@@ -37,7 +37,7 @@ com.servitec
 
 ## Capas y responsabilidades
 - **Controller**: validación de entrada (`@Valid`), seguridad por rol, mapeo a DTO. **Sin lógica de negocio.**
-- **Service**: reglas de negocio (R-1…R-8), transacciones, orquestación. Lanza `ApiException` con el estado HTTP.
+- **Service**: reglas de negocio (R-1…R-15), transacciones, orquestación. Lanza `ApiException` con el estado HTTP.
 - **Repository**: acceso a datos (Spring Data JPA). Sin lógica.
 - **Model**: entidades JPA mapeadas a las tablas del `02-data-model.md`.
 - **DTO**: nunca se exponen entidades directamente; en particular, **el `password` jamás sale**.
@@ -57,7 +57,7 @@ com.servitec
   - `ROLE_CLIENTE`: `POST /api/cita/agregarCita`.
   - `ROLE_ASESOR` (dueño) o `ROLE_ADMIN`: `POST /api/cita/aprobarCita`, `POST /api/cita/completarCita`.
   - `ROLE_CLIENTE` (dueño), `ROLE_ASESOR` (dueño) o `ROLE_ADMIN`: `POST /api/cita/cancelarCita` (el rechazo del asesor/admin es esta misma operación).
-  - Propiedad (verificada en servicio → `403`): un `cliente` solo cancela/consulta sus propias citas; un `asesor` solo aprueba/concluye citas de su agenda.
+  - Propiedad (verificada en servicio → `403`): un `cliente` solo cancela/consulta sus propias citas; un `asesor` solo aprueba/concluye/cancela citas de su agenda.
 - **CORS**: orígenes `http://localhost:5173` (front público) y `http://localhost:5174` (panel admin); métodos y cabeceras estándar, `Authorization` permitido.
 - **Transporte**: el prototipo local usa HTTP; HTTPS es requisito de despliegue productivo (fuera del alcance actual).
 
@@ -124,7 +124,7 @@ app:
 
 ## Pruebas
 - `@SpringBootTest` + `MockMvc` (perfil `test`, BD `servitec_test`).
-- Cobertura mínima: **P01–P12** de `01-functional.md`.
+- Cobertura mínima: **P01–P13** de `01-functional.md`.
 - `mvn test` debe pasar en verde.
 
 ## Tareas derivables
@@ -132,7 +132,7 @@ app:
 2. Crear `SecurityConfig`, `CorsConfig`, `TokenService`, `JwtAuthoritiesConverter`.
 3. Crear `GlobalExceptionHandler` y `ApiException`.
 4. Implementar capas por módulo (auth, user, producto, cita).
-5. Configurar el perfil `test` y las pruebas P01–P12.
+5. Configurar el perfil `test` y las pruebas P01–P13.
 
 ## Dependencias
 - Contrato: `03-api-contract.md`. Modelo: `02-data-model.md`. Migraciones: `05-db-migrations.md`.

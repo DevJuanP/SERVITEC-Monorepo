@@ -82,18 +82,20 @@ El front reutilizado parsea posiciones y claves concretas. El backend **debe pre
 | PUT | `/api/productos/{id}` | Bearer | admin | Actualización total, incluido `stock` (HU-06/HU-08) |
 | DELETE | `/api/productos/{id}` | Bearer | admin | Baja **física**; `caracteristicas` cae en cascada (HU-06) |
 
-- `GET /api/categorias` responde `200`:
+- `GET /api/categorias` responde `200` con el árbol de las **3 categorías y sus 12 subcategorías reales**
+  de la semilla (las mismas que usan el menú del front y `getTitleCategory`):
   ```json
   {
     "categorias": [
-      { "name": "laptops", "Subcategoria": ["gaming", "oficina"] },
-      { "name": "pc", "Subcategoria": ["escritorio", "all-in-one"] },
-      { "name": "componentes", "Subcategoria": ["gpu", "ram"] }
+      { "name": "laptops", "Subcategoria": ["gaming", "otras"] },
+      { "name": "pc", "Subcategoria": ["combos", "profesional", "oficinas"] },
+      { "name": "componentes", "Subcategoria": ["monitores", "cases", "mb", "ram", "cpus", "memorias", "otros"] }
     ]
   }
   ```
-  Puebla los filtros del catálogo y el formulario de productos del panel. **No** crea categorías: el
-  catálogo es fijo (ver `02-data-model.md`).
+  En `/api/categorias`, `Subcategoria` es un **array de nombres**; en el payload de un producto es un
+  **string** (su única subcategoría), como en C-1. Puebla los filtros del catálogo y el formulario de
+  productos del panel. **No** crea categorías: el catálogo es fijo (ver `02-data-model.md`).
 - **Filtros** de `GET /api/productos`: `categoria` y `subcategoria` filtran por `name` exacto; sin
   coincidencia → array vacío (nunca `404`).
 
@@ -204,8 +206,8 @@ El front reutilizado parsea posiciones y claves concretas. El backend **debe pre
 | GET | `/api/cita/disponibilidad` | Bearer | autenticado | `?asesorId=&fecha=YYYY-MM-DD` | `200 {asesorId, fecha, franjas:[{hora, disponible}]}` |
 | GET | `/api/cita/disponibilidadSemana` | Bearer | autenticado | `?asesorId=&desde=YYYY-MM-DD` | `200 {asesorId, desde, dias:[{fecha, franjas:[{hora, disponible}]}]}` |
 | GET | `/api/cita` | Bearer | admin/asesor | `?asesorId=&clienteId=&estado=` | `200 {citas:[...]}` ordenadas por `fechaCita` asc |
-| POST | `/api/cita/agregarCita` | Bearer | cliente | `{asesorId, tipoCitaId, fechaCita, descripcion?}` | `201 {mensaje, cita}` |
-| POST | `/api/cita/agregarCitaAdmin` | Bearer | admin | `{clienteId, asesorId, tipoCitaId, fechaCita, descripcion?}` | `201 {mensaje, cita}` |
+| POST | `/api/cita/agregarCita` | Bearer | cliente | `{asesorId, tipoCitaId, fechaCita, descripcion?, contacto?}` | `201 {mensaje, cita}` |
+| POST | `/api/cita/agregarCitaAdmin` | Bearer | admin | `{clienteId, asesorId, tipoCitaId, fechaCita, descripcion?, contacto?}` | `201 {mensaje, cita}` |
 | POST | `/api/cita/aprobarCita` | Bearer | asesor (dueño) / admin | `{citaId}` | `200 {mensaje, citaId}` |
 | POST | `/api/cita/cancelarCita` | Bearer | cliente (dueño) / asesor (dueño) / admin | `{citaId}` | `200 {mensaje, citaId}` |
 | POST | `/api/cita/completarCita` | Bearer | asesor (dueño) / admin | `{citaId, observacion}` | `200 {mensaje, citaId}` |
@@ -385,4 +387,4 @@ D-1…D-3 **se resuelven construyendo el panel** con las formas canónicas; D-4 
 
 ## Evidencia esperada
 - Colección de peticiones (curl/Postman) por endpoint con su respuesta.
-- Salida de las pruebas P01–P12.
+- Salida de las pruebas P01–P13.

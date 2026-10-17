@@ -17,7 +17,8 @@ SERVITEC-Monorepo/
 ├─ docs/
 │  ├─ entregable_2_grupo10 (1).docx
 │  ├─ actualizaciones-word/
-│  └─ specs/          Especificaciones técnicas (fuente de los planes)
+│  ├─ specs/          Especificaciones técnicas (fuente de los planes)
+│  └─ plans/          Planes de implementación (roadmap y por workstream)
 ├─ .env.example
 └─ .gitignore
 ```
@@ -32,14 +33,14 @@ SERVITEC-Monorepo/
 | Seguridad | Spring Security 7 · OAuth2 Resource Server (JWT HS256) |
 | Base de datos | PostgreSQL 18 |
 | Migraciones | Flyway (`db/migrations`) |
-| Pruebas | JUnit + MockMvc (P01–P07) |
+| Pruebas | JUnit + MockMvc (P01–P13) |
 
 ## Estado actual
 
 - `apps/front` → **copiado y adaptado mínimamente** (cliente axios único con `VITE_API_URL`, contrato alineado).
 - `apps/admin` → **especificado** (`docs/specs/09-admin-panel.md`); pendiente de implementación.
 - `apps/api` → **placeholder** (pendiente de implementación).
-- `db/migrations` → **implementado** (esquema `V1`–`V3` + semilla `R__01`–`R__04`).
+- `db/migrations` → **implementado** (esquema `V1`–`V4` + semilla `R__01`–`R__04`).
 - `docs/specs` → **especificaciones escritas** (plan-ready), incluida `10-front-publico-citas.md`.
 - `docs/plans` → **planes de implementación** (roadmap + backend + fronts + trazabilidad).
 
@@ -96,7 +97,8 @@ Configuración por entorno (ver `.env.example`): `SPRING_DATASOURCE_URL`,
 | Documento | Contenido |
 |---|---|
 | `docs/plans/00-roadmap.md` | Orden, fases, dependencias y DoD |
-| `docs/plans/plan-backend.md` | Implementación de `apps/api` (P01–P12) |
+| `docs/plans/01-guia-de-ejecucion.md` | Secuencia de ejecución de las specs (guía paso a paso) |
+| `docs/plans/plan-backend.md` | Implementación de `apps/api` (P01–P13) |
 | `docs/plans/plan-front-publico.md` | Citas por franjas (B16) y retiro de `/admin` |
 | `docs/plans/plan-admin.md` | Implementación del panel `apps/admin` |
 | `docs/plans/matriz-trazabilidad.md` | HU ↔ endpoint ↔ regla ↔ prueba |

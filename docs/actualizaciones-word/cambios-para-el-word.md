@@ -2,7 +2,7 @@
 
 > **Qué es este archivo.** Lista de cambios de redacción a aplicar en la **próxima edición del Word**
 > (Entregable 3 / informe final), derivados de la conciliación entre el Word del Entregable N.° 2 y las
-> especificaciones técnicas (`docs/specs/01–08`).
+> especificaciones técnicas (`docs/specs/01–10`).
 >
 > **Fuente de verdad técnica:** `docs/specs/`. Este documento es solo la guía de redacción para que el Word
 > quede alineado con lo que ya está especificado.
@@ -16,7 +16,7 @@
 |---|---|---|
 | 1 | Inventario | Control de stock completo: un producto agotado (`stock = 0`) no se ofrece; el administrador lo repone desde el panel. |
 | 2 | Métricas SMART | Plan de medición **diferido**: se documentará en la etapa de pruebas (semanas 6–7). |
-| 3 | Citas | Agendamiento por **franjas de 1 hora** (lun–vie 09:00–17:00, sin 12:00–13:00; 7 franjas por asesor y día) + ciclo `Pendiente → Aprobada → Realizada` con **observación** al concluir. |
+| 3 | Citas | Agendamiento por **franjas de 1 hora** (lun–vie 09:00–17:00, sin 12:00–13:00; 7 franjas por asesor y día) + ciclo `Pendiente → Aprobada → Realizada` con **observación** al concluir; cancelable/rechazable a `Cancelada` con **notificación in-app** al cliente. |
 | 4 | Registro | Los **clientes** se registran desde la web; **solo el administrador** da de alta nuevos asesores. |
 | 5 | HTTPS | El prototipo local usa **HTTP**; HTTPS es requisito del despliegue productivo (fuera de alcance). |
 | 6 | Versiones | Java 21, Spring Boot 4.1.x, PostgreSQL 18, React 19 + Vite 7 (tabla lista para copiar; ver §14). |
@@ -55,7 +55,7 @@
 **OBJ 2 (calidad funcional):** la frase "al menos seis casos de prueba" sigue siendo válida, pero conviene precisar:
 
 - Actual: "al menos seis casos de prueba de las funciones prioritarias (autenticación, listado de catálogo, creación, consulta y cancelación de citas, y rechazo de horario ocupado)"
-- **Propuesto:** "al menos seis casos de prueba de las funciones prioritarias (autenticación, listado de catálogo, creación, consulta y cancelación de citas, y rechazo de horario ocupado); el plan técnico vigente contempla doce casos (P01–P12)"
+- **Propuesto:** "al menos seis casos de prueba de las funciones prioritarias (autenticación, listado de catálogo, creación, consulta y cancelación de citas, y rechazo de horario ocupado); el plan técnico vigente contempla trece casos (P01–P13)"
 
 *Motivo: decisión 2.*
 
@@ -101,7 +101,7 @@
 
 *Motivo: decisiones 1, 3 y 4 + avance del repositorio (ya no es "por definir").*
 
-## 10. §3.2.3 Tabla 16 (Historias de usuario) — agregar HU-08 a HU-11
+## 10. §3.2.3 Tabla 16 (Historias de usuario) — agregar HU-08 a HU-12
 
 | ID | Historia de usuario | Criterio de aceptación observable |
 |---|---|---|
@@ -109,10 +109,11 @@
 | HU-09 | Como asesor quiero aprobar las solicitudes de mi agenda para confirmar las citas viables | La cita pendiente pasa a aprobada solo por su asesor (o el administrador); una cita ajena se rechaza |
 | HU-10 | Como asesor quiero concluir una cita aprobada registrando una observación | La cita pasa a realizada con la observación persistida; una transición inválida se rechaza |
 | HU-11 | Como administrador quiero dar de alta nuevos asesores | El asesor queda activo, inicia sesión y aparece en la lista de asesores; solo el administrador puede crearlo |
+| HU-12 | Como cliente quiero ver avisos cuando mi cita cambia de estado | Al aprobar o cancelar/rechazar una cita se crea una notificación in-app para el cliente; puede marcarla como leída |
 
 *Motivo: decisiones 1, 3 y 4.*
 
-## 11. §3.2.4 Tabla 17 (Plan de pruebas) — agregar P08 a P12
+## 11. §3.2.4 Tabla 17 (Plan de pruebas) — agregar P08 a P13
 
 | Código | Escenario | Resultado esperado | Evidencia |
 |---|---|---|---|
@@ -121,6 +122,7 @@
 | P10 | Consultar disponibilidad | Siete franjas del día con las ocupadas marcadas | Captura / log por adjuntar |
 | P11 | Ciclo de estados de la cita | `Pendiente → Aprobada → Realizada` con observación persistida; transición inválida rechazada | Captura / log por adjuntar |
 | P12 | Alta de asesor por el administrador | Asesor creado y visible en la lista; sin permisos se rechaza | Captura / log por adjuntar |
+| P13 | Cancelar/rechazar por asesor o administrador | La cita pasa a `Cancelada` con notificación creada para el cliente; cita ajena se rechaza; ya cancelada se rechaza | Captura / log por adjuntar |
 
 *Motivo: decisiones 1, 3 y 4.*
 
@@ -160,6 +162,7 @@
 | Catálogo | "HU-02, HU-06, P06, capturas" | "HU-02, HU-06, HU-08; P06, P08; capturas" |
 | Agenda | "HU-03, HU-04, HU-05, P03-P05" | "HU-03, HU-04, HU-05, HU-09, HU-10; P03–P05, P11" |
 | Disponibilidad | "HU-07, P04 y prueba de concurrencia" | "HU-07 y reglas de franja; P04, P10" |
+| Notificaciones | (no existía) | "HU-12; P13; capturas" |
 
 *Motivo: decisiones 1, 3 y 4.*
 
@@ -179,8 +182,8 @@
 - [ ] Alcance §2.2: identidad, citas y catálogo reescritos (ítems 4, 5 y 6)
 - [ ] Tabla 5 y Tabla 9 con la precisión de HTTPS (ítems 7 y 8)
 - [ ] §3.2.2 con los flujos actualizados (ítem 9)
-- [ ] Tabla 16 con HU-08 a HU-11 (ítem 10)
-- [ ] Tabla 17 con P08 a P12 (ítem 11)
+- [ ] Tabla 16 con HU-08 a HU-12 (ítem 10)
+- [ ] Tabla 17 con P08 a P13 (ítem 11)
 - [ ] Tabla 18 con estados actualizados + tabla de versiones (ítems 12 y 13)
 - [ ] Tabla 19 con la trazabilidad ampliada (ítem 14)
 - [ ] Tabla 20 con la mitigación de solapamiento por franjas (ítem 15)

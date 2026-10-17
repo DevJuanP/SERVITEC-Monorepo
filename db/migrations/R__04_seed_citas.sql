@@ -48,7 +48,7 @@ WHERE cl.correo = 'cliente@servitec.pe'
       WHERE c.cliente_id = cl.id AND c.fecha_cita = '2026-07-09T14:00:00Z'::timestamptz
   );
 
--- Notificación de ejemplo para la cita cancelada (R-14, HU-13)
+-- Notificación de ejemplo para la cita cancelada (R-14, HU-12)
 INSERT INTO notificaciones (usuario_id, cita_id, tipo, mensaje, leida, fecha)
 SELECT c.cliente_id, c.id, 'Cancelada', 'Tu cita fue cancelada', false, c.fecha_creacion
 FROM citas c

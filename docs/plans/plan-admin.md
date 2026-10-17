@@ -11,7 +11,7 @@ autónomo (sin workspaces). Consume la misma API (`VITE_API_URL`).
 
 ## Fase A2 — Auth y dashboard
 - [ ] `Login.jsx` (`POST /api/auth/login`; solo `admin`/`asesor`; `cliente` rechazado).
-- [ ] `Dashboard.jsx` (resumen de citas por estado + alertas de stock agotado).
+- [ ] `Dashboard.jsx` (resumen de citas por estado; conteos de catálogo y stock solo para `admin`; el `asesor` ve su agenda).
 
 ## Fase A3 — Catálogo e inventario
 - [ ] `Catalogo.jsx` contra `GET /api/productos/admin` (incluye agotados) con `StockBadge`.

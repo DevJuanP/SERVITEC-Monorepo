@@ -7,7 +7,7 @@ reutilizado espera) y las reglas de integridad.
 
 ## Alcance
 Entidades: `roles`, `usuarios`, `categorias`, `subcategorias`, `productos`, `caracteristicas`,
-`tipos_cita`, `citas`. Incluye claves, índices, restricciones `CHECK` y datos semilla.
+`tipos_cita`, `citas`, `notificaciones`. Incluye claves, índices, restricciones `CHECK` y datos semilla.
 
 ## Diagrama ER
 
@@ -181,13 +181,13 @@ Semilla: `1=admin`, `2=asesor`, `3=cliente`.
 - `UNIQUE (asesor_id, fecha_cita) WHERE estado <> 'Cancelada'` → **regla R-3** (HU-07). Cancelar/rechazar libera la franja.
 - `INDEX (cliente_id)`, `INDEX (asesor_id)`, `INDEX (fecha_cita)`.
 
-### `notificaciones` (HU-13, R-14)
+### `notificaciones` (HU-12, R-14)
 | Columna | Tipo | Restricciones | Descripción |
 |---|---|---|---|
 | `id` | `bigint` | PK, identity | |
 | `usuario_id` | `bigint` | NOT NULL, FK → `usuarios(id)` | Destinatario (el cliente) |
 | `cita_id` | `bigint` | FK → `citas(id)` | Cita que origina el aviso |
-| `tipo` | `varchar(30)` | NOT NULL | `Aprobada`/`Cancelada`/`Realizada`/… |
+| `tipo` | `varchar(30)` | NOT NULL | `Aprobada`/`Cancelada` |
 | `mensaje` | `varchar(300)` | NOT NULL | Texto mostrado |
 | `leida` | `boolean` | NOT NULL, DEFAULT `false` | Estado de lectura |
 | `fecha` | `timestamptz` | NOT NULL, DEFAULT `now()` | |
@@ -242,4 +242,4 @@ Semilla: `1=admin`, `2=asesor`, `3=cliente`.
 ## Evidencia esperada
 - Scripts `V#__*.sql` / `R__*.sql` aplicados sin error.
 - Salida de `\d citas` mostrando el índice único parcial.
-- Volcado de conteos de semilla (3/12/60/2).
+- Volcado de conteos de semilla (3 categorías / 12 subcategorías / 60 productos / 300 características / 2 tipos de cita / 5 citas / ≥1 notificación).

@@ -25,18 +25,19 @@ Front React 19 + Vite copiado desde `SERVITEC-Front`. Se adapta solo lo necesari
 | 11 | Nueva configuración de entorno (`VITE_API_URL`) | `.env.example` *(nuevo)* |
 
 ## Configuración
-- `apps/front/.env.example` → `VITE_API_URL=http://localhost:8080`.
+- `apps/front/.env.example` → `VITE_API_URL=http://localhost:8080` y `VITE_ADMIN_URL=http://localhost:5174`.
 - `api.js` usa `import.meta.env.VITE_API_URL` con fallback a `http://localhost:8080`.
 - El token sigue guardándose en `localStorage` (clave `token`), `nombreUsuario` y `rolUsuario`.
 
 ## Contrato consumido por el front
-Front público: `/api/auth/login`, `/api/auth/register`, `/api/productos`, `/api/user/myInfo`,
-`/api/user/asesores`, `/api/cita/tipoCita`, `/api/cita/disponibilidad` (franjas, B16),
-`/api/cita/agregarCita`, `/api/cita/cancelarCita`.
+Front público: `/api/auth/login`, `/api/auth/register`, `/api/productos`,
+`/api/user/myInfo`, `/api/user/asesores`, `/api/cita/tipoCita`, `/api/cita/disponibilidad` (franjas, B16),
+`/api/cita/disponibilidadSemana` (calendario semanal, B16), `/api/cita/agregarCita`,
+`/api/cita/cancelarCita`, `/api/notificaciones` y `POST /api/notificaciones/leer`.
 
 Panel de administración (`apps/admin`, ver `09-admin-panel.md`): `/api/cita/agregarCitaAdmin`,
 `/api/user/clientesPorCorreo/:texto`, `GET /api/cita`, `/api/user`, `POST /api/user/asesores`,
-`/api/productos/admin` y el CRUD de productos. Estas rutas **se retiran del front público** al mover el panel.
+`/api/productos/admin`, `GET /api/categorias` y el CRUD de productos. Estas rutas **se retiran del front público** al mover el panel.
 
 El front depende de estas formas: `categoria.Subcategoria` (S mayúscula), `_id` en usuarios/asesores/tipos/citas, `tipoCita.type`, y listados envueltos (`asesores`, `tiposCitas`, `usuario`). El backend debe preservarlas (ver `03-api-contract.md`).
 

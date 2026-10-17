@@ -1,14 +1,14 @@
 # Plan — Backend (`apps/api`)
 
 Basado en `03-api-contract.md`, `04-backend-conventions.md` y `02-data-model.md`. Objetivo: API Spring
-Boot 4.1.x / Java 21 que cumpla el contrato y pase P01–P12.
+Boot 4.1.x / Java 21 que cumpla el contrato y pase P01–P13.
 
 ## Fase B1 — Bootstrap
 - [ ] Generar el proyecto (start.spring.io) con las dependencias de `04` y el wrapper `mvnw`.
 - [ ] `application.yml` con `datasource`, `jpa.hibernate.ddl-auto: validate`, `flyway.locations`
       (`filesystem:../../db/migrations`) y `app.security`/`app.cors` (orígenes `:5173` y `:5174`).
 - [ ] Crear `ServitecApplication` y el árbol de paquetes `com.servitec` (`04`).
-- [ ] Verificar que Flyway aplica `V1`–`V3` + semilla sobre `servitec` vacía y `ddl-auto` no genera DDL.
+- [ ] Verificar que Flyway aplica `V1`–`V4` + semilla sobre `servitec` vacía y `ddl-auto` no genera DDL.
 
 ## Fase B2 — Seguridad
 - [ ] `TokenService` (JWT HS256, claims `sub`/`rol`/`exp` 2 h) con `ImmutableSecret`.

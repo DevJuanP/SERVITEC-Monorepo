@@ -16,7 +16,7 @@ dentro del front público.
 ## Alcance
 Módulos:
 1. **Autenticación y sesión** — login (admin/asesor), guardas de ruta por rol, cierre de sesión y manejo de `401`/`403`.
-2. **Dashboard** — resumen de citas por estado, **conteo de productos por categoría** (calculado desde `GET /api/productos/admin`) y alertas de stock agotado.
+2. **Dashboard** — resumen de citas por estado; **para `admin`**, además, **conteo de productos por categoría** (calculado desde `GET /api/productos/admin`) y alertas de stock agotado. El `asesor` solo ve el resumen de **su** agenda.
 3. **Catálogo e inventario** — CRUD de productos y control de `stock` (incluye agotados).
 4. **Citas** — agenda con filtros, creación a nombre de un cliente, aprobar, cancelar/rechazar, concluir con observación; consulta de disponibilidad (día y semana).
 5. **Usuarios** — listado, búsqueda de clientes por correo y **alta de asesores**.
@@ -27,7 +27,7 @@ Fuera de alcance: catálogo público y navegación de marketing (front público)
 | Rol | Acceso |
 |---|---|
 | `admin` | Todos los módulos (catálogo, citas, usuarios, dashboard) |
-| `asesor` | Solo **Citas** (su propia agenda + disponibilidad) y dashboard de su agenda. **Sin** catálogo ni usuarios |
+| `asesor` | Solo **Citas** (su propia agenda + disponibilidad) y el dashboard de *su* agenda (sin conteos de catálogo ni de stock). **Sin** catálogo ni usuarios |
 
 ## Stack
 | Capa | Tecnología |
@@ -103,7 +103,7 @@ apps/admin/
 | Tipos | `GET /api/cita/tipoCita` | — |
 | Asesores | `GET /api/user/asesores` | autenticado |
 | Disponibilidad | `GET /api/cita/disponibilidad?asesorId=&fecha=`, `GET /api/cita/disponibilidadSemana?asesorId=&desde=` | autenticado |
-| Nueva cita | `POST /api/cita/agregarCitaAdmin` → `{clienteId, asesorId, tipoCitaId, fechaCita, descripcion?}` | admin |
+| Nueva cita | `POST /api/cita/agregarCitaAdmin` → `{clienteId, asesorId, tipoCitaId, fechaCita, descripcion?, contacto?}` | admin |
 | Estados | `POST /api/cita/aprobarCita` · `completarCita` · `cancelarCita` | asesor dueño / admin |
 | Usuarios | `GET /api/user`, `GET /api/user/clientesPorCorreo/:texto`, `POST /api/user/asesores` | admin |
 
@@ -124,7 +124,7 @@ apps/admin/
 | A3 | Token en `localStorage` (XSS, sin refresh) | Alta | Seguridad |
 | A4 | Sin tests ni CI del panel | Media | Calidad |
 
-> La deuda B5/B16/B17 de `06-front-adaptation.md` (panel admin con mock, franjas, alta de asesores) **se traslada a este panel**.
+> La deuda B5/B17/B18 de `06-front-adaptation.md` (panel admin con mock, alta de asesores, dashboard del asesor) **se traslada a este panel**; B16 (franjas del cliente) se cierra en el front público (`10-front-publico-citas.md`).
 
 ## Criterios de aceptación
 - `npm run dev` en `apps/admin` levanta en `:5174` y consume `VITE_API_URL`.
@@ -132,7 +132,7 @@ apps/admin/
 - El `asesor` no ve Catálogo ni Usuarios; el `admin` ve todos los módulos.
 - Catálogo lista también agotados y permite crear/editar/eliminar y ajustar `stock` (validación ≥ 0).
 - Citas: filtrar por asesor/cliente/estado; crear a nombre de un cliente **eligiendo asesor, cliente, tipo y franja libre**; aprobar, cancelar/rechazar, concluir con observación; la lista queda ordenada por `fechaCita`.
-- Dashboard: muestra el conteo de productos por categoría y las alertas de stock agotado.
+- Dashboard: el `admin` ve el conteo de productos por categoría y las alertas de stock agotado; el `asesor`, solo el resumen de su agenda.
 - Alta de asesor (`POST /api/user/asesores`) → aparece en `GET /api/user/asesores` y puede iniciar sesión.
 - Sin token → redirección a `/login`; `401` → cierre de sesión; `403` → aviso.
 - El front público ya no expone `/admin`.

@@ -62,7 +62,7 @@ Criterios de aceptación:
 - El asesor ve únicamente las citas donde él es `asesor`.
 - Las citas se devuelven ordenadas por `fecha_cita` ascendente.
 - El admin puede ver la agenda de cualquier asesor.
-- La agenda muestra las solicitudes `Pendiente` (para aprobar, HU-09) y las `Aprobada` (para concluir, HU-10).
+- La agenda muestra las solicitudes `Pendiente` (para aprobar, HU-09) y las `Aprobada` (para concluir, HU-10), y conserva como historial las `Realizada` y `Cancelada`.
 
 ### HU-05 — Cancelar / rechazar cita
 > Como **cliente** quiero cancelar una cita, y como **asesor/admin** quiero rechazarla, para liberar el horario.
@@ -122,7 +122,7 @@ Criterios de aceptación:
 - `correo` duplicado → `409`; datos inválidos → `400`; sin rol admin → `403`.
 - El nuevo asesor aparece en `GET /api/user/asesores` y puede iniciar sesión.
 
-### HU-13 — Notificaciones del cliente
+### HU-12 — Notificaciones del cliente
 > Como **cliente** quiero ver avisos cuando mi cita cambia de estado para enterarme sin volver a consultarla.
 
 Criterios de aceptación:
@@ -173,7 +173,7 @@ Criterios de aceptación:
 
 ## Tareas derivables
 
-1. Modelar y crear la tabla `roles` + `usuario.rol_id`; sembrar admin/asesor/cliente.
+1. Modelar y crear la tabla `roles` + `usuarios.rol_id`; sembrar admin/asesor/cliente.
 2. Implementar `POST /api/auth/register` (fuerza rol `cliente`, BCrypt, validación).
 3. Implementar `POST /api/auth/login` (verificación BCrypt, emisión JWT, chequeo `activo`).
 4. Configurar Spring Security + Resource Server (HS256, authorities `ROLE_*`).
@@ -185,7 +185,7 @@ Criterios de aceptación:
 10. Implementar `GET /api/cita` con filtros (asesor/cliente/estado) y orden por `fecha_cita`.
 11. Implementar cambio de estado (`POST /api/cita/cancelarCita` y completar).
 12. Implementar las reglas R-3 y R-4 (índice único parcial + validación de servicio → `409`).
-13. Escribir las pruebas P01–P12 (JUnit + MockMvc).
+13. Escribir las pruebas P01–P13 (JUnit + MockMvc).
 14. Implementar `GET /api/cita/disponibilidad` (franjas de R-11) y las transiciones `aprobarCita`/`completarCita` con `observacion` (HU-09/HU-10).
 15. Sembrar los 3 asesores demo y citas en los cuatro estados (ver `07-install-guide.md`).
 16. Permitir cancelar/rechazar (`POST /api/cita/cancelarCita`) al cliente dueño, al asesor de la cita y al admin.
@@ -199,6 +199,6 @@ Criterios de aceptación:
 - Convenciones de código y seguridad: `04-backend-conventions.md`.
 
 ## Evidencia esperada
-- Suite de pruebas que cubra P01–P12 (salida de `mvn test`).
-- Capturas/logs de los escenarios P01–P12 contra la API levantada.
+- Suite de pruebas que cubra P01–P13 (salida de `mvn test`).
+- Capturas/logs de los escenarios P01–P13 contra la API levantada.
 - Tabla de historias de usuario con su criterio de aceptación marcado.

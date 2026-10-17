@@ -1,5 +1,5 @@
 -- V4: datos de contacto y notificaciones
--- Ver docs/specs/01-functional.md (HU-13, R-14, R-15) y 02-data-model.md
+-- Ver docs/specs/01-functional.md (HU-12, R-14, R-15) y 02-data-model.md
 
 -- Contacto del usuario
 ALTER TABLE usuarios ADD COLUMN apellido varchar(120);

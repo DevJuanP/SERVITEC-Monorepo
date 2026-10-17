@@ -1,7 +1,7 @@
 # Matriz de trazabilidad — SERVITEC
 
 Cruza **historia de usuario → endpoint → regla → prueba → spec**, para verificar cobertura antes de
-implementar y para guiar las pruebas P01–P12.
+implementar y para guiar las pruebas P01–P13.
 
 ## HU → contrato → regla → prueba
 | HU | Endpoint(s) | Regla(s) | Prueba(s) | Specs |
@@ -18,7 +18,7 @@ implementar y para guiar las pruebas P01–P12.
 | HU-09 Aprobar cita | `POST /api/cita/aprobarCita` | R-2, R-14 | P11 | 01, 03 |
 | HU-10 Concluir cita | `POST /api/cita/completarCita` | R-2, R-13 | P11 | 01, 03 |
 | HU-11 Alta de asesores | `POST /api/user/asesores`, `GET /api/user/asesores` | R-5 | P12 | 01, 03 |
-| HU-13 Notificaciones del cliente | `GET /api/notificaciones`, `POST /api/notificaciones/leer` | R-14 | P13 | 01, 03 |
+| HU-12 Notificaciones del cliente | `GET /api/notificaciones`, `POST /api/notificaciones/leer` | R-14 | P13 | 01, 03 |
 
 ## Prueba → verificación
 | Código | Verificación | Specs |

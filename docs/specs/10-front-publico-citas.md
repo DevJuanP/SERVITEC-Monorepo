@@ -15,7 +15,7 @@ backend rechaza con `400`.
 - Consulta y cancelación de citas propias (`GET /api/user/myInfo`, `POST /api/cita/cancelarCita`).
 - **Campana de notificaciones** (`GET /api/notificaciones`, `POST /api/notificaciones/leer`), incluidas las de cancelación/rechazo.
 
-Fuera de alcance: aprobar/concluir citas (asesor → panel `apps/admin`), pagos, notificaciones.
+Fuera de alcance: aprobar/concluir citas (asesor → panel `apps/admin`) y pagos.
 
 ## Contrato consumido (ver `03-api-contract.md`)
 | Uso | Endpoint | Rol |
