@@ -30,20 +30,24 @@ Front React 19 + Vite copiado desde `SERVITEC-Front`. Se adapta solo lo necesari
 - El token sigue guardándose en `localStorage` (clave `token`), `nombreUsuario` y `rolUsuario`.
 
 ## Contrato consumido por el front
-`/api/auth/login`, `/api/auth/register`, `/api/productos`, `/api/user/myInfo`, `/api/user/asesores`,
-`/api/user/clientesPorCorreo/:texto`, `/api/cita/tipoCita`, `/api/cita/agregarCita`,
-`/api/cita/agregarCitaAdmin`, `/api/cita/cancelarCita`.
+Front público: `/api/auth/login`, `/api/auth/register`, `/api/productos`, `/api/user/myInfo`,
+`/api/user/asesores`, `/api/cita/tipoCita`, `/api/cita/disponibilidad` (franjas, B16),
+`/api/cita/agregarCita`, `/api/cita/cancelarCita`.
+
+Panel de administración (`apps/admin`, ver `09-admin-panel.md`): `/api/cita/agregarCitaAdmin`,
+`/api/user/clientesPorCorreo/:texto`, `GET /api/cita`, `/api/user`, `POST /api/user/asesores`,
+`/api/productos/admin` y el CRUD de productos. Estas rutas **se retiran del front público** al mover el panel.
 
 El front depende de estas formas: `categoria.Subcategoria` (S mayúscula), `_id` en usuarios/asesores/tipos/citas, `tipoCita.type`, y listados envueltos (`asesores`, `tiposCitas`, `usuario`). El backend debe preservarlas (ver `03-api-contract.md`).
 
 ## Backlog de deuda técnica (diferido)
 | # | Deuda | Severidad | Impacto |
 |---|---|---|---|
-| B1 | Sin guardas de ruta; `/admin` accesible por URL sin rol | Alta | Seguridad (mitigado por autorización en backend) |
+| B1 | Front público sin guardas de ruta (páginas accesibles por URL sin sesión); el panel admin define sus propias guardas (A2 de `09`) | Alta | Seguridad (mitigado por autorización en backend) |
 | B2 | Token e identidad en `localStorage` (XSS, sin expiración) | Alta | Seguridad |
 | B3 | Imports con mayúsculas incorrectas (`App.jsx` → `header.jsx`; `main.jsx` → `pages/Locales/Locales.jsx`) | Alta | Rompe builds en Linux/CI |
 | B4 | Sin error boundary ni ruta `*` (404) | Alta | UX/robustez |
-| B5 | Panel admin sigue renderizando **datos mock** (`citasData.js`); falta conectarlo a `GET /api/cita` y a cancelar/completar reales | Alta | Trazabilidad |
+| B5 | Panel admin sigue renderizando **datos mock** (`citasData.js`); falta conectarlo a `GET /api/cita` y a cancelar/completar reales → **se traslada al panel `apps/admin`** (`09-admin-panel.md`) | Alta | Trazabilidad |
 | B6 | Bugs del PDF (el alto de fila se calcula sobre la columna equivocada) | Media | Reporte |
 | B7 | Sin manejo de 401/expirado; `alert()` en auth y admin | Media | UX |
 | B8 | `styled-components@4` (dependencia muerta) + `@types` | Media | Mantenimiento/React 19 |
@@ -54,8 +58,9 @@ El front depende de estas formas: `categoria.Subcategoria` (S mayúscula), `_id`
 | B13 | Doble fuente de productos (API vs `public/productos.json` del chatbot) | Media | Consistencia |
 | B14 | Sin tests ni CI en el front | Media | Calidad |
 | B15 | `console.log` restantes en otras zonas | Baja | Ruido |
-| B16 | Formulario de citas por franjas (consumir `GET /api/cita/disponibilidad` y elegir franja) y dashboard del asesor para aprobar/concluir con observación (HU-09/HU-10) | Alta | Módulo de citas incompleto en el front |
-| B17 | Pantalla admin para alta de asesores (`POST /api/user/asesores`, HU-11) | Media | Gestión de usuarios solo por API |
+| B16 | Formulario de citas del cliente por franjas en el front público (consumir `GET /api/cita/disponibilidad` y elegir franja; HU-03/R-12) | Alta | Reserva fuera de franja rechazada por el backend |
+| B17 | Pantalla admin para alta de asesores (`POST /api/user/asesores`, HU-11) → **se traslada al panel `apps/admin`** | Media | Gestión de usuarios solo por API |
+| B18 | Dashboard del asesor (agenda, aprobar/concluir con observación; HU-09/HU-10) → **se traslada al panel `apps/admin`** | Alta | Módulo de citas del asesor solo por API |
 
 > Cada ítem puede convertirse en un plan de ejecución propio cuando se decida abordarlo.
 
@@ -67,7 +72,7 @@ El front depende de estas formas: `categoria.Subcategoria` (S mayúscula), `_id`
 ## Tareas derivables
 1. *(Hecho)* Cliente único + env.
 2. *(Hecho)* Alineación de endpoints, roles y estados.
-3. Conectar el panel admin a la API real (B5) — requiere `GET /api/cita` del backend.
+3. Retirar `/admin` del front público y trasladar el panel a `apps/admin` (ver `09-admin-panel.md`); enlazar el panel desde el `Header` con `VITE_ADMIN_URL`.
 4. Abordar B3 (case-sensitive) y B4 antes de cualquier despliegue.
 5. Abordar B1/B2 cuando se cierre el alcance de seguridad.
 

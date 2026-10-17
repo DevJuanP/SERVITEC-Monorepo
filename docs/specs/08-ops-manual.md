@@ -7,16 +7,19 @@ Describir las operaciones de uso, respaldo y mantenimiento del entorno de desarr
 | Acción | Comando |
 |---|---|
 | Levantar backend | `cd apps/api && ./mvnw spring-boot:run` |
-| Levantar front | `cd apps/front && npm run dev` |
+| Levantar front público | `cd apps/front && npm run dev` |
+| Levantar panel admin | `cd apps/admin && npm run dev` |
 | Compilar backend | `cd apps/api && ./mvnw clean package` |
 | Ejecutar pruebas | `cd apps/api && ./mvnw test` |
-| Compilar front | `cd apps/front && npm run build` |
-| Lint front | `cd apps/front && npm run lint` |
+| Compilar front público | `cd apps/front && npm run build` |
+| Compilar panel admin | `cd apps/admin && npm run build` |
+| Lint fronts | `cd apps/front && npm run lint` · `cd apps/admin && npm run lint` |
 
 ## Variables de entorno
 | Variable | Descripción | Valor por defecto |
 |---|---|---|
-| `VITE_API_URL` | URL base de la API para el front | `http://localhost:8080` |
+| `VITE_API_URL` | URL base de la API para los fronts | `http://localhost:8080` |
+| `VITE_ADMIN_URL` | URL del panel admin (enlace del `Header` público) | `http://localhost:5174` |
 | `SPRING_DATASOURCE_URL` | JDBC de PostgreSQL | `jdbc:postgresql://localhost:5432/servitec` |
 | `SPRING_DATASOURCE_USERNAME` | Usuario de BD | `servitec` |
 | `SPRING_DATASOURCE_PASSWORD` | Contraseña de BD | *(sin default)* |
@@ -43,12 +46,12 @@ FROM flyway_schema_history ORDER BY installed_rank;
 ## Registros (logs)
 - Backend: salida estándar de Spring Boot (consola). Si se habilita archivo, `logging.file.name`.
 - Nivel de log configurable: `logging.level.com.servitec=DEBUG`.
-- Front: consola del navegador (`npm run dev` en la terminal).
+- Fronts (público y panel): consola del navegador (`npm run dev` en la terminal).
 
 ## Gestión de datos
 - **Alta de usuarios**: el registro público crea clientes (R-5); el admin da de alta asesores mediante `POST /api/user/asesores` (HU-11). Los usuarios `admin` se asignan por BD o semilla (fuera del alcance de la aplicación).
 - **Desactivar usuario**: `UPDATE usuarios SET activo = false WHERE correo = '...';` (no borrar).
-- **Semilla**: se re-aplica de forma idempotente al reiniciar (migraciones repetibles `R__seed_*.sql`).
+- **Semilla**: se re-aplica de forma idempotente al reiniciar (migraciones repetibles `R__01`–`R__04`).
 
 ## Mantenimiento
 ### Agregar un cambio de esquema

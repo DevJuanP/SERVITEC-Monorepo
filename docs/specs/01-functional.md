@@ -8,20 +8,19 @@ implementables y testeables.
 ## Alcance
 Módulos incluidos:
 
-1. **Identidad y accesos** — registro de clientes, login, roles (admin, asesor, cliente), alta de asesores por admin (HU-11) y autorización por token.
+1. **Identidad y accesos** — registro de clientes, login, roles (admin, asesor, cliente), alta de asesores por admin (HU-11) y autorización por token. El rol `asesor` equivale a "técnico".
 2. **Catálogo** — consulta de productos por categoría y subcategoría.
-3. **Citas (cliente)** — agendamiento, consulta de citas propias y cancelación.
-4. **Citas (admin/asesor)** — agenda del asesor, registro de cita a nombre de un cliente y cambio de estado.
+3. **Citas (cliente)** — agendamiento con datos de contacto, disponibilidad semanal, consulta de citas propias, cancelación y notificaciones.
+4. **Citas (admin/asesor)** — agenda del asesor, registro de cita a nombre de un cliente, aprobación, cancelación/rechazo y conclusión.
 5. **Catálogo e inventario (admin)** — mantenimiento de productos y control de stock (HU-06, HU-08).
 
-Fuera de alcance: pasarela de pago, carrito/checkout, telemetría diagnóstica, notificaciones por
-correo, chatbot (se reutiliza tal cual desde el front).
+Fuera de alcance: pasarela de pago, carrito/checkout, telemetría diagnóstica y chatbot (se reutiliza tal cual desde el front). Las **notificaciones in-app** sí están en alcance; el **envío por correo** queda diferido (ver R-14).
 
 ### Actores / roles
 | Rol | Descripción | Necesidades |
 |---|---|---|
 | `cliente` | Cliente final | Registrarse, iniciar sesión, consultar catálogo, agendar/consultar/cancelar sus citas |
-| `asesor` | Técnico que atiende citas | Consultar su agenda (HU-04) y aprobar/concluir sus citas (HU-09, HU-10) |
+| `asesor` | Técnico que atiende citas | Consultar su agenda (HU-04), aprobar (HU-09), cancelar/rechazar (HU-05) y concluir (HU-10) sus citas |
 | `admin` | Administrador | Todo lo del asesor + mantenimiento de catálogo y gestión global de citas |
 
 `admin` es un superconjunto de `asesor`. El asesor actúa sobre su propia agenda.
@@ -51,7 +50,8 @@ Criterios de aceptación:
 Criterios de aceptación:
 - Cita creada con `estado = Pendiente` y `fecha_cita` futura.
 - `fecha_cita` debe caer exactamente en una franja válida del asesor (R-11/R-12); fuera de franja → `400`.
-- El `cliente` se toma del token (no del cuerpo); el formulario no reingresa datos personales ya registrados.
+- El `cliente` se toma del token; el formulario **precarga y permite editar** los datos de contacto (`nombre`, `apellido`, `correo`, `telefono`), que se guardan como **snapshot** en la cita (R-5, R-15).
+- El calendario muestra el día y la semana con sus cupos mediante `GET /api/cita/disponibilidadSemana` (R-11).
 - Si la franja ya está ocupada por el asesor, se rechaza (R-3) → `409`.
 - Respuesta `201` con la cita creada.
 
@@ -64,13 +64,14 @@ Criterios de aceptación:
 - El admin puede ver la agenda de cualquier asesor.
 - La agenda muestra las solicitudes `Pendiente` (para aprobar, HU-09) y las `Aprobada` (para concluir, HU-10).
 
-### HU-05 — Cancelar cita
-> Como **cliente** quiero cancelar una cita para liberar el horario.
+### HU-05 — Cancelar / rechazar cita
+> Como **cliente** quiero cancelar una cita, y como **asesor/admin** quiero rechazarla, para liberar el horario.
 
 Criterios de aceptación:
-- La cita pasa a `estado = Cancelada` (desde `Pendiente` o `Aprobada`); **no se elimina** (trazabilidad).
-- Solo el dueño de la cita (o un admin) puede cancelarla; otro cliente → `403`.
+- La cita pasa a `estado = Cancelada` (desde `Pendiente` o `Aprobada`); **no se elimina** (trazabilidad). El rechazo del asesor/admin es una **cancelación** (mismo estado).
+- Puede cancelarla el dueño (cliente), el asesor de la cita o un admin; otro actor → `403`.
 - Una cita ya cancelada no puede volver a cancelarse (idempotente o `409`).
+- La cancelación/rechazo genera una **notificación** para el cliente (R-14).
 
 ### HU-06 — Mantener catálogo
 > Como **administrador** quiero mantener un catálogo confiable.
@@ -121,12 +122,21 @@ Criterios de aceptación:
 - `correo` duplicado → `409`; datos inválidos → `400`; sin rol admin → `403`.
 - El nuevo asesor aparece en `GET /api/user/asesores` y puede iniciar sesión.
 
+### HU-13 — Notificaciones del cliente
+> Como **cliente** quiero ver avisos cuando mi cita cambia de estado para enterarme sin volver a consultarla.
+
+Criterios de aceptación:
+- Al aprobar o **cancelar/rechazar** una cita se crea una notificación para el `cliente_id`.
+- `GET /api/notificaciones` devuelve las notificaciones del usuario autenticado (más recientes primero).
+- `POST /api/notificaciones/leer` marca como leídas una o todas las notificaciones.
+- El envío por correo queda **diferido**: la notificación se persiste y podrá despacharse en una edición futura.
+
 ## Reglas de negocio
 
 | ID | Regla |
 |---|---|
 | R-1 | Roles válidos: `admin`, `asesor`, `cliente`. Un usuario tiene exactamente un rol. |
-| R-2 | Estados de cita: `Pendiente`, `Aprobada`, `Realizada`, `Cancelada`. Flujo: `Pendiente → Aprobada → Realizada`; cancelable desde `Pendiente`/`Aprobada`. Cancelar = cambio de estado, nunca `DELETE`. |
+| R-2 | Estados de cita: `Pendiente`, `Aprobada`, `Realizada`, `Cancelada`. Flujo: `Pendiente → Aprobada → Realizada`; cancelable/rechazable desde `Pendiente`/`Aprobada`. Cancelar o rechazar = mismo efecto (`Cancelada`), cambio de estado, nunca `DELETE`. |
 | R-3 | Unicidad de agenda: `(asesor_id, fecha_cita)` único entre citas no canceladas (una cita por franja, R-11). |
 | R-4 | Un cliente no puede tener dos citas no canceladas en el mismo instante. |
 | R-5 | El registro público siempre crea usuarios con rol `cliente` (no se acepta `rol` del cliente). El alta de `asesor` solo la realiza un `admin` (HU-11); los usuarios `admin` se crean fuera de la aplicación (semilla/BD). |
@@ -135,9 +145,11 @@ Criterios de aceptación:
 | R-8 | Un usuario inactivo (`activo = false`) no puede iniciar sesión. |
 | R-9 | `productos.stock` es un entero ≥ 0; agotado = `stock = 0` (el producto no se borra: se repone). |
 | R-10 | El catálogo público no ofrece agotados (`GET /api/productos` excluye `stock = 0`); el admin sí los ve (`GET /api/productos/admin`). |
-| R-11 | Horario de atención: lunes a viernes 09:00–17:00 (hora de Lima, UTC-5), almuerzo 12:00–13:00 sin franjas. Cada asesor ofrece 7 franjas de 1 hora al día (máximo 7 citas/día/asesor). |
+| R-11 | Horario de atención: lunes a viernes 09:00–17:00 (hora de Lima, UTC-5), almuerzo 12:00–13:00 sin franjas. Cada asesor ofrece 7 franjas de 1 hora al día (máximo 7 citas/día/asesor). La consulta semanal (`disponibilidadSemana`) devuelve 5 días × 7 franjas. |
 | R-12 | `fecha_cita` debe caer exactamente en una franja válida (en punto, día laborable, fuera del almuerzo); si no → `400`. |
 | R-13 | Concluir una cita (`Aprobada → Realizada`) exige `observacion` no vacía, persistida en `citas.observacion`. |
+| R-14 | Cada cambio de estado relevante (aprobación o cancelación/rechazo) genera una notificación persistida para el cliente; el envío por correo es diferido (fuera de alcance). |
+| R-15 | Toda cita guarda un snapshot de contacto (`contacto_nombre`, `contacto_apellido`, `contacto_correo`, `contacto_telefono`) tomado del perfil del cliente y editable en el formulario. |
 
 ## Plan mínimo de pruebas técnicas → criterios de aceptación
 
@@ -155,6 +167,7 @@ Criterios de aceptación:
 | P10 | Consultar disponibilidad | 7 franjas de 1 hora (sin 12–13) con las ocupadas en `disponible: false`; fecha malformada → `400` |
 | P11 | Ciclo de estados de la cita | `Pendiente → Aprobada → Realizada` con observación persistida; transición inválida → `409` |
 | P12 | Alta de asesor por admin | `201` con rol `asesor`; visible en `/api/user/asesores`; sin admin → `403`; correo duplicado → `409` |
+| P13 | Cancelar/rechazar por asesor o admin | `Pendiente`/`Aprobada → Cancelada` con **notificación** creada para el cliente; cita ajena → `403`; ya cancelada → `409` |
 
 > **Diferido:** la medición de los objetivos SMART del entregable (reducción ≥30% en registro de citas, ≤3 s de respuesta promedio y usabilidad ≥4/5) no forma parte de esta edición; su plan de medición (planillas de cronometraje, rendimiento y usabilidad) se documentará en una edición futura.
 
@@ -175,6 +188,10 @@ Criterios de aceptación:
 13. Escribir las pruebas P01–P12 (JUnit + MockMvc).
 14. Implementar `GET /api/cita/disponibilidad` (franjas de R-11) y las transiciones `aprobarCita`/`completarCita` con `observacion` (HU-09/HU-10).
 15. Sembrar los 3 asesores demo y citas en los cuatro estados (ver `07-install-guide.md`).
+16. Permitir cancelar/rechazar (`POST /api/cita/cancelarCita`) al cliente dueño, al asesor de la cita y al admin.
+17. Implementar las **notificaciones** (`notificaciones`, `GET /api/notificaciones`, `POST /api/notificaciones/leer`), disparadas en aprobar/cancelar.
+18. Implementar `GET /api/cita/disponibilidadSemana` (5 días × 7 franjas).
+19. Añadir `apellido`/`telefono` a `usuarios` y el snapshot `contacto_*` en `citas` (R-15).
 
 ## Dependencias
 - Modelo de datos y migraciones: `02-data-model.md`, `05-db-migrations.md`.

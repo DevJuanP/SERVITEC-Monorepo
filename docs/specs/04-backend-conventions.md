@@ -27,7 +27,7 @@ com.servitec
 ├─ ServitecApplication.java
 ├─ config/        SecurityConfig, CorsConfig, JacksonConfig
 ├─ security/      TokenService (emisión JWT), JwtAuthoritiesConverter
-├─ controller/    AuthController, ProductoController, UserController, CitaController
+├─ controller/    AuthController, ProductoController, UserController, CitaController, NotificacionController
 ├─ service/       AuthService, ProductoService, UserService, CitaService (lógica + reglas)
 ├─ repository/    interfaces JpaRepository
 ├─ model/         entidades JPA
@@ -50,15 +50,37 @@ com.servitec
 - **Authorities**: conversor que lee el claim `rol` y produce `ROLE_ADMIN`, `ROLE_ASESOR`, `ROLE_CLIENTE`.
 - **Password encoder**: `BCryptPasswordEncoder` (strength por defecto 10).
 - **Reglas de acceso**:
-  - Público: `POST /api/auth/**`, `GET /api/productos`, `GET /api/cita/tipoCita`.
-  - `ROLE_ADMIN`: `/api/user` (listado), `POST /api/user/asesores`, `/api/user/clientesPorCorreo/**`, escrituras de productos, `GET /api/productos/admin`, `agregarCitaAdmin`.
-  - Autenticado: `myInfo`, `asesores`, `GET /api/cita` (admin/asesor), `disponibilidad`, `agregarCita`, `aprobarCita`, `cancelarCita`, `completarCita`.
-  - Propiedad: un `cliente` solo puede cancelar/consultar sus propias citas; un `asesor` solo aprueba/concluye citas de su agenda (verificar en servicio → `403`).
-- **CORS**: origen `http://localhost:5173`, métodos y cabeceras estándar, `Authorization` permitido.
+  - Público: `POST /api/auth/**`, `GET /api/productos`, `GET /api/categorias`, `GET /api/cita/tipoCita`.
+  - `ROLE_ADMIN`: `GET /api/user`, `POST /api/user/asesores`, `GET /api/user/clientesPorCorreo/**`, `GET /api/productos/admin`, escrituras de productos (`POST`/`PUT`/`DELETE /api/productos`), `POST /api/cita/agregarCitaAdmin`.
+  - `ROLE_ADMIN` o `ROLE_ASESOR`: `GET /api/cita`.
+  - Cualquier rol autenticado: `GET /api/user/myInfo`, `GET /api/user/asesores`, `GET /api/cita/disponibilidad`, `GET /api/cita/disponibilidadSemana`, `GET /api/notificaciones`, `POST /api/notificaciones/leer`.
+  - `ROLE_CLIENTE`: `POST /api/cita/agregarCita`.
+  - `ROLE_ASESOR` (dueño) o `ROLE_ADMIN`: `POST /api/cita/aprobarCita`, `POST /api/cita/completarCita`.
+  - `ROLE_CLIENTE` (dueño), `ROLE_ASESOR` (dueño) o `ROLE_ADMIN`: `POST /api/cita/cancelarCita` (el rechazo del asesor/admin es esta misma operación).
+  - Propiedad (verificada en servicio → `403`): un `cliente` solo cancela/consulta sus propias citas; un `asesor` solo aprueba/concluye citas de su agenda.
+- **CORS**: orígenes `http://localhost:5173` (front público) y `http://localhost:5174` (panel admin); métodos y cabeceras estándar, `Authorization` permitido.
 - **Transporte**: el prototipo local usa HTTP; HTTPS es requisito de despliegue productivo (fuera del alcance actual).
 
 ## Validación y manejo de errores
 - Validación declarativa con `jakarta.validation` (`@NotBlank`, `@Email`, `@Positive`, etc.) + `@Valid`.
+
+  | Campo | Regla |
+  |---|---|
+  | `nombre` (usuario) | `@NotBlank`, `@Size(max = 120)` |
+  | `apellido` (usuario) | `@Size(max = 120)` (opcional) |
+  | `telefono` (usuario) | `@Size(max = 30)` (opcional) |
+  | `correo` | `@NotBlank`, `@Email`, `@Size(max = 150)` |
+  | `password` | `@NotBlank`, `@Size(min = 6, max = 72)` |
+  | `name` (producto) | `@NotBlank`, `@Size(max = 150)` |
+  | `price` | `@NotNull`, `@Positive` |
+  | `stock` | `@NotNull`, `@PositiveOrZero` |
+  | `description` | lista opcional de `String`; cada ítem `@Size(max = 300)` |
+  | `categoria.name` / `categoria.Subcategoria` | `@NotBlank` |
+  | `asesorId` / `clienteId` / `tipoCitaId` | `@NotNull`, `@Positive` |
+  | `fechaCita` | `@NotNull` (ISO 8601) |
+  | `observacion` (completar) | `@NotBlank`, `@Size(max = 1000)` |
+  | `contacto.*` (agregarCita) | opcional; si viene, `correo` `@Email`, resto `@Size` |
+  | `notificacionId` / `todas` | uno de los dos requerido |
 - `GlobalExceptionHandler` (`@RestControllerAdvice`) → **siempre** `{ "error": "<mensaje>" }`:
   | Excepción | HTTP |
   |---|---|
@@ -88,7 +110,7 @@ app:
     jwt-secret: ${JWT_SECRET}
     jwt-expiration-minutes: 120
   cors:
-    allowed-origins: http://localhost:5173
+    allowed-origins: http://localhost:5173,http://localhost:5174
 ```
 - `ddl-auto: validate` (nunca `update`): el esquema es responsabilidad de Flyway.
 - La ruta `filesystem:../../db/migrations` es relativa al directorio de trabajo (`apps/api`).

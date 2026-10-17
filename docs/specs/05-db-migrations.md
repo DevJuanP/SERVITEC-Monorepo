@@ -16,7 +16,7 @@ y auditable, incluyendo la carga de datos semilla.
 | Tipo | Patrón | Ejemplo |
 |---|---|---|
 | Versionada | `V<versión>__<descripcion>.sql` | `V1__esquema_inicial.sql` |
-| Repetible | `R__<descripcion>.sql` | `R__seed_catalogo.sql` |
+| Repetible | `R__<NN>_<descripcion>.sql` | `R__03_seed_catalogo.sql` |
 
 Reglas:
 - Doble guion bajo (`__`) separa versión y descripción.
@@ -28,20 +28,24 @@ Reglas:
 |---|---|
 | `V1__esquema_inicial.sql` | `roles`, `usuarios` (+ FK, UNIQUE correo) |
 | `V2__catalogo.sql` | `categorias`, `subcategorias`, `productos` (incluye `stock` con CHECK ≥ 0), `caracteristicas` (+ FKs, checks) |
-| `V3__citas.sql` | `tipos_cita`, `citas` (+ FKs, CHECK estado con los cuatro valores, columna `observacion`, índices, índice único parcial) |
-| `R__seed_roles.sql` | Roles `admin`, `asesor`, `cliente` |
-| `R__seed_catalogo.sql` | 3 categorías, 12 subcategorías, 60 productos + características, 2 tipos de cita |
-| `R__seed_usuarios.sql` | Usuarios demo (`@servitec.pe`) |
-| `R__seed_citas.sql` | Citas demo cubriendo los cuatro estados |
+| `V3__citas.sql` | `tipos_cita`, `citas` (+ FKs, CHECK estado con cuatro valores, columna `observacion`, índices, índice único parcial) |
+| `V4__contacto_notificaciones.sql` | Añade `usuarios.apellido/telefono`; `citas.contacto_*` (snapshot); crea `notificaciones` |
+| `R__01_seed_roles.sql` | Roles `admin`, `asesor`, `cliente` |
+| `R__02_seed_usuarios.sql` | Usuarios demo (`@servitec.pe`, BCrypt) |
+| `R__03_seed_catalogo.sql` | 3 categorías, 12 subcategorías, 60 productos + 300 características, 2 tipos de cita |
+| `R__04_seed_citas.sql` | Citas demo cubriendo los cuatro estados + notificación de ejemplo |
 
-Dependencias de orden: `roles` → `usuarios`; `categorias` → `subcategorias` → `productos` → `caracteristicas`; `tipos_cita` + `usuarios` → `citas`.
+Dependencias de orden: `roles` → `usuarios`; `categorias` → `subcategorias` → `productos` → `caracteristicas`; `tipos_cita` + `usuarios` → `citas`; `usuarios` + `citas` → `notificaciones`.
+
+> Las migraciones repetibles se ejecutan **después** de las versionadas y **en orden alfabético por descripción**. Por eso la semilla lleva prefijo numérico `01`–`04`: garantiza el orden `roles → usuarios → catálogo → citas` (citas depende de usuarios).
 
 ## Reglas de la semilla
 - La semilla es **idempotente**: `INSERT ... ON CONFLICT DO NOTHING` (o `DO UPDATE` donde corresponda).
 - El catálogo conserva los **IDs originales** (categorías 1–3, subcategorías 101–112, productos 1–60, tipos de cita 1–2).
-- La semilla de productos asigna `stock` inicial variado (con al menos un agotado) para poder ejecutar P08.
-- Tras insertar catálogo con IDs fijos, se debe **reajustar la secuencia de identidad** si la tabla usa identity (`setval`), para no chocar con futuros inserts.
-- Las contraseñas de la semilla se insertan ya hasheadas con BCrypt.
+- La semilla de productos asigna `stock` inicial variado (con al menos un agotado: 2, 12 y 48) para poder ejecutar P08.
+- `roles` usa identidad: tras insertar los IDs 1–3 se **reajusta la secuencia** con `setval` para no chocar con futuros inserts. Las tablas de catálogo y `tipos_cita` usan **IDs fijos sin identity**, por lo que no requieren `setval`.
+- Las contraseñas de la semilla se insertan ya hasheadas con BCrypt (`$2b$`, compatible con `BCryptPasswordEncoder`).
+- La idempotencia usa `ON CONFLICT`: catálogo por `id`, características por `(producto_id, orden)`, usuarios por `correo`; las `citas` y las `notificaciones` se insertan con guarda `NOT EXISTS` (no tienen clave natural).
 
 ## Cómo se aplican
 1. **Automático (recomendado)**: al arrancar `apps/api`, Spring Boot ejecuta Flyway contra `db/migrations` antes de inicializar JPA (`ddl-auto: validate`).
@@ -66,11 +70,11 @@ Dependencias de orden: `roles` → `usuarios`; `categorias` → `subcategorias` 
 | P08 | El `stock` sembrado respeta `CHECK (stock >= 0)` y los agotados no aparecen en `GET /api/productos` |
 
 - Reaplicar la semilla dos veces no duplica filas.
-- `V1`–`V3` + semilla aplican sin error en una base vacía.
+- `V1`–`V4` + semilla aplican sin error en una base vacía.
 
 ## Tareas derivables
-1. Escribir `V1__esquema_inicial.sql`, `V2__catalogo.sql`, `V3__citas.sql`.
-2. Escribir las migraciones repetibles de semilla (`R__seed_*.sql`).
+1. Escribir `V1__esquema_inicial.sql`, `V2__catalogo.sql`, `V3__citas.sql`, `V4__contacto_notificaciones.sql`.
+2. Escribir las migraciones repetibles de semilla (`R__01`–`R__04`).
 3. Configurar `spring.flyway.locations` y `ddl-auto: validate` en el backend.
 4. Crear la base y el usuario `servitec` (y `servitec_test`).
 5. Verificar el índice único parcial de `citas`.
@@ -81,4 +85,4 @@ Dependencias de orden: `roles` → `usuarios`; `categorias` → `subcategorias` 
 ## Evidencia esperada
 - Listado de `db/migrations/` con los scripts.
 - Salida de `flyway_schema_history` con las migraciones aplicadas.
-- Conteos de semilla verificados (3 / 12 / 60 / 2).
+- Conteos de semilla verificados (3 categorías / 12 subcategorías / 60 productos / 300 características / 2 tipos de cita / 5 citas / ≥1 notificación).

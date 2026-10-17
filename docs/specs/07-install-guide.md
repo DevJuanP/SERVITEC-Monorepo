@@ -49,6 +49,7 @@ Ajustar como mínimo:
 | Variable | Valor esperado |
 |---|---|
 | `VITE_API_URL` | `http://localhost:8080` |
+| `VITE_ADMIN_URL` | `http://localhost:5174` (usado por el `Header` del front público) |
 | `SPRING_DATASOURCE_URL` | `jdbc:postgresql://localhost:5432/servitec` |
 | `SPRING_DATASOURCE_USERNAME` | `servitec` |
 | `SPRING_DATASOURCE_PASSWORD` | la que definiste |
@@ -66,12 +67,20 @@ cd apps/api
 - Aplica automáticamente las migraciones Flyway de `db/migrations`.
 - Verificar: `curl http://localhost:8080/api/productos`.
 
-## 6. Levantar el front
+## 6. Levantar los fronts
+### 6.1 Front público
 ```bash
 cd apps/front
 npm install
 npm run dev                # http://localhost:5173
 ```
+### 6.2 Panel de administración *(cuando esté implementado)*
+```bash
+cd apps/admin
+npm install
+npm run dev                # http://localhost:5174
+```
+> El backend debe permitir CORS desde `http://localhost:5173` y `http://localhost:5174`.
 
 ## 7. Credenciales de la semilla (demo)
 | Rol | Correo | Contraseña |
@@ -104,9 +113,10 @@ npm run dev                # http://localhost:5173
 - [ ] `java -version` → 21.x
 - [ ] `psql -h localhost -U servitec -d servitec -c "select 1;"` responde
 - [ ] Backend arriba en `:8080` y migraciones aplicadas
-- [ ] `GET /api/productos` devuelve 60 productos
-- [ ] Front arriba en `:5173` y carga el catálogo
-- [ ] Login con `admin@servitec.pe` funciona y muestra el enlace ADMIN
+- [ ] `GET /api/productos` devuelve 57 productos disponibles (60 en `GET /api/productos/admin`; 2/12/48 agotados)
+- [ ] Front público arriba en `:5173` y carga el catálogo
+- [ ] Panel admin arriba en `:5174`; login de admin/asesor funciona
+- [ ] Login con `admin@servitec.pe` muestra el enlace al panel
 
 ## Problemas frecuentes
 Ver `08-ops-manual.md` (sección de resolución de problemas).

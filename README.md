@@ -9,12 +9,14 @@ con las **especificaciones** desde las que se generan los planes de ejecución.
 ```
 SERVITEC-Monorepo/
 ├─ apps/
-│  ├─ front/          Frontend React 19 + Vite (reutilizado y adaptado)
+│  ├─ front/          Frontend público React 19 + Vite (reutilizado y adaptado)
+│  ├─ admin/          Panel de administración React 19 + Vite (segundo front, planificado)
 │  └─ api/            Backend Spring Boot 4.1.x + Java 21  (placeholder)
 ├─ db/
-│  └─ migrations/     Migraciones Flyway (placeholder)
+│  └─ migrations/     Migraciones Flyway (esquema + semilla implementados)
 ├─ docs/
 │  ├─ entregable_2_grupo10 (1).docx
+│  ├─ actualizaciones-word/
 │  └─ specs/          Especificaciones técnicas (fuente de los planes)
 ├─ .env.example
 └─ .gitignore
@@ -25,6 +27,7 @@ SERVITEC-Monorepo/
 | Capa | Tecnología |
 |---|---|
 | Frontend | React 19 + Vite (JS) · `axios` · `react-router-dom` 7 |
+| Panel admin | React 19 + Vite (JS) · `axios` · `react-router-dom` 7 (segundo front, `apps/admin`) |
 | Backend | Spring Boot 4.1.x · Java 21 (LTS) · Maven · Controller–Service–Repository |
 | Seguridad | Spring Security 7 · OAuth2 Resource Server (JWT HS256) |
 | Base de datos | PostgreSQL 18 |
@@ -34,9 +37,11 @@ SERVITEC-Monorepo/
 ## Estado actual
 
 - `apps/front` → **copiado y adaptado mínimamente** (cliente axios único con `VITE_API_URL`, contrato alineado).
+- `apps/admin` → **especificado** (`docs/specs/09-admin-panel.md`); pendiente de implementación.
 - `apps/api` → **placeholder** (pendiente de implementación).
-- `db/migrations` → **placeholder** (pendiente de implementación).
-- `docs/specs` → **especificaciones escritas** (plan-ready).
+- `db/migrations` → **implementado** (esquema `V1`–`V3` + semilla `R__01`–`R__04`).
+- `docs/specs` → **especificaciones escritas** (plan-ready), incluida `10-front-publico-citas.md`.
+- `docs/plans` → **planes de implementación** (roadmap + backend + fronts + trazabilidad).
 
 ## Requisitos previos
 
@@ -45,7 +50,7 @@ SERVITEC-Monorepo/
 - **PostgreSQL 18** local.
 - **Git**.
 
-## Cómo levantar el front
+## Cómo levantar los fronts
 
 ```bash
 cd apps/front
@@ -54,7 +59,9 @@ npm install
 npm run dev               # http://localhost:5173
 ```
 
-El front apunta a la API definida en `VITE_API_URL` (por defecto `http://localhost:8080`).
+El panel de administración será un segundo front (`apps/admin`, puerto `5174`) — ver
+`docs/specs/09-admin-panel.md`. Ambos apuntan a la API definida en `VITE_API_URL`
+(por defecto `http://localhost:8080`).
 
 ## Cómo levantar el backend *(pendiente)*
 
@@ -80,7 +87,19 @@ Configuración por entorno (ver `.env.example`): `SPRING_DATASOURCE_URL`,
 | `docs/specs/06-front-adaptation.md` | Adaptación del front y backlog de deuda técnica |
 | `docs/specs/07-install-guide.md` | Guía de instalación |
 | `docs/specs/08-ops-manual.md` | Manual técnico de operación |
+| `docs/specs/09-admin-panel.md` | Panel de administración (segundo front `apps/admin`) |
+| `docs/specs/10-front-publico-citas.md` | Citas del cliente por franjas en el front público (B16) |
 | `docs/actualizaciones-word/cambios-para-el-word.md` | Cambios pendientes de redacción en el documento Word |
+
+### Planes de implementación (`docs/plans/`)
+
+| Documento | Contenido |
+|---|---|
+| `docs/plans/00-roadmap.md` | Orden, fases, dependencias y DoD |
+| `docs/plans/plan-backend.md` | Implementación de `apps/api` (P01–P12) |
+| `docs/plans/plan-front-publico.md` | Citas por franjas (B16) y retiro de `/admin` |
+| `docs/plans/plan-admin.md` | Implementación del panel `apps/admin` |
+| `docs/plans/matriz-trazabilidad.md` | HU ↔ endpoint ↔ regla ↔ prueba |
 
 ## Convenciones
 

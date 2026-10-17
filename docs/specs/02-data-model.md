@@ -2,7 +2,8 @@
 
 ## Objetivo
 Definir el modelo relacional de SERVITEC en PostgreSQL: entidades, columnas, tipos, restricciones y
-relaciones, junto con el mapeo desde el modelo MongoDB heredado y las reglas de integridad.
+relaciones, junto con el mapeo desde el modelo de datos heredado (formas JSON que el front
+reutilizado espera) y las reglas de integridad.
 
 ## Alcance
 Entidades: `roles`, `usuarios`, `categorias`, `subcategorias`, `productos`, `caracteristicas`,
@@ -19,6 +20,8 @@ erDiagram
     TIPOS_CITA ||--o{ CITAS : "tipifica"
     USUARIOS ||--o{ CITAS : "solicita (cliente)"
     USUARIOS ||--o{ CITAS : "atiende (asesor)"
+    USUARIOS ||--o{ NOTIFICACIONES : "recibe"
+    CITAS ||--o{ NOTIFICACIONES : "origina"
 
     ROLES {
         bigint id PK
@@ -27,7 +30,9 @@ erDiagram
     USUARIOS {
         bigint id PK
         varchar nombre
+        varchar apellido
         varchar correo UK
+        varchar telefono
         varchar password
         bigint rol_id FK
         boolean activo
@@ -70,6 +75,19 @@ erDiagram
         timestamptz fecha_cita
         text descripcion
         text observacion
+        varchar contacto_nombre
+        varchar contacto_apellido
+        varchar contacto_correo
+        varchar contacto_telefono
+    }
+    NOTIFICACIONES {
+        bigint id PK
+        bigint usuario_id FK
+        bigint cita_id FK
+        varchar tipo
+        varchar mensaje
+        boolean leida
+        timestamptz fecha
     }
 ```
 
@@ -89,7 +107,9 @@ Semilla: `1=admin`, `2=asesor`, `3=cliente`.
 |---|---|---|---|
 | `id` | `bigint` | PK, identity | |
 | `nombre` | `varchar(120)` | NOT NULL | |
+| `apellido` | `varchar(120)` | | Apellido del contacto |
 | `correo` | `varchar(150)` | NOT NULL, UNIQUE | Clave de login |
+| `telefono` | `varchar(30)` | | Teléfono de contacto |
 | `password` | `varchar(100)` | NOT NULL | Hash BCrypt (nunca se serializa) |
 | `rol_id` | `bigint` | NOT NULL, FK → `roles(id)` | |
 | `activo` | `boolean` | NOT NULL, DEFAULT `true` | Borrado lógico |
@@ -114,7 +134,7 @@ Semilla: `1=admin`, `2=asesor`, `3=cliente`.
 |---|---|---|
 | `id` | `bigint` | PK, sin identity (1–60) |
 | `name` | `varchar(150)` | NOT NULL |
-| `price` | `numeric(10,2)` | NOT NULL, CHECK `price >= 0` |
+| `price` | `numeric(10,2)` | NOT NULL, CHECK `price > 0` |
 | `stock` | `int` | NOT NULL, DEFAULT `0`, CHECK `stock >= 0` |
 | `img` | `varchar(500)` | |
 | `subcategoria_id` | `bigint` | NOT NULL, FK → `subcategorias(id)` |
@@ -129,6 +149,7 @@ Semilla: `1=admin`, `2=asesor`, `3=cliente`.
 | `producto_id` | `bigint` | NOT NULL, FK → `productos(id)` ON DELETE CASCADE |
 | `descripcion` | `varchar(300)` | NOT NULL |
 | `orden` | `int` | NOT NULL, DEFAULT 0 |
+| | | UNIQUE `(producto_id, orden)` — orden y soporte de `ON CONFLICT` en la semilla |
 
 ### `tipos_cita`
 | Columna | Tipo | Restricciones |
@@ -151,25 +172,43 @@ Semilla: `1=admin`, `2=asesor`, `3=cliente`.
 | `fecha_cita` | `timestamptz` | NOT NULL |
 | `descripcion` | `text` | |
 | `observacion` | `text` | | Observación de cierre (HU-10, R-13) |
+| `contacto_nombre` | `varchar(120)` | | Snapshot de contacto (R-15) |
+| `contacto_apellido` | `varchar(120)` | | Snapshot de contacto (R-15) |
+| `contacto_correo` | `varchar(150)` | | Snapshot de contacto (R-15) |
+| `contacto_telefono` | `varchar(30)` | | Snapshot de contacto (R-15) |
 
 Índices y restricciones:
-- `UNIQUE (asesor_id, fecha_cita) WHERE estado <> 'Cancelada'` → **regla R-3** (HU-07).
+- `UNIQUE (asesor_id, fecha_cita) WHERE estado <> 'Cancelada'` → **regla R-3** (HU-07). Cancelar/rechazar libera la franja.
 - `INDEX (cliente_id)`, `INDEX (asesor_id)`, `INDEX (fecha_cita)`.
+
+### `notificaciones` (HU-13, R-14)
+| Columna | Tipo | Restricciones | Descripción |
+|---|---|---|---|
+| `id` | `bigint` | PK, identity | |
+| `usuario_id` | `bigint` | NOT NULL, FK → `usuarios(id)` | Destinatario (el cliente) |
+| `cita_id` | `bigint` | FK → `citas(id)` | Cita que origina el aviso |
+| `tipo` | `varchar(30)` | NOT NULL | `Aprobada`/`Cancelada`/`Realizada`/… |
+| `mensaje` | `varchar(300)` | NOT NULL | Texto mostrado |
+| `leida` | `boolean` | NOT NULL, DEFAULT `false` | Estado de lectura |
+| `fecha` | `timestamptz` | NOT NULL, DEFAULT `now()` | |
+
+Índices: `INDEX (usuario_id, leida)`, `INDEX (cita_id)`. Solo in-app por ahora; el correo es diferido.
 
 ## Reglas e integridad
 - Todas las PK son `BIGINT`; el catálogo conserva sus IDs originales.
 - Sin `ON DELETE` en las FKs de `citas` y `productos` (borrado restringido): integridad referencial dura.
 - `caracteristicas` se elimina en cascada con su producto.
-- Cancelar una cita **nunca** borra la fila (R-2).
+- Cancelar o rechazar una cita **nunca** borra la fila (R-2).
+- `notificaciones.usuario_id → usuarios(id)` con `ON DELETE CASCADE`; `cita_id → citas(id)` con `ON DELETE CASCADE`.
 
-## Mapeo desde el modelo MongoDB heredado
-| Mongo | PostgreSQL | Nota |
+## Mapeo desde el modelo heredado (formas que el front reutilizado espera)
+| Modelo heredado (JSON) | PostgreSQL | Nota |
 |---|---|---|
 | `categorias._id` (int) | `categorias.id` | Se conserva |
 | `subcategorias.categoriaId` | `subcategorias.categoria_id` | |
 | `productos.categoriaId` | *(eliminado)* | Redundante: se deriva por subcategoría |
 | `productos.description[]` | `caracteristicas(descripcion, orden)` | Array → tabla hija |
-| `usuarios._id` (ObjectId) | `usuarios.id` (bigint) | FKs remapeadas en la semilla |
+| `usuarios._id` (string) | `usuarios.id` (bigint) | FKs remapeadas en la semilla |
 | `usuarios.rol` (string) | `usuarios.rol_id` → `roles` | `admin`/`cliente` → +`asesor` |
 | `usuarios.citas[]` | *(eliminado)* | Redundante: relación por `citas.cliente_id` |
 | `tiposCitas.type` | `tipos_cita.nombre` (JSON: `type`) | |
@@ -179,7 +218,7 @@ Semilla: `1=admin`, `2=asesor`, `3=cliente`.
 ## Datos semilla (repetible)
 - 3 categorías, 12 subcategorías, 60 productos (con `stock` inicial variado, incluido al menos un agotado) + sus características, 2 tipos de cita.
 - Usuarios demo con correos `@servitec.pe` (admin, 3 asesores, cliente) y credenciales documentadas en `07-install-guide.md`.
-- Unas pocas citas cubriendo los cuatro estados.
+- Unas pocas citas cubriendo los cuatro estados (`Pendiente`, `Aprobada`, `Realizada`, `Cancelada`) y al menos una notificación de ejemplo.
 
 ## Criterios de aceptación
 - **P06** — el catálogo consultado por categoría coincide exactamente con las filas de `productos` (solo los disponibles).
@@ -190,9 +229,10 @@ Semilla: `1=admin`, `2=asesor`, `3=cliente`.
 
 ## Tareas derivables
 1. Escribir las migraciones `V1__esquema_inicial.sql` (tablas, FKs, checks) y los índices de `citas`.
-2. Escribir la migración de catálogo y la semilla idempotente `R__seed_*.sql`.
-3. Mapear entidades JPA (`Usuario`, `Rol`, `Categoria`, `Subcategoria`, `Producto`, `Caracteristica`, `TipoCita`, `Cita`).
-4. Verificar el índice único parcial con una prueba de integración.
+2. Escribir la migración de catálogo y la semilla idempotente (`R__03_seed_catalogo.sql`).
+3. Escribir `V4__contacto_notificaciones.sql`: `usuarios.apellido/telefono`, `citas.contacto_*` y la tabla `notificaciones`.
+4. Mapear entidades JPA (`Usuario`, `Rol`, `Categoria`, `Subcategoria`, `Producto`, `Caracteristica`, `TipoCita`, `Cita`, `Notificacion`).
+5. Verificar el índice único parcial con una prueba de integración.
 
 ## Dependencias
 - Convenciones de migración: `05-db-migrations.md`.
