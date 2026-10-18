@@ -19,6 +19,10 @@ implementar y para guiar las pruebas P01–P13.
 | HU-10 Concluir cita | `POST /api/cita/completarCita` | R-2, R-13 | P11 | 01, 03 |
 | HU-11 Alta de asesores | `POST /api/user/asesores`, `GET /api/user/asesores` | R-5 | P12 | 01, 03 |
 | HU-12 Notificaciones del cliente | `GET /api/notificaciones`, `POST /api/notificaciones/leer` | R-14 | P13 | 01, 03 |
+| **HU-04 (Admin) Agenda del asesor en panel** | `GET /api/cita?asesorId=`, `POST /api/cita/aprobarCita`, `POST /api/cita/completarCita` | R-2, R-3 | P09, P11 | 01, 03, 09 |
+| **HU-06 (Admin) Catálogo e inventario** | `GET /api/productos/admin`, `POST`/`PUT`/`DELETE /api/productos` | R-9, R-10 | P06, P08 | 01, 02, 03, 09 |
+| **HU-08 (Admin) Control de stock** | `GET /api/productos/admin`, `POST`/`PUT /api/productos` | R-9, R-10 | P08 | 01, 02, 03, 09 |
+| **HU-11 (Admin) Alta de asesores** | `POST /api/user/asesores`, `GET /api/user/asesores` | R-5 | P12 | 01, 03, 09 |
 
 ## Prueba → verificación
 | Código | Verificación | Specs |
