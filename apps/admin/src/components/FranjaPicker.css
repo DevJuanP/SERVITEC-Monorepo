@@ -1,0 +1,140 @@
+.franja-picker {
+  background: #fff;
+  border: 1px solid #e0e0e0;
+  border-radius: 12px;
+  overflow: hidden;
+}
+
+.franja-picker-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 16px;
+  background: #fafafa;
+  border-bottom: 1px solid #e0e0e0;
+}
+
+.franja-picker-title {
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: #1a1a2e;
+}
+
+.franja-picker-fecha {
+  font-size: 0.85rem;
+  color: #6b7280;
+}
+
+.franja-picker-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
+  gap: 8px;
+  padding: 16px;
+}
+
+.franja-picker-btn {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+  padding: 14px 10px;
+  border: 2px solid #e0e0e0;
+  border-radius: 10px;
+  background: #fff;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.franja-picker-btn:hover:not(:disabled) {
+  border-color: #8B1E1E;
+  background: #fef2f2;
+}
+
+.franja-picker-btn:disabled {
+  cursor: not-allowed;
+  opacity: 0.5;
+}
+
+.franja-picker-btn.seleccionada {
+  border-color: #8B1E1E;
+  background: #fef2f2;
+  box-shadow: 0 0 0 2px rgba(139, 30, 30, 0.2);
+}
+
+.franja-picker-btn.ocupada {
+  background: #f9fafb;
+  border-color: #f0f0f0;
+  color: #9ca3af;
+}
+
+.franja-picker-hora {
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: #1a1a2e;
+}
+
+.franja-picker-estado {
+  font-size: 0.7rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  padding: 2px 8px;
+  border-radius: 10px;
+}
+
+.franja-picker-estado.libre {
+  background: #d1fae5;
+  color: #065f46;
+}
+
+.franja-picker-estado.ocupada {
+  background: #fee2e2;
+  color: #991b1b;
+}
+
+.franja-picker-loading,
+.franja-picker-error,
+.franja-picker-no-laborable,
+.franja-picker-vacio {
+  padding: 24px;
+  text-align: center;
+  color: #6b7280;
+}
+
+.skeleton-franjas {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
+  gap: 8px;
+}
+
+.skeleton-franja {
+  height: 70px;
+  background: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%);
+  background-size: 200% 100%;
+  animation: shimmer 1.5s infinite;
+  border-radius: 10px;
+  border: 1px solid #e0e0e0;
+}
+
+@keyframes shimmer {
+  0% { background-position: 200% 0; }
+  100% { background-position: -200% 0; }
+}
+
+.franja-picker-no-laborable {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+}
+
+.franja-picker-no-laborable .icon {
+  font-size: 2rem;
+}
+
+.franja-picker-error {
+  color: #dc2626;
+  background: #fff5f5;
+  border: 1px solid #fecaca;
+  border-radius: 8px;
+  margin: 16px;
+}

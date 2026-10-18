@@ -1,0 +1,42 @@
+.estado-badge {
+  display: inline-flex;
+  align-items: center;
+  font-weight: 600;
+  border-radius: 20px;
+  white-space: nowrap;
+}
+
+.estado-badge-sm {
+  padding: 2px 8px;
+  font-size: 0.7rem;
+}
+
+.estado-badge-md {
+  padding: 4px 12px;
+  font-size: 0.8rem;
+}
+
+.estado-badge-lg {
+  padding: 6px 16px;
+  font-size: 0.9rem;
+}
+
+.estado-badge.pendiente {
+  background: #fef3c7;
+  color: #92400e;
+}
+
+.estado-badge.aprobada {
+  background: #dbeafe;
+  color: #1e40af;
+}
+
+.estado-badge.realizada {
+  background: #d1fae5;
+  color: #065f46;
+}
+
+.estado-badge.cancelada {
+  background: #fee2e2;
+  color: #991b1b;
+}
