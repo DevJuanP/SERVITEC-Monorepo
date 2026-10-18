@@ -113,4 +113,5 @@ Configuración por entorno (ver `.env.example`): `SPRING_DATASOURCE_URL`,
 
 | Fecha | Cambio |
 |---|---|
-| 2026-10-17 | **F1 Backend ✅** — `apps/api` implementado (Spring Boot 4.1 / Java 21): seguridad JWT HS256 + CORS `:5173`/`:5174`, auth/usuarios, catálogo, citas, notificaciones y `GlobalExceptionHandler`. `mvnw.cmd test` en verde con P01–P13. `plan-backend.md` normalizado a la plantilla del contrato y cerrado. |
+| 2026-10-18 | **F1 Backend ✅ verificado** — `mvnw.cmd test` en verde (14 tests: P01–P13 + context + P07) con PostgreSQL 16 local operativo (`servitec` / `servitec_test`, rol `servitec`). Flyway aplica V1–V4 + semillas. CORS `:5173`/`:5174` confirmado. |
+| 2026-10-17 | **F1 Backend implementado** — `apps/api` (Spring Boot 4.1 / Java 21): seguridad JWT HS256 + CORS `:5173`/`:5174`, auth/usuarios, catálogo, citas, notificaciones, `GlobalExceptionHandler`. `plan-backend.md` normalizado a plantilla §4. Tests pendientes de BD (resuelto 2026-10-18). |
