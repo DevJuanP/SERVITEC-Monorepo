@@ -37,7 +37,7 @@ SERVITEC-Monorepo/
 
 ## Estado actual
 
-- `apps/front` → **copiado y adaptado mínimamente** (cliente axios único con `VITE_API_URL`, contrato alineado).
+- `apps/front` → **implementado** (citas por franjas B16, `CalendarioSemanal`, `FranjaPicker`, `MisCitas`, `Notificaciones`, contacto R-15, conversión Lima→UTC, toasts 400/409, `/admin` retirado, enlace `VITE_ADMIN_URL`).
 - `apps/admin` → **especificado** (`docs/specs/09-admin-panel.md`); pendiente de implementación.
 - `apps/api` → **implementado** (API REST completa, P01–P13 en verde con `mvnw.cmd test`).
 - `db/migrations` → **implementado** (esquema `V1`–`V4` + semilla `R__01`–`R__04`).
@@ -113,5 +113,6 @@ Configuración por entorno (ver `.env.example`): `SPRING_DATASOURCE_URL`,
 
 | Fecha | Cambio |
 |---|---|
+| 2026-10-18 | **F2 Front público ✅ verificado** — `npm run build` en verde. B16 cerrado: `CalendarioSemanal` (disponibilidadSemana 5×7), `FranjaPicker` (disponibilidad), contacto R-15, conversión Lima→UTC, toasts 400/409, `MisCitas` con cancelación, `Notificaciones` (campana). `/admin` y `CitaAdmin.jsx` retirados. `Header` enlaza panel con `VITE_ADMIN_URL`. Sin URLs `localhost` hardcodeadas. |
 | 2026-10-18 | **F1 Backend ✅ verificado** — `mvnw.cmd test` en verde (14 tests: P01–P13 + context + P07) con PostgreSQL 16 local operativo (`servitec` / `servitec_test`, rol `servitec`). Flyway aplica V1–V4 + semillas. CORS `:5173`/`:5174` confirmado. |
 | 2026-10-17 | **F1 Backend implementado** — `apps/api` (Spring Boot 4.1 / Java 21): seguridad JWT HS256 + CORS `:5173`/`:5174`, auth/usuarios, catálogo, citas, notificaciones, `GlobalExceptionHandler`. `plan-backend.md` normalizado a plantilla §4. Tests pendientes de BD (resuelto 2026-10-18). |

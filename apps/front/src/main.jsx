@@ -15,7 +15,6 @@ import MapSite from  './pages/mapSite/MapSite.jsx'
 import FormularioCitas from './pages/citas/FormularioCitas.jsx'
 import Login from './pages/logReg/login.jsx'
 import Register from './pages/logReg/register.jsx'
-import { CitaAdmin } from './pages/citaAdmin/CitaAdmin.jsx'
 
 createRoot(document.getElementById('root')).render(
   <StrictMode>
@@ -33,7 +32,6 @@ createRoot(document.getElementById('root')).render(
            <Route path="/login" element={<Login/>} />
            <Route path="/register" element={<Register/>} />
           <Route path="/mapsite" element={<MapSite/>} />
-          <Route path="/admin" element={<CitaAdmin />} />
         </Route>
       </Routes>    
     </BrowserRouter>

@@ -1,0 +1,194 @@
+.calendario-semanal {
+  background: #fff;
+  border: 1px solid #e0e0e0;
+  border-radius: 12px;
+  padding: 16px;
+  margin-bottom: 16px;
+}
+
+.calendario-semanal-header {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  margin-bottom: 12px;
+  padding-bottom: 12px;
+  border-bottom: 1px solid #f0f0f0;
+}
+
+.calendario-semanal-title {
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: #1a1a1a;
+}
+
+.calendario-semanal-subtitle {
+  font-size: 0.8rem;
+  color: #666;
+}
+
+.calendario-semanal-grid {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 8px;
+}
+
+.calendario-semanal-dia {
+  background: #fafafa;
+  border: 1px solid #e8e8e8;
+  border-radius: 8px;
+  padding: 10px 8px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.calendario-semanal-dia:hover:not(.no-laborable):not(.seleccionado) {
+  background: #f5f5f5;
+  border-color: #d0d0d0;
+  transform: translateY(-1px);
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.06);
+}
+
+.calendario-semanal-dia.seleccionado {
+  background: #eef5ff;
+  border-color: #3b82f6;
+  box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.2);
+}
+
+.calendario-semanal-dia.hoy {
+  border-color: #3b82f6;
+}
+
+.calendario-semanal-dia.hoy .calendario-semanal-dia-fecha {
+  font-weight: 600;
+  color: #3b82f6;
+}
+
+.calendario-semanal-dia.no-laborable {
+  background: #f9f9f9;
+  border-color: #eee;
+  color: #999;
+  cursor: not-allowed;
+  opacity: 0.6;
+}
+
+.calendario-semanal-dia-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.calendario-semanal-dia-fecha {
+  font-size: 0.85rem;
+  font-weight: 500;
+  color: #333;
+}
+
+.calendario-semanal-badge {
+  font-size: 0.65rem;
+  background: #3b82f6;
+  color: #fff;
+  padding: 1px 6px;
+  border-radius: 4px;
+}
+
+.calendario-semanal-dia-cupos {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.calendario-semanal-cupos {
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: #22c55e;
+}
+
+.calendario-semanal-no-laborable {
+  font-size: 0.75rem;
+  color: #999;
+  text-align: center;
+}
+
+.calendario-semanal-franjas-mini {
+  display: flex;
+  gap: 2px;
+  justify-content: center;
+}
+
+.calendario-semanal-franja-mini {
+  width: 8px;
+  height: 8px;
+  border-radius: 2px;
+  background: #e0e0e0;
+}
+
+.calendario-semanal-franja-mini.libre {
+  background: #22c55e;
+}
+
+.calendario-semanal-franja-mini.ocupada {
+  background: #ef4444;
+}
+
+.calendario-semanal-loading {
+  padding: 16px;
+}
+
+.skeleton-grid {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 8px;
+}
+
+.skeleton-day {
+  background: #fafafa;
+  border: 1px solid #e8e8e8;
+  border-radius: 8px;
+  padding: 10px 8px;
+}
+
+.skeleton-day-header {
+  height: 16px;
+  background: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%);
+  background-size: 200% 100%;
+  animation: shimmer 1.5s infinite;
+  border-radius: 4px;
+  margin-bottom: 8px;
+}
+
+.skeleton-slot {
+  height: 8px;
+  background: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%);
+  background-size: 200% 100%;
+  animation: shimmer 1.5s infinite;
+  border-radius: 2px;
+  margin-bottom: 3px;
+}
+
+@keyframes shimmer {
+  0% { background-position: 200% 0; }
+  100% { background-position: -200% 0; }
+}
+
+.calendario-semanal-error {
+  padding: 16px;
+  background: #fef2f2;
+  border: 1px solid #fecaca;
+  border-radius: 8px;
+  color: #b91c1c;
+  font-size: 0.85rem;
+  text-align: center;
+}
+
+.calendario-semanal-vacio {
+  padding: 24px;
+  text-align: center;
+  color: #666;
+  font-size: 0.9rem;
+  background: #fafafa;
+  border: 1px dashed #ddd;
+  border-radius: 8px;
+}

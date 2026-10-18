@@ -15,7 +15,7 @@ en encargos autónomos.
 ## Estado
 
 - [x] Prompt 1 — F1 Backend (`apps/api`) — *ejecutado*
-- [ ] Prompt 2 — F2 Front público (`apps/front`)
+- [x] Prompt 2 — F2 Front público (`apps/front`) — *ejecutado*
 - [ ] Prompt 3 — F3 Panel admin (`apps/admin`)
 - [ ] Prompt 4 — Traspaso / diagnóstico (uso previo a cada sesión)
 

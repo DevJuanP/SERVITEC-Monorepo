@@ -1,12 +1,14 @@
 import React from 'react'
 import './header.css'
 import { Link, NavLink, useNavigate } from 'react-router-dom'
+import Notificaciones from './Notificaciones'
 
 const Header = () => {
   const navigate = useNavigate()
   const token = localStorage.getItem('token')
   const nombreUsuario = localStorage.getItem('nombreUsuario') || localStorage.getItem('authUserName')
   const rolUsuario = localStorage.getItem('rolUsuario')
+  const adminUrl = import.meta.env.VITE_ADMIN_URL || 'http://localhost:5174'
 
   const handleLogout = () => {
     localStorage.removeItem('token')
@@ -147,15 +149,17 @@ const Header = () => {
               <>
                 <h2>•</h2>
                 <li className="main-items">
-                  <Link to="/admin">ADMIN</Link>
+                  <a href={adminUrl} target="_blank" rel="noopener noreferrer">PANEL ADMIN</a>
                 </li>
               </>
             )}
 
           </ul>
-      
+       
         </div>
       </nav>
+
+      {token && <Notificaciones />}
     </header>
     </>
   )

@@ -1,0 +1,163 @@
+.franja-picker {
+  background: #fff;
+  border: 1px solid #e0e0e0;
+  border-radius: 12px;
+  padding: 16px;
+  margin-bottom: 16px;
+}
+
+.franja-picker-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 12px;
+  padding-bottom: 12px;
+  border-bottom: 1px solid #f0f0f0;
+}
+
+.franja-picker-title {
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: #1a1a1a;
+}
+
+.franja-picker-fecha {
+  font-size: 0.8rem;
+  color: #666;
+}
+
+.franja-picker-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
+  gap: 8px;
+}
+
+.franja-picker-btn {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  padding: 12px 8px;
+  border: 2px solid #e0e0e0;
+  border-radius: 8px;
+  background: #fff;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  font-size: 0.8rem;
+}
+
+.franja-picker-btn.disponible:hover {
+  border-color: #22c55e;
+  background: #f0fdf4;
+  transform: translateY(-1px);
+  box-shadow: 0 2px 6px rgba(34, 197, 94, 0.15);
+}
+
+.franja-picker-btn.disponible:focus {
+  outline: none;
+  border-color: #3b82f6;
+  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.3);
+}
+
+.franja-picker-btn.seleccionada {
+  border-color: #3b82f6;
+  background: #eff6ff;
+  box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.2);
+}
+
+.franja-picker-btn.ocupada {
+  background: #fef2f2;
+  border-color: #fecaca;
+  color: #999;
+  cursor: not-allowed;
+}
+
+.franja-picker-hora {
+  font-weight: 600;
+  font-size: 0.9rem;
+  color: #1a1a1a;
+}
+
+.franja-picker-btn.ocupada .franja-picker-hora {
+  color: #999;
+}
+
+.franja-picker-estado {
+  font-size: 0.65rem;
+  font-weight: 500;
+  padding: 1px 6px;
+  border-radius: 4px;
+  text-transform: uppercase;
+  letter-spacing: 0.3px;
+}
+
+.franja-picker-estado.libre {
+  background: #dcfce7;
+  color: #166534;
+}
+
+.franja-picker-estado.ocupada {
+  background: #fee2e2;
+  color: #991b1b;
+}
+
+.franja-picker-loading {
+  padding: 8px;
+}
+
+.skeleton-franjas {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
+  gap: 8px;
+}
+
+.skeleton-franja {
+  height: 60px;
+  background: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%);
+  background-size: 200% 100%;
+  animation: shimmer 1.5s infinite;
+  border-radius: 8px;
+  border: 1px solid #e8e8e8;
+}
+
+@keyframes shimmer {
+  0% { background-position: 200% 0; }
+  100% { background-position: -200% 0; }
+}
+
+.franja-picker-error {
+  padding: 16px;
+  background: #fef2f2;
+  border: 1px solid #fecaca;
+  border-radius: 8px;
+  color: #b91c1c;
+  font-size: 0.85rem;
+  text-align: center;
+}
+
+.franja-picker-no-laborable {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  padding: 24px;
+  text-align: center;
+  background: #f9f9f9;
+  border: 1px dashed #ddd;
+  border-radius: 8px;
+  color: #666;
+}
+
+.franja-picker-no-laborable .icon {
+  font-size: 1.5rem;
+}
+
+.franja-picker-vacio {
+  padding: 24px;
+  text-align: center;
+  color: #666;
+  font-size: 0.9rem;
+  background: #fafafa;
+  border: 1px dashed #ddd;
+  border-radius: 8px;
+}

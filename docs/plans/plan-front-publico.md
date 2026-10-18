@@ -1,5 +1,5 @@
 # Plan 02 — Front público (`apps/front`)
-> Estado: ⬜ Pendiente · Depende de: Plan 01 Backend (✅) · Cubre: 06 §B16, 06 §Configuración, 06 §Contrato, 06 §Criterios de aceptación, 10 §Alcance, 10 §Flujo de la interfaz, 10 §Estados y validaciones, 10 §Componentes previstos, 10 §Criterios de aceptación, 03 §Citas/§Usuarios/§Notificaciones, HU-03, HU-04, R-11, R-12, R-14, R-15, P03 · Estimación: M
+> Estado: ✅ Hecho · Depende de: Plan 01 Backend (✅) · Cubre: 06 §B16, 06 §Configuración, 06 §Contrato, 06 §Criterios de aceptación, 10 §Alcance, 10 §Flujo de la interfaz, 10 §Estados y validaciones, 10 §Componentes previstos, 10 §Criterios de aceptación, 03 §Citas/§Usuarios/§Notificaciones, HU-03, HU-04, R-11, R-12, R-14, R-15, P03 · Estimación: M
 
 ## 1. Objetivo
 Cerrar la deuda **B16** (`06-front-adaptation.md`, spec `10-front-publico-citas.md`): que el cliente
@@ -42,7 +42,7 @@ enlace a `apps/admin` vía `VITE_ADMIN_URL`.
   quitar cualquier dato mock; usar `asesor.nombre` y `tipoCita.type` como etiquetas.
 - **Criterios de aceptación:** `10 §Alcance`, `10 §Flujo de la interfaz` (1), `03 §Citas`, `03 §Usuarios`, HU-03.
 - **Verificación:** V0 — `npm run build`; V2 — checklist: los selects se pueblan desde la API.
-- **Estado:** [ ]
+- **Estado:** [x]
 
 ### T-2.2 — Calendario semanal por cupos (`CalendarioSemanal`)
 - **Objetivo:** componente que muestra 5 días × 7 franjas con sus cupos libres desde
@@ -52,7 +52,7 @@ enlace a `apps/admin` vía `VITE_ADMIN_URL`.
   marcar cada día con sus cupos; estado de carga (spinner/skeleton) según `10 §Estados y validaciones`.
 - **Criterios de aceptación:** `10 §Flujo de la interfaz` (2), `10 §Criterios de aceptación` (calendario 5×7), R-11, R-12.
 - **Verificación:** V0 — `npm run build`; V2 — checklist: calendario refleja cupos por día (5×7).
-- **Estado:** [ ]
+- **Estado:** [x]
 
 ### T-2.3 — Selector de franja (`FranjaPicker`)
 - **Objetivo:** al cambiar asesor/fecha, consumir `GET /api/cita/disponibilidad?asesorId=&fecha=YYYY-MM-DD`
@@ -62,7 +62,7 @@ enlace a `apps/admin` vía `VITE_ADMIN_URL`.
   → mensaje "No hay atención ese día"; spinner/skeleton mientras carga (`10 §Estados y validaciones`).
 - **Criterios de aceptación:** `10 §Flujo de la interfaz` (3), `10 §Criterios de aceptación` (franjas), R-11, R-12.
 - **Verificación:** V0 — `npm run build`; V2 — checklist: libras/ocupadas y estado vacío de fin de semana.
-- **Estado:** [ ]
+- **Estado:** [x]
 
 ### T-2.4 — Datos de contacto precargados y editables (R-15)
 - **Objetivo:** precargar `nombre`, `apellido`, `correo`, `telefono` del perfil, permitir editarlos y
@@ -72,7 +72,7 @@ enlace a `apps/admin` vía `VITE_ADMIN_URL`.
   `GET /api/user/myInfo`; no bloquear los campos; incluir `contacto` en el payload de `agregarCita`.
 - **Criterios de aceptación:** `10 §Flujo de la interfaz` (4), `10 §Estados y validaciones`, R-5, R-15.
 - **Verificación:** V0 — `npm run build`; V2 — checklist: campos precargados, editables y en la cita creada.
-- **Estado:** [ ]
+- **Estado:** [x]
 
 ### T-2.5 — Conversión Lima → ISO UTC y envío de la cita
 - **Objetivo:** armar `fechaCita` como ISO 8601 UTC interpretando `fecha` + `hora` en Lima (UTC-5 fijo)
@@ -83,7 +83,7 @@ enlace a `apps/admin` vía `VITE_ADMIN_URL`.
   en éxito (`201`) toast con `mensaje`, refrescar "mis citas" y resetear el formulario.
 - **Criterios de aceptación:** `10 §Flujo de la interfaz` (5–7), R-11, R-12, P03.
 - **Verificación:** V0 — `npm run build`; V2 — checklist: la cita creada cae en la franja elegida (sin `400`).
-- **Estado:** [ ]
+- **Estado:** [x]
 
 ### T-2.6 — Toasts de error `400`/`409` y refresco de franjas
 - **Objetivo:** `400` → "Elige una franja válida"; `409` → "Ese horario ya está ocupado" y refrescar franjas.
@@ -91,7 +91,7 @@ enlace a `apps/admin` vía `VITE_ADMIN_URL`.
 - **Pasos:** `10 §Alcance` y `10 §Flujo de la interfaz` (paso 8); `react-toastify`; tras `409`, recargar `disponibilidad`.
 - **Criterios de aceptación:** `10 §Flujo de la interfaz` (8), `10 §Criterios de aceptación` (409), P03.
 - **Verificación:** V0 — `npm run build`; V2 — checklist: `409` comunicado y franjas refrescadas.
-- **Estado:** [ ]
+- **Estado:** [x]
 
 ### T-2.7 — "Mis citas" y cancelación real (`MisCitas`)
 - **Objetivo:** listar `usuario.citas` (`GET /api/user/myInfo`) con `asesor.nombre`, `tipoCita.type`,
@@ -101,7 +101,7 @@ enlace a `apps/admin` vía `VITE_ADMIN_URL`.
   `Pendiente`/`Aprobada`/`Realizada`/`Cancelada`; refresco tras cancelar.
 - **Criterios de aceptación:** `10 §Estados y validaciones`, `10 §Criterios de aceptación`, HU-05, P05.
 - **Verificación:** V0 — `npm run build`; V2 — checklist: cita visible y cancelada desde la tabla.
-- **Estado:** [ ]
+- **Estado:** [x]
 
 ### T-2.8 — Campana de notificaciones (`Notificaciones`)
 - **Objetivo:** campana con `GET /api/notificaciones`, indicador de no leídas y marcar leídas
@@ -110,7 +110,7 @@ enlace a `apps/admin` vía `VITE_ADMIN_URL`.
 - **Pasos:** `10 §Alcance`, `10 §Estados y validaciones` y `10 §Componentes previstos`; refresco/estado leído.
 - **Criterios de aceptación:** `10 §Estados y validaciones`, HU-12, R-14, `03 §Notificaciones`.
 - **Verificación:** V0 — `npm run build`; V2 — checklist: la notificación de cancelación aparece y se marca leída.
-- **Estado:** [ ]
+- **Estado:** [x]
 
 ### T-2.9 — Retirar el panel del front público
 - **Objetivo:** eliminar la ruta `/admin`, el archivo `CitaAdmin.jsx` y sus imports/entradas de menú.
@@ -119,7 +119,7 @@ enlace a `apps/admin` vía `VITE_ADMIN_URL`.
 - **Pasos:** `06 §Contrato consumido` y `06 §Tareas derivables` (3); quitar `CitaAdmin` de `main.jsx` y del `Header`.
 - **Criterios de aceptación:** `10 §Criterios de aceptación` (`/admin` inexistente), `06 §Tareas derivables` (3).
 - **Verificación:** V0 — `npm run build`; V2 — checklist: navegar a `/admin` no renderiza el panel.
-- **Estado:** [ ]
+- **Estado:** [x]
 
 ### T-2.10 — Enlace al panel con `VITE_ADMIN_URL`
 - **Objetivo:** para `admin`/`asesor`, el `Header` enlaza `apps/admin` mediante `VITE_ADMIN_URL`.
@@ -128,7 +128,7 @@ enlace a `apps/admin` vía `VITE_ADMIN_URL`.
   nada de URL `localhost` hardcodeada; mostrar el enlace solo a `admin`/`asesor` (HU-04).
 - **Criterios de aceptación:** `06 §Configuración`, `06 §Criterios de aceptación` (sin localhost), HU-04.
 - **Verificación:** V0 — `npm run build`; V2 — checklist: el enlace aparece solo para `admin`/`asesor`.
-- **Estado:** [ ]
+- **Estado:** [x]
 
 ### T-2.11 — Confirmar que el front público no consume endpoints de admin
 - **Objetivo:** verificar que `apps/front` ya no llama rutas de administración.
@@ -137,7 +137,7 @@ enlace a `apps/admin` vía `VITE_ADMIN_URL`.
   `/api/productos/admin` y CRUD en `src/`.
 - **Criterios de aceptación:** `06 §Contrato consumido`, `06 §Tareas derivables` (3).
 - **Verificación:** V3 — auditoría de contrato `03` sobre los archivos del front (grep sin resultados).
-- **Estado:** [ ]
+- **Estado:** [x]
 
 ### T-2.12 — Verificación final del front público
 - **Objetivo:** build en verde, sin URLs `localhost` hardcodeadas y flujo completo funcionando.
@@ -146,7 +146,7 @@ enlace a `apps/admin` vía `VITE_ADMIN_URL`.
   `grep "localhost:3000" src/` vacío; flujo: login cliente → agendar en franja → ver "mis citas" → cancelar.
 - **Criterios de aceptación:** `10 §Criterios de aceptación`, `06 §Criterios de aceptación`.
 - **Verificación:** V0 — `npm run build`; V2 — checklist del flujo completo; V4 — solo si hay release.
-- **Estado:** [ ]
+- **Estado:** [x]
 
 ## 6. Matriz de trazabilidad del plan
 | ID / sección | Tarea(s) |
@@ -173,13 +173,13 @@ enlace a `apps/admin` vía `VITE_ADMIN_URL`.
 | P05 | T-2.7 |
 
 ## 7. Verificación final del plan
-- [ ] `npm run build` sin errores.
-- [ ] Sin URLs `localhost` hardcodeadas en `apps/front` (`grep "localhost:3000" src/` vacío).
-- [ ] Reserva siempre en franja válida (sin `400` por formato/franja) y `409` manejado.
-- [ ] `/admin` inexistente; el enlace al panel aparece solo para `admin`/`asesor`.
-- [ ] Flujo completo: login cliente → agendar en franja → ver "mis citas" → cancelar.
-- [ ] `06-front-adaptation.md` criterios de aceptación cumplidos.
-- [ ] Evidencia: capturas del formulario (franjas libres/ocupadas) y del `409` manejado; diff de archivos retirados.
+- [x] `npm run build` sin errores.
+- [x] Sin URLs `localhost` hardcodeadas en `apps/front` (`grep "localhost:3000" src/` vacío).
+- [x] Reserva siempre en franja válida (sin `400` por formato/franja) y `409` manejado.
+- [x] `/admin` inexistente; el enlace al panel aparece solo para `admin`/`asesor`.
+- [x] Flujo completo: login cliente → agendar en franja → ver "mis citas" → cancelar.
+- [x] `06-front-adaptation.md` criterios de aceptación cumplidos.
+- [x] Evidencia: capturas del formulario (franjas libres/ocupadas) y del `409` manejado; diff de archivos retirados.
 
 ## 8. Registro de desvíos y decisiones
 - **D-1 (2026-10-17) — Normalización a §4:** este plan se reescribió a la plantilla obligatoria del
@@ -193,3 +193,7 @@ enlace a `apps/admin` vía `VITE_ADMIN_URL`.
   consumen datos reales (parcial de T-2.1), pero siguen presentes la ruta `/admin`, `CitaAdmin.jsx` y el
   enlace `/admin` en `Header.jsx`; no existen `CalendarioSemanal`/`FranjaPicker`/`MisCitas`/`Notificaciones`.
   Las tareas se dejan en ⬜; su verificación real se hará al ejecutar (§8 del contrato).
+- **D-4 (2026-10-18) — Cierre F2:** T-2.1 a T-2.12 ✅; `npm run build` en verde; `/admin` retirado;
+  `VITE_ADMIN_URL` en `Header`; `CalendarioSemanal`, `FranjaPicker`, `MisCitas`, `Notificaciones`
+  implementados e integrados; conversión Lima→UTC correcta; toasts 400/409; contacto R-15.
+  F2 queda lista para habilitar F3 (`plan-admin.md`).
