@@ -39,14 +39,14 @@ const Citas = () => {
     }
   }, [filtros, isAdmin, usuario._id]);
 
-  const cargarAsesores = async () => {
+  const cargarAsesores = useCallback(async () => {
     try {
       const data = await citasService.obtenerAsesores();
       setAsesores(data || []);
     } catch (err) {
       console.error("Error cargando asesores:", err);
     }
-  };
+  }, []);
 
   useEffect(() => {
     cargarCitas();
