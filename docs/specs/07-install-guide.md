@@ -35,6 +35,16 @@ Verificar conexión:
 psql -h localhost -U servitec -d servitec -c "select 1;"
 ```
 
+> **Alternativa automatizada**: `tools/db-setup` hace esto mismo (más los `.env` y las
+> migraciones) sin necesidad de `psql` en el `PATH`:
+> ```bash
+> cd tools/db-setup
+> copy .env.example .env       # y edita las credenciales del superusuario
+> npm install
+> npm run setup
+> ```
+> Ver `tools/db-setup/README.md`.
+
 ## 3. Clonar y preparar el monorepo
 ```bash
 git clone https://github.com/DevJuanP/SERVITEC-Monorepo.git
@@ -55,14 +65,18 @@ Ajustar como mínimo:
 | `SPRING_DATASOURCE_PASSWORD` | la que definiste |
 | `JWT_SECRET` | una cadena larga y secreta |
 
-> `.env` **no se commitea** (está en `.gitignore`).
+> Los archivos de entorno de este repo **sí se versionan** (solo para desarrollo local).
+> Al clonar ya vienen; cada máquina solo ajusta `PGSUPERPASSWORD` en
+> `tools/db-setup/.env` y re-ejecuta `npm run setup`. Ver
+> `tools/db-setup/README.md` → «Otra máquina (tu compañero, otro PostgreSQL)».
 
 ## 5. Levantar el backend *(cuando esté implementado)*
 ```bash
 cd apps/api
 ./mvnw spring-boot:run     # Windows: mvnw.cmd spring-boot:run
 ```
-- Escucha en `http://localhost:8080`.
+- Escucha en `http://localhost:8080` (`SERVER_PORT`; configurable por entorno, no hay puertos literales en el código).
+- Los orígenes permitidos por CORS se definen con `CORS_ALLOWED_ORIGINS` (por defecto `5173` y `5174`).
 - El entorno local usa **HTTP**; HTTPS (dominio y certificados) se configura en el despliegue productivo, fuera del alcance actual.
 - Aplica automáticamente las migraciones Flyway de `db/migrations`.
 - Verificar: `curl http://localhost:8080/api/productos`.

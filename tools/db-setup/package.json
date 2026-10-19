@@ -1,0 +1,20 @@
+{
+  "name": "servitec-db-setup",
+  "private": true,
+  "version": "0.0.0",
+  "description": "Configuración inicial de PostgreSQL (rol + bases) y migraciones Flyway de SERVITEC",
+  "type": "module",
+  "engines": {
+    "node": ">=20"
+  },
+  "scripts": {
+    "setup": "node src/index.mjs",
+    "db:create": "node src/index.mjs --only-create",
+    "db:migrate": "node src/index.mjs --skip-create --skip-env-files",
+    "db:verify": "node src/index.mjs --verify",
+    "db:reset": "node src/index.mjs --reset --yes"
+  },
+  "dependencies": {
+    "pg": "^8.23.1"
+  }
+}
