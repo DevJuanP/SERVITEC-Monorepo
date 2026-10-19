@@ -4,12 +4,12 @@ dist/
 *.local
 
 # --- Variables de entorno ---
-.env
-.env.*
-!.env.example
-# Generados por tools/db-setup (contienen la contraseña de la BD)
-dev-env.ps1
-dev-env.sh
+# Este repo versiona los .env reales de desarrollo (proyecto de dos personas).
+# Contienen credenciales locales: no reutilizar estas contraseñas fuera del proyecto.
+# Solo se ignoran los respaldos que genera tools/db-setup y los archivos locales del IDE.
+.env.bak
+*.env.bak
+*.local
 
 # --- Java / Maven ---
 target/
