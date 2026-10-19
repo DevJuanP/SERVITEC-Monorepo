@@ -34,7 +34,8 @@ export const DEFAULTS = {
   SPRING_FLYWAY_LOCATIONS: "filesystem:../../db/migrations",
 };
 
-const REQUIRED = ["PGSUPERPASSWORD", "APP_DB_PASSWORD"];
+const ALWAYS_REQUIRED = ["APP_DB_PASSWORD"];
+const SUPERUSER_REQUIRED = ["PGSUPERPASSWORD"];
 
 /** Error de configuración: se muestra sin stack trace para no ensuciar la salida. */
 export class ConfigError extends Error {
@@ -47,8 +48,10 @@ export class ConfigError extends Error {
 /**
  * Construye la configuración efectiva del script.
  * `skipRequired` permite mostrar la ayuda sin tener credenciales configuradas.
+ * `requiresSuperuser` es false cuando solo se migra o verifica (--skip-create),
+ * porque en ese caso no se abre conexión con el superusuario.
  */
-export function loadConfig({ skipRequired = false } = {}) {
+export function loadConfig({ skipRequired = false, requiresSuperuser = true } = {}) {
   const scriptEnv = readEnvFile(ENV_FILE);
   const rootEnv = readEnvFile(ROOT_ENV_FILE);
 
@@ -74,7 +77,8 @@ export function loadConfig({ skipRequired = false } = {}) {
 
   if (skipRequired) return config;
 
-  const missing = REQUIRED.filter((key) => !pick(key));
+  const required = [...ALWAYS_REQUIRED, ...(requiresSuperuser ? SUPERUSER_REQUIRED : [])];
+  const missing = required.filter((key) => !pick(key));
   if (missing.length > 0) {
     throw new ConfigError(
       `Falta configurar ${missing.join(", ")} en tools/db-setup/.env.\n` +

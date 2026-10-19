@@ -279,7 +279,8 @@ async function main() {
   }
 
   ensureEnvFile();
-  const config = loadConfig();
+  // El superusuario solo hace falta para crear el rol y las bases.
+  const config = loadConfig({ requiresSuperuser: !options.skipCreate });
   describe(config);
 
   if (!options.skipCreate) {
