@@ -72,7 +72,8 @@ Ajustar como mínimo:
 cd apps/api
 ./mvnw spring-boot:run     # Windows: mvnw.cmd spring-boot:run
 ```
-- Escucha en `http://localhost:8080`.
+- Escucha en `http://localhost:8080` (`SERVER_PORT`; configurable por entorno, no hay puertos literales en el código).
+- Los orígenes permitidos por CORS se definen con `CORS_ALLOWED_ORIGINS` (por defecto `5173` y `5174`).
 - El entorno local usa **HTTP**; HTTPS (dominio y certificados) se configura en el despliegue productivo, fuera del alcance actual.
 - Aplica automáticamente las migraciones Flyway de `db/migrations`.
 - Verificar: `curl http://localhost:8080/api/productos`.

@@ -16,4 +16,4 @@ app:
     jwt-secret: ${JWT_SECRET:test-secret-test-secret-test-secret-test-secret}
     jwt-expiration-minutes: 120
   cors:
-    allowed-origins: http://localhost:5173,http://localhost:5174
+    allowed-origins: ${CORS_ALLOWED_ORIGINS:http://localhost:5173,http://localhost:5174}

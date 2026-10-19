@@ -1,11 +1,18 @@
 import react from '@vitejs/plugin-react'
-import { defineConfig } from 'vite'
+import { defineConfig, loadEnv } from 'vite'
 
 // https://vite.dev/config/
-export default defineConfig({
-  plugins: [react()],
-  server: {
-    port: 5174,
-    strictPort: true,
-  },
+// El puerto del dev server se toma de VITE_PORT (apps/admin/.env) y por defecto es 5174.
+// Debe coincidir con CORS_ALLOWED_ORIGINS del backend: tools/db-setup genera ambos a la vez.
+export default defineConfig(({ mode }) => {
+  const env = loadEnv(mode, process.cwd(), 'VITE_')
+
+  return {
+    plugins: [react()],
+    server: {
+      port: Number(env.VITE_PORT ?? 5174),
+      // Si el puerto está ocupado, fallar en vez de saltar a otro que no esté en CORS.
+      strictPort: true,
+    },
+  }
 })

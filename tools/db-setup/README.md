@@ -17,6 +17,24 @@ migraciones **Flyway** de `db/migrations`.
 | 3 | Aplica las migraciones (`V1`–`V4` + repetibles `R__01`–`R__04`) | `apps/api/mvnw flyway:migrate` |
 | 4 | Verifica historial de Flyway y volumen de la semilla | `pg` (TCP) |
 
+## Puertos: un solo lugar
+
+Ningún puerto está escrito en el código. El script los propaga desde su `.env`:
+
+```
+API_PORT   ──► SERVER_PORT (backend)          + VITE_API_URL   (fronts y dev-env)
+FRONT_PORT ──► VITE_PORT (apps/front)         + CORS_ALLOWED_ORIGINS
+ADMIN_PORT ──► VITE_PORT (apps/admin)         + VITE_ADMIN_URL + CORS_ALLOWED_ORIGINS
+```
+
+Los valores por defecto son los de siempre (`8080`, `5173`, `5174`), así que nada cambia
+si no tocas nada. Si necesitas otro puerto (por ejemplo porque está ocupado), edita solo
+`API_PORT` en `tools/db-setup/.env` y vuelve a ejecutar el script: se regeneran el
+`dev-env`, los `.env` de los fronts y el CORS de forma consistente.
+
+`VITE_API_URL`, `VITE_ADMIN_URL` y `CORS_ALLOWED_ORIGINS` se pueden fijar a mano
+(útiles si la API vive en otra máquina); si se dejan vacíos se derivan de los puertos.
+
 Detalles de diseño:
 
 - **No necesita `psql`** ni la ruta de instalación de PostgreSQL (en Windows `psql`
@@ -89,10 +107,11 @@ npm run setup -- --reset --yes      # reconstruir todo desde cero
 
 | Archivo | Contenido | En git |
 |---|---|---|
-| `.env` (raíz) | `VITE_*` + `SPRING_*` + `JWT_SECRET` | ignorado |
-| `dev-env.ps1` | `$env:SPRING_*` y `$env:JWT_SECRET` para la sesión de PowerShell | ignorado |
+| `.env` (raíz) | `VITE_*` + `SPRING_*` + `JWT_SECRET` + `SERVER_PORT` + `CORS_ALLOWED_ORIGINS` | ignorado |
+| `dev-env.ps1` | `$env:` de `SPRING_*`, `JWT_SECRET`, `SERVER_PORT`, `CORS_ALLOWED_ORIGINS`, `SPRING_FLYWAY_LOCATIONS` | ignorado |
 | `dev-env.sh` | lo mismo para bash / Git Bash / WSL | ignorado |
-| `apps/front/.env`, `apps/admin/.env` | `VITE_API_URL`, `VITE_ADMIN_URL` | ignorados |
+| `apps/front/.env` | `VITE_API_URL`, `VITE_ADMIN_URL`, `VITE_PORT` | ignorado |
+| `apps/admin/.env` | `VITE_API_URL`, `VITE_PORT` | ignorado |
 
 Si alguno de esos archivos ya existía **sin** la marca `GENERADO POR tools/db-setup`,
 el script lo respalda como `<archivo>.bak` antes de sobrescribirlo.
@@ -103,10 +122,10 @@ el script lo respalda como `<archivo>.bak` antes de sobrescribirlo.
 ## Después del setup
 
 ```powershell
-. .\dev-env.ps1
-cd apps/api; .\mvnw.cmd spring-boot:run    # http://localhost:8080
-cd apps/front; npm run dev                 # http://localhost:5173
-cd apps/admin; npm run dev                 # http://localhost:5174
+. .\dev-env.ps1                            # carga los puertos y las credenciales
+cd apps/api; .\mvnw.cmd spring-boot:run    # API en $SERVER_PORT (por defecto 8080)
+cd apps/front; npm run dev                 # front en su VITE_PORT (5173 por defecto)
+cd apps/admin; npm run dev                 # panel en su VITE_PORT (5174 por defecto)
 ```
 
 Mientras `dev-env.ps1` está cargado, `SPRING_DATASOURCE_URL` apunta a la base de

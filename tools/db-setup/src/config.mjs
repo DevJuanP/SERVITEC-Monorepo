@@ -5,7 +5,13 @@ import { readEnvFile } from "./env.mjs";
 // Resolución de rutas y de la configuración del script.
 //
 // Precedencia de cada valor: variables de entorno del proceso → .env del script
-// → .env ya generado en la raíz (solo para no rotar el JWT_SECRET) → valor por defecto.
+// → .env ya generado en la raíz (SOLO las claves de PRESERVE_FROM_ROOT) → valor por defecto.
+//
+// El `.env` de la raíz es una SALIDA del script, así que no puede realimentar la
+// configuración: si lo hiciéramos, cambiar API_PORT dejaría VITE_API_URL apuntando
+// al puerto viejo. Solo se rescata JWT_SECRET, para no rotar los tokens en cada corrida.
+
+export const PRESERVE_FROM_ROOT = new Set(["JWT_SECRET"]);
 
 export const SCRIPT_DIR = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
 export const REPO_ROOT = path.resolve(SCRIPT_DIR, "..", "..");
@@ -29,10 +35,13 @@ export const DEFAULTS = {
   DB_TEST_NAME: "servitec_test",
   APP_DB_USER: "servitec",
   API_PORT: "8080",
-  VITE_API_URL: "http://localhost:8080",
-  VITE_ADMIN_URL: "http://localhost:5174",
+  FRONT_PORT: "5173",
+  ADMIN_PORT: "5174",
   SPRING_FLYWAY_LOCATIONS: "filesystem:../../db/migrations",
 };
+
+/** Puertos que se validan además de PGPORT. */
+const APP_PORT_KEYS = ["API_PORT", "FRONT_PORT", "ADMIN_PORT"];
 
 const ALWAYS_REQUIRED = ["APP_DB_PASSWORD"];
 const SUPERUSER_REQUIRED = ["PGSUPERPASSWORD"];
@@ -56,7 +65,10 @@ export function loadConfig({ skipRequired = false, requiresSuperuser = true } = 
   const rootEnv = readEnvFile(ROOT_ENV_FILE);
 
   const pick = (key, fallback = "") =>
-    (process.env[key] ?? "").trim() || scriptEnv[key] || rootEnv[key] || fallback;
+    (process.env[key] ?? "").trim() ||
+    scriptEnv[key] ||
+    (PRESERVE_FROM_ROOT.has(key) ? rootEnv[key] : "") ||
+    fallback;
 
   const config = {
     host: pick("PGHOST", DEFAULTS.PGHOST),
@@ -70,8 +82,14 @@ export function loadConfig({ skipRequired = false, requiresSuperuser = true } = 
     appPassword: pick("APP_DB_PASSWORD"),
     jwtSecret: pick("JWT_SECRET"),
     apiPort: pick("API_PORT", DEFAULTS.API_PORT),
-    viteApiUrl: pick("VITE_API_URL", DEFAULTS.VITE_API_URL),
-    viteAdminUrl: pick("VITE_ADMIN_URL", DEFAULTS.VITE_ADMIN_URL),
+    frontPort: pick("FRONT_PORT", DEFAULTS.FRONT_PORT),
+    adminPort: pick("ADMIN_PORT", DEFAULTS.ADMIN_PORT),
+    viteApiUrl: pick("VITE_API_URL", `http://localhost:${pick("API_PORT", DEFAULTS.API_PORT)}`),
+    viteAdminUrl: pick("VITE_ADMIN_URL", `http://localhost:${pick("ADMIN_PORT", DEFAULTS.ADMIN_PORT)}`),
+    corsAllowedOrigins: pick(
+      "CORS_ALLOWED_ORIGINS",
+      `http://localhost:${pick("FRONT_PORT", DEFAULTS.FRONT_PORT)},http://localhost:${pick("ADMIN_PORT", DEFAULTS.ADMIN_PORT)}`,
+    ),
     flywayLocations: pick("SPRING_FLYWAY_LOCATIONS", DEFAULTS.SPRING_FLYWAY_LOCATIONS),
   };
 
@@ -99,6 +117,19 @@ export function loadConfig({ skipRequired = false, requiresSuperuser = true } = 
 
   if (!/^\d+$/.test(config.port) || Number(config.port) < 1 || Number(config.port) > 65535) {
     throw new ConfigError(`PGPORT="${config.port}" no es un puerto válido.`);
+  }
+
+  const ports = { API_PORT: config.apiPort, FRONT_PORT: config.frontPort, ADMIN_PORT: config.adminPort };
+  for (const [key, value] of Object.entries(ports)) {
+    if (!/^\d+$/.test(value) || Number(value) < 1 || Number(value) > 65535) {
+      throw new ConfigError(`${key}="${value}" no es un puerto válido.`);
+    }
+  }
+  if (config.apiPort === config.frontPort || config.apiPort === config.adminPort) {
+    throw new ConfigError(
+      `API_PORT (${config.apiPort}) no puede coincidir con FRONT_PORT (${config.frontPort}) ` +
+        `ni con ADMIN_PORT (${config.adminPort}): son procesos distintos.`,
+    );
   }
 
   return config;

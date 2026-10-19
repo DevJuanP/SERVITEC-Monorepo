@@ -104,7 +104,9 @@ function describe(config) {
   log(`  Superusuario  : ${config.superuser}`);
   log(`  Rol de la app : ${config.appUser}`);
   log(`  Bases         : ${config.databases.join(", ")}`);
-  log(`  Migraciones   : db/migrations -> ${jdbcUrl(config)}`);
+  log(`  Puertos       : API ${config.apiPort} · front ${config.frontPort} · admin ${config.adminPort}`);
+  log(`  CORS          : ${config.corsAllowedOrigins}`);
+  log(`  Migraciones   : db/migrations (Flyway)`);
   log(`  Configuración : ${ENV_FILE}`);
 }
 

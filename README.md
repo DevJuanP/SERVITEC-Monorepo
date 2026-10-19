@@ -91,39 +91,62 @@ copy .env.example .env
 El `.env.example` ya incluye:
 
 ```
-# --- Fronts (apps/front, apps/admin) ---
+# --- Puertos y URLs (ningún puerto está escrito en el código) ---
+SERVER_PORT=8080            # puerto de la API (application.yml)
 VITE_API_URL=http://localhost:8080
 VITE_ADMIN_URL=http://localhost:5174
+VITE_PORT=5173              # dev server del front (apps/admin usa 5174)
 
 # --- Backend (apps/api) ---
 SPRING_DATASOURCE_URL=jdbc:postgresql://localhost:5432/servitec
 SPRING_DATASOURCE_USERNAME=servitec
 SPRING_DATASOURCE_PASSWORD=cambia_esta_password
 JWT_SECRET=cambia_este_secreto_super_seguro
+
+# Orígenes permitidos por CORS (los fronts)
+CORS_ALLOWED_ORIGINS=http://localhost:5173,http://localhost:5174
 ```
+
+> **Puertos configurables.** Nada está fijado en el código: el backend lee `SERVER_PORT`
+> y `CORS_ALLOWED_ORIGINS`, y cada front lee su `VITE_PORT` en `vite.config.js`.
+> Con `tools/db-setup` basta cambiar `API_PORT` / `FRONT_PORT` / `ADMIN_PORT` en
+> `tools/db-setup/.env` y re-ejecutar `npm run setup`: se regeneran el `dev-env`,
+> los `.env` de los fronts y el CORS de forma consistente. Los valores por defecto
+> son los mismos de siempre (`8080`, `5173`, `5174`), así que nadie se ve afectado
+> si no toca nada.
+
 
 > Spring Boot **no** lee el `.env` de la raíz: hay que exportar esas variables en la
 > terminal antes de arrancar la API. `npm run setup` de `tools/db-setup` genera
 > `dev-env.ps1` (y `dev-env.sh`) justo para eso; si lo haces a mano, define
 > `SPRING_DATASOURCE_PASSWORD` y `JWT_SECRET` en la sesión.
 
-### 2. Levantar el backend (`apps/api`, puerto 8080)
+### 2. Levantar el backend (`apps/api`)
 
 Requiere **JDK 21** en `JAVA_HOME` y PostgreSQL corriendo en `:5432` con la BD `servitec`.
+El puerto sale de `SERVER_PORT` (por defecto `8080`, el valor de `application.yml`).
 
 ```powershell
 $env:JAVA_HOME = "C:\Program Files\Java\jdk-21"
 cd apps/api
-.\mvnw.cmd spring-boot:run   # aplica Flyway de db/migrations y deja la API en http://localhost:8080
+.\mvnw.cmd spring-boot:run   # aplica Flyway de db/migrations
 ```
 
-Verificación de pruebas (P01–P13):
+Si necesitas otro puerto (por ejemplo porque `8080` está ocupado), no toques el código:
 
 ```powershell
+$env:SERVER_PORT = "8092"    # y ajusta VITE_API_URL de los fronts al mismo valor
+```
+
+Verificación de pruebas (P01–P13). Ojo: las pruebas usan `servitec_test`, no la BD de
+desarrollo, así que reasigna la URL si cargaste `dev-env.ps1`:
+
+```powershell
+$env:SPRING_DATASOURCE_URL = "jdbc:postgresql://localhost:5432/servitec_test"
 .\mvnw.cmd test
 ```
 
-### 3. Levantar el front público (`apps/front`, puerto 5173)
+### 3. Levantar el front público (`apps/front`, puerto `VITE_PORT`, por defecto 5173)
 
 ```powershell
 cd apps/front
@@ -132,17 +155,25 @@ npm install              # solo la primera vez
 npm run dev              # http://localhost:5173
 ```
 
-### 4. Panel de administración (`apps/admin`, puerto 5174)
+### 4. Panel de administración (`apps/admin`, puerto `VITE_PORT`, por defecto 5174)
 
-**No existe todavía.** Está planificado (fase F3) y especificado en `docs/specs/09-admin-panel.md`. Cuando se implemente, correrá en `:5174` apuntando a la misma API (`VITE_API_URL`).
+Implementado (fase F3, `docs/specs/09-admin-panel.md`). Apunta a la misma API (`VITE_API_URL`).
 
-### 5. URLs finales
+```powershell
+cd apps/admin
+copy .env.example .env
+npm install
+npm run dev              # http://localhost:5174
+```
 
-| Servicio | URL |
-|---|---|
-| Backend API | `http://localhost:8080` |
-| Front público | `http://localhost:5173` |
-| Panel admin (planificado) | `http://localhost:5174` |
+### 5. URLs finales (valores por defecto)
+
+| Servicio | URL | Variable que la define |
+|---|---|---|
+| Backend API | `http://localhost:8080` | `SERVER_PORT` |
+| Front público | `http://localhost:5173` | `VITE_PORT` (apps/front) + `VITE_API_URL` |
+| Panel admin | `http://localhost:5174` | `VITE_PORT` (apps/admin) + `VITE_ADMIN_URL` |
+| CORS del backend | `5173` y `5174` | `CORS_ALLOWED_ORIGINS` |
 
 ## Documentación
 
@@ -180,6 +211,7 @@ npm run dev              # http://localhost:5173
 
 | Fecha | Cambio |
 |---|---|
+| 2026-10-18 | **Puertos por entorno** — se eliminan los puertos literales: la API lee `SERVER_PORT` y `CORS_ALLOWED_ORIGINS` (`application.yml`), y cada front lee `VITE_PORT` en su `vite.config.js` (`strictPort`). `tools/db-setup` deriva todo de `API_PORT`/`FRONT_PORT`/`ADMIN_PORT` y ahora genera `SERVER_PORT`, `CORS_ALLOWED_ORIGINS` y `VITE_PORT` en `dev-env.*` y los `.env`. Defaults intactos (8080/5173/5174). Verificado: API en 8092 por `SERVER_PORT`, CORS acorde, build de ambos fronts y `mvnw test` 14/14. |
 | 2026-10-18 | **Setup automatizado de BD** — nuevo `tools/db-setup` (Node.js + `pg`, sin `psql`): crea rol/bases, genera `.env` + `dev-env.ps1`/`.sh`, aplica Flyway y verifica semilla. `apps/api/pom.xml` declara `flyway-maven-plugin` (sin enlazar a fases) para migrar sin arrancar la API. Verificado end-to-end contra PostgreSQL 18 en contenedor (`--reset`, idempotencia y `mvnw test` 14/14 en verde). |
 | 2026-10-18 | **F3 Panel admin ✅ verificado** — `apps/admin` (React 19 + Vite 7, `:5174`) funcional: login con guardas por rol (admin/asesor/cliente rechazado), dashboard admin (conteos catálogo + stock agotado) / asesor (agenda), catálogo CRUD admin (`GET /api/productos/admin`, `stock ≥ 0`, `price > 0`, subcategoría válida), citas agenda con filtros + `NuevaCita` (`agregarCitaAdmin` + `FranjaPicker`) + acciones `aprobar`/`completar` (observación obligatoria) / `cancelar` con notificaciones, usuarios listado + búsqueda `clientesPorCorreo` + alta asesores, CORS `:5174` operativo, `npm run build` en verde. |
 | 2026-10-18 | **F2 Front público ✅ verificado** — `npm run build` en verde. B16 cerrado: `CalendarioSemanal` (disponibilidadSemana 5×7), `FranjaPicker` (disponibilidad), contacto R-15, conversión Lima→UTC, toasts 400/409, `MisCitas` con cancelación, `Notificaciones` (campana). `/admin` y `CitaAdmin.jsx` retirados. `Header` enlaza panel con `VITE_ADMIN_URL`. Sin URLs `localhost` hardcodeadas. |

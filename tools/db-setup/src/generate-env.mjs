@@ -28,6 +28,12 @@ const PS_HEADER = (config) => [
   "    . .\\dev-env.ps1",
   "    cd apps/api; .\\mvnw.cmd spring-boot:run",
   "",
+  "Los puertos salen de estas variables (no hay puertos escritos en el código):",
+  "    SERVER_PORT          -> puerto de la API (application.yml)",
+  "    CORS_ALLOWED_ORIGINS -> orígenes permitidos (los fronts)",
+  "Para cambiarlos: edita API_PORT / FRONT_PORT / ADMIN_PORT en tools/db-setup/.env",
+  "y vuelve a ejecutar el script.",
+  "",
   "OJO con las pruebas: SPRING_DATASOURCE_URL apunta a la base de DESARROLLO.",
   "Las pruebas del backend usan la base de PRUEBAS, así que reasigna la variable",
   "antes de `mvnw test`:",
@@ -40,6 +46,12 @@ const SH_HEADER = (config) => [
   "Carga estas variables en la sesión actual antes de arrancar el backend:",
   "    source dev-env.sh",
   "    cd apps/api && ./mvnw spring-boot:run",
+  "",
+  "Los puertos salen de estas variables (no hay puertos escritos en el código):",
+  "    SERVER_PORT          -> puerto de la API (application.yml)",
+  "    CORS_ALLOWED_ORIGINS -> orígenes permitidos (los fronts)",
+  "Para cambiarlos: edita API_PORT / FRONT_PORT / ADMIN_PORT en tools/db-setup/.env",
+  "y vuelve a ejecutar el script.",
   "",
   "OJO con las pruebas: SPRING_DATASOURCE_URL apunta a la base de DESARROLLO.",
   "Las pruebas del backend usan la base de PRUEBAS, así que reasigna la variable",
@@ -74,6 +86,8 @@ function backendEntries(config, jwtSecret) {
     ["SPRING_DATASOURCE_USERNAME", config.appUser],
     ["SPRING_DATASOURCE_PASSWORD", config.appPassword],
     ["JWT_SECRET", jwtSecret],
+    ["SERVER_PORT", config.apiPort],
+    ["CORS_ALLOWED_ORIGINS", config.corsAllowedOrigins],
     ["SPRING_FLYWAY_LOCATIONS", config.flywayLocations],
   ];
 }
@@ -132,11 +146,15 @@ export function writeFrontEnvs(config) {
       entries: [
         ["VITE_API_URL", config.viteApiUrl],
         ["VITE_ADMIN_URL", config.viteAdminUrl],
+        ["VITE_PORT", config.frontPort],
       ],
     },
     {
       dir: path.join(REPO_ROOT, "apps", "admin"),
-      entries: [["VITE_API_URL", config.viteApiUrl]],
+      entries: [
+        ["VITE_API_URL", config.viteApiUrl],
+        ["VITE_PORT", config.adminPort],
+      ],
     },
   ];
 

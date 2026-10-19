@@ -6,8 +6,9 @@ import { readFileSync, writeFileSync } from "node:fs";
 
 /**
  * Mini parser de .env: basta para el formato que usa el repo.
- * Soporta `CLAVE=valor`, `export CLAVE=valor`, comentarios `#`, líneas en blanco
- * y valores entre comillas simples o dobles.
+ * Soporta `CLAVE=valor`, `export CLAVE=valor`, comentarios `#`, líneas en blanco,
+ * valores entre comillas simples o dobles y comentarios al final de una línea
+ * (`CLAVE=valor # comentario`), siempre que el valor no esté entrecomillado.
  */
 export function readEnvFile(file) {
   const vars = {};
@@ -27,11 +28,22 @@ export function readEnvFile(file) {
     if (separator <= 0) continue;
 
     const key = normalized.slice(0, separator).trim();
-    let value = normalized.slice(separator + 1).trim();
-    const quoted =
-      (value.startsWith('"') && value.endsWith('"')) ||
-      (value.startsWith("'") && value.endsWith("'"));
-    if (quoted && value.length >= 2) value = value.slice(1, -1);
+    const rawValue = normalized.slice(separator + 1);
+    const trimmed = rawValue.trim();
+    let value;
+
+    if (trimmed.startsWith('"') || trimmed.startsWith("'")) {
+      // Entrecomillado: vale solo el contenido de las comillas; lo que sigue
+      // (comentario incluido) se descarta.
+      const quote = trimmed[0];
+      const end = trimmed.indexOf(quote, 1);
+      value = end > 0 ? trimmed.slice(1, end) : trimmed.slice(1);
+    } else {
+      // Sin comillas: ` #` marca el inicio de un comentario al final de línea.
+      // Se corta ANTES de recortar espacios, para que `CLAVE=   # nota` quede vacío.
+      // Sin espacio de por medio (ej. una contraseña con #) el valor se conserva.
+      value = rawValue.split(/\s+#/)[0].trim();
+    }
 
     if (key) vars[key] = value;
   }
