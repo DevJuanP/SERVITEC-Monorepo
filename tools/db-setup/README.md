@@ -107,17 +107,90 @@ npm run setup -- --reset --yes      # reconstruir todo desde cero
 
 | Archivo | Contenido | En git |
 |---|---|---|
-| `.env` (raíz) | `VITE_*` + `SPRING_*` + `JWT_SECRET` + `SERVER_PORT` + `CORS_ALLOWED_ORIGINS` | ignorado |
-| `dev-env.ps1` | `$env:` de `SPRING_*`, `JWT_SECRET`, `SERVER_PORT`, `CORS_ALLOWED_ORIGINS`, `SPRING_FLYWAY_LOCATIONS` | ignorado |
-| `dev-env.sh` | lo mismo para bash / Git Bash / WSL | ignorado |
-| `apps/front/.env` | `VITE_API_URL`, `VITE_ADMIN_URL`, `VITE_PORT` | ignorado |
-| `apps/admin/.env` | `VITE_API_URL`, `VITE_PORT` | ignorado |
+| `.env` (raíz) | `VITE_*` + `SPRING_*` + `JWT_SECRET` + `SERVER_PORT` + `CORS_ALLOWED_ORIGINS` | versionado |
+| `dev-env.ps1` | `$env:` de `SPRING_*`, `JWT_SECRET`, `SERVER_PORT`, `CORS_ALLOWED_ORIGINS`, `SPRING_FLYWAY_LOCATIONS` | versionado |
+| `dev-env.sh` | lo mismo para bash / Git Bash / WSL | versionado |
+| `apps/front/.env` | `VITE_API_URL`, `VITE_ADMIN_URL`, `VITE_PORT` | versionado |
+| `apps/admin/.env` | `VITE_API_URL`, `VITE_PORT` | versionado |
+
+Los `.env` de este repo **sí se versionan** (es un proyecto de dos personas y contienen
+credenciales de desarrollo local). Al clonar ya vienen; solo hay que ajustar la conexión a
+PostgreSQL — ver **«Otra máquina (tu compañero, otro PostgreSQL)»**.
 
 Si alguno de esos archivos ya existía **sin** la marca `GENERADO POR tools/db-setup`,
-el script lo respalda como `<archivo>.bak` antes de sobrescribirlo.
+el script lo respalda como `<archivo>.bak` antes de sobrescribirlo (los `.bak` sí se ignoran).
 
 > Spring Boot **no** lee el `.env` de la raíz. Por eso el script genera `dev-env.ps1`:
 > hay que cargarlo en la terminal antes de arrancar la API.
+
+## Otra máquina (tu compañero, otro PostgreSQL)
+
+Al clonar ya vienen todos los entornos. **Cada uno solo cambia la conexión a su PostgreSQL**,
+y eso se hace en **un único archivo**:
+
+### `tools/db-setup/.env` — el único que se edita a mano
+
+| Variable | Qué poner | ¿Obligatoria? |
+|---|---|---|
+| `PGSUPERPASSWORD` | contraseña del superusuario `postgres` **de tu máquina** | sí (para el paso 1/4) |
+| `PGPORT` | solo si tu PostgreSQL no escucha en `5432` | no (default `5432`) |
+| `PGHOST` | solo si no es `localhost` | no (default `localhost`) |
+| `APP_DB_PASSWORD` | contraseña que tendrá el rol `servitec`; el script la aplica con `ALTER ROLE` | no (puedes dejar la del repo) |
+
+### El resto NO se toca a mano
+
+| Archivo | Variable de PostgreSQL | Quién la escribe |
+|---|---|---|
+| `.env` (raíz) | `SPRING_DATASOURCE_PASSWORD` | `npm run setup` |
+| `dev-env.ps1` | `$env:SPRING_DATASOURCE_PASSWORD` | `npm run setup` |
+| `dev-env.sh` | `export SPRING_DATASOURCE_PASSWORD` | `npm run setup` |
+| `apps/front/.env`, `apps/admin/.env` | — (solo URLs y puertos) | `npm run setup` |
+
+Si editas a mano el `.env` de la raíz o los `dev-env.*`, el siguiente `npm run setup` los
+sobrescribe: **el origen de verdad es `tools/db-setup/.env`**.
+
+### Pasos en la máquina nueva
+
+```bash
+cd tools/db-setup
+# editar .env: PGSUPERPASSWORD (y PGPORT/PGHOST si aplica)
+npm install
+npm run setup
+cd ../..
+. ./dev-env.ps1          # PowerShell — o: source dev-env.sh
+cd apps/api && ./mvnw spring-boot:run
+```
+
+`npm run setup` crea (o actualiza) el rol `servitec` y las bases `servitec` y
+`servitec_test` en **tu** PostgreSQL, sincroniza la contraseña del rol con
+`APP_DB_PASSWORD`, aplica las migraciones Flyway y regenera los archivos de entorno.
+
+### Si no tienes la contraseña del superusuario
+
+Crea el rol y las bases a mano (ver `docs/specs/07-install-guide.md`), deja
+`PGSUPERPASSWORD` vacío y ejecuta solo la parte que no lo necesita:
+
+```bash
+npm run db:migrate   # esquema + semilla
+npm run db:verify
+```
+
+### Colaboración: los `.env` están versionados
+
+Como se commitean, **cada máquina tiene valores distintos en las mismas líneas**. Para no
+pisarse:
+
+- **No commitees** cambios de `PGSUPERPASSWORD`, `APP_DB_PASSWORD`, `API_PORT`, `JWT_SECRET`
+  ni `SPRING_DATASOURCE_PASSWORD`: son de tu máquina.
+- Si te molestan los diffs, marca esos archivos como «no rastrear mis cambios»:
+
+```bash
+git update-index --skip-worktree tools/db-setup/.env .env dev-env.ps1 dev-env.sh
+# revertir:  git update-index --no-skip-worktree <archivo>
+```
+
+- Estas credenciales son **solo para desarrollo local**: el repositorio es público, no
+  reutilices esas contraseñas en otros sitios.
 
 ## Después del setup
 

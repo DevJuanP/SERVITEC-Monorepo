@@ -121,6 +121,11 @@ CORS_ALLOWED_ORIGINS=http://localhost:5173,http://localhost:5174
 > `dev-env.ps1` (y `dev-env.sh`) justo para eso; si lo haces a mano, define
 > `SPRING_DATASOURCE_PASSWORD` y `JWT_SECRET` en la sesión.
 
+> **En otra máquina:** los archivos de entorno **se versionan** en este repo (proyecto de
+> dos personas, credenciales solo de desarrollo). Al clonar ya vienen: lo único que hay que
+> ajustar es `PGSUPERPASSWORD` en `tools/db-setup/.env` y correr `npm run setup`.
+> Detalle completo en `tools/db-setup/README.md` → «Otra máquina (tu compañero, otro PostgreSQL)».
+
 ### 2. Levantar el backend (`apps/api`)
 
 Requiere **JDK 21** en `JAVA_HOME` y PostgreSQL corriendo en `:5432` con la BD `servitec`.

@@ -65,7 +65,10 @@ Ajustar como mínimo:
 | `SPRING_DATASOURCE_PASSWORD` | la que definiste |
 | `JWT_SECRET` | una cadena larga y secreta |
 
-> `.env` **no se commitea** (está en `.gitignore`).
+> Los archivos de entorno de este repo **sí se versionan** (solo para desarrollo local).
+> Al clonar ya vienen; cada máquina solo ajusta `PGSUPERPASSWORD` en
+> `tools/db-setup/.env` y re-ejecuta `npm run setup`. Ver
+> `tools/db-setup/README.md` → «Otra máquina (tu compañero, otro PostgreSQL)».
 
 ## 5. Levantar el backend *(cuando esté implementado)*
 ```bash
