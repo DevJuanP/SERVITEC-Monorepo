@@ -21,20 +21,30 @@ const GENERATED_HEADERS = [
   `${GENERATED_MARKER} — no editar a mano: se regenera con \`npm run setup\``,
 ];
 
-const PS_HEADER = [
+const PS_HEADER = (config) => [
   ...GENERATED_HEADERS,
   "",
   "Carga estas variables en la sesión actual antes de arrancar el backend:",
   "    . .\\dev-env.ps1",
   "    cd apps/api; .\\mvnw.cmd spring-boot:run",
+  "",
+  "OJO con las pruebas: SPRING_DATASOURCE_URL apunta a la base de DESARROLLO.",
+  "Las pruebas del backend usan la base de PRUEBAS, así que reasigna la variable",
+  "antes de `mvnw test`:",
+  `    $env:SPRING_DATASOURCE_URL = '${jdbcUrl(config, config.testDatabase)}'`,
 ];
 
-const SH_HEADER = [
+const SH_HEADER = (config) => [
   ...GENERATED_HEADERS,
   "",
   "Carga estas variables en la sesión actual antes de arrancar el backend:",
   "    source dev-env.sh",
   "    cd apps/api && ./mvnw spring-boot:run",
+  "",
+  "OJO con las pruebas: SPRING_DATASOURCE_URL apunta a la base de DESARROLLO.",
+  "Las pruebas del backend usan la base de PRUEBAS, así que reasigna la variable",
+  "antes de mvnw test:",
+  `    export SPRING_DATASOURCE_URL="${jdbcUrl(config, config.testDatabase)}"`,
 ];
 
 /** Valor entre comillas simples para PowerShell (el estilo más seguro). */
@@ -97,7 +107,7 @@ export function writeBackendEnv(config, jwtSecret) {
       "# Descomenta y ajusta si tu JAVA_HOME no apunta a un JDK 21:",
       "# $env:JAVA_HOME = 'C:\\Program Files\\Java\\jdk-21'",
     ],
-    PS_HEADER,
+    PS_HEADER(config),
   );
 
   writeScriptFile(
@@ -108,7 +118,7 @@ export function writeBackendEnv(config, jwtSecret) {
       "# Descomenta y ajusta si tu JAVA_HOME no apunta a un JDK 21:",
       "# export JAVA_HOME=/c/Program\\ Files/Java/jdk-21",
     ],
-    SH_HEADER,
+    SH_HEADER(config),
   );
 
   return backedUp;

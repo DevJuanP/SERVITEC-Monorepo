@@ -109,6 +109,16 @@ cd apps/front; npm run dev                 # http://localhost:5173
 cd apps/admin; npm run dev                 # http://localhost:5174
 ```
 
+Mientras `dev-env.ps1` está cargado, `SPRING_DATASOURCE_URL` apunta a la base de
+**desarrollo** (`servitec`). Las pruebas del backend usan la base de **pruebas**
+(`application-test.yml` → `servitec_test`), así que hay que reasignar la variable
+antes de correrlas (el propio script imprime estas líneas al terminar):
+
+```powershell
+$env:SPRING_DATASOURCE_URL = 'jdbc:postgresql://localhost:5432/servitec_test'
+cd apps/api; .\mvnw.cmd test
+```
+
 Credenciales de la semilla (solo desarrollo): `admin@servitec.pe` / `Servitec123`
 (también `asesor@servitec.pe`, `asesor2`, `asesor3`, `cliente@servitec.pe`).
 
@@ -147,4 +157,5 @@ historial que el backend.
 | `El usuario "..." no puede crear roles ni bases` | No es superusuario: usa `postgres` o crea rol/bases a mano y corre `npm run db:migrate`. |
 | `Falta configurar PGSUPERPASSWORD, APP_DB_PASSWORD` | Copiaste `.env.example` pero no editaste `tools/db-setup/.env`. |
 | Flyway falla con error de conexión | Verifica que el rol pueda conectarse: `npm run db:verify` (usa el usuario de la app). |
+| Las pruebas (`mvnw test`) tocan tu base de desarrollo | `dev-env.ps1` exporta `SPRING_DATASOURCE_URL` apuntando a `servitec`. Reasígnala a `servitec_test` antes de `mvnw test` (ver «Después del setup»). |
 | `Flyway terminó con código 1` y `validate` | Alguien editó un `V*.sql` ya aplicado. Reconstruye con `npm run db:reset` (en desarrollo). |

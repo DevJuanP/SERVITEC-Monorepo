@@ -250,7 +250,7 @@ async function verify(config) {
   return allOk;
 }
 
-function nextSteps({ onlyCreate = false } = {}) {
+function nextSteps(config, { onlyCreate = false } = {}) {
   if (onlyCreate) {
     log(`
 Listo: el rol y las bases quedaron creados.
@@ -259,11 +259,14 @@ Para aplicar las migraciones cuando quieras:  npm run db:migrate`);
   }
   log(`
 Listo. Siguientes pasos:
-  1) . .\\dev-env.ps1                  # carga las variables en esta terminal
-  2) cd apps/api; .\\mvnw.cmd spring-boot:run
-  3) cd apps/api; .\\mvnw.cmd test      # P01-P13 (usa servitec_test)
-  4) cd apps/front; npm install; npm run dev     # http://localhost:5173
-  5) cd apps/admin; npm install; npm run dev     # http://localhost:5174
+  1) . .\\dev-env.ps1                              # carga las variables en esta terminal
+  2) cd apps/api; .\\mvnw.cmd spring-boot:run      # http://localhost:${config.apiPort}
+  3) cd apps/front; npm install; npm run dev       # http://localhost:5173
+  4) cd apps/admin; npm install; npm run dev       # http://localhost:5174
+
+Para correr las pruebas (usan "${config.testDatabase}", no la base de desarrollo):
+  $env:SPRING_DATASOURCE_URL = '${jdbcUrl(config, config.testDatabase)}'
+  cd apps/api; .\\mvnw.cmd test
 
 Credenciales demo (semilla): admin@servitec.pe / Servitec123`);
 }
@@ -304,7 +307,7 @@ async function main() {
   } else {
     verified = await verify(config);
   }
-  if (verified) nextSteps({ onlyCreate: options.onlyCreate });
+  if (verified) nextSteps(config, { onlyCreate: options.onlyCreate });
 
   return verified ? 0 : 1;
 }

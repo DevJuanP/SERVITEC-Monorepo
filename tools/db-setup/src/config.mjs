@@ -62,6 +62,7 @@ export function loadConfig({ skipRequired = false } = {}) {
     superuserPassword: pick("PGSUPERPASSWORD"),
     databases: [pick("DB_NAME", DEFAULTS.DB_NAME), pick("DB_TEST_NAME", DEFAULTS.DB_TEST_NAME)],
     mainDatabase: pick("DB_NAME", DEFAULTS.DB_NAME),
+    testDatabase: pick("DB_TEST_NAME", DEFAULTS.DB_TEST_NAME),
     appUser: pick("APP_DB_USER", DEFAULTS.APP_DB_USER),
     appPassword: pick("APP_DB_PASSWORD"),
     jwtSecret: pick("JWT_SECRET"),
