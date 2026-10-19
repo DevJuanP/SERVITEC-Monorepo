@@ -1,15 +1,29 @@
 import api from "./api";
 
-export async function getProducts() {
-  const response = await api.get("/api/productos");
-  const products = response.data;
-  return products;
+function parsearCategoria(categoriaCompleta) {
+  if (!categoriaCompleta) return { categoria: null, subcategoria: null };
+  const partes = categoriaCompleta.split("_");
+  return {
+    categoria: partes[0] || null,
+    subcategoria: partes[1] || null,
+  };
+}
+
+export async function getProducts(categoriaCompleta) {
+  const { categoria, subcategoria } = parsearCategoria(categoriaCompleta);
+  const params = {};
+  if (categoria) params.categoria = categoria;
+  if (subcategoria) params.subcategoria = subcategoria;
+  const response = await api.get("/api/productos", { params });
+  return response.data;
 }
 
 export const getByCategory = (category, productos) => {
+  if (!category || !productos) return [];
+  const target = category.trim().toLowerCase();
   return productos.filter((p) => {
-    const cat = p.categoria.name + "_" + p.categoria.Subcategoria;
-    return cat.trim() === category.trim();
+    const cat = (p.categoria?.name + "_" + p.categoria?.Subcategoria || "").trim().toLowerCase();
+    return cat === target;
   });
 };
 
