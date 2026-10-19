@@ -51,31 +51,67 @@ SERVITEC-Monorepo/
 - **PostgreSQL 18** local.
 - **Git**.
 
-## Cómo levantar los fronts
+## Entorno y ejecución rápida
 
-```bash
-cd apps/front
-cp .env.example .env      # ajusta VITE_API_URL si hace falta
-npm install
-npm run dev               # http://localhost:5173
+### 1. Variables de entorno
+
+Desde la raíz del repo, copia el archivo de ejemplo y ajusta si es necesario:
+
+```powershell
+# Windows PowerShell
+copy .env.example .env
 ```
 
-El panel de administración será un segundo front (`apps/admin`, puerto `5174`) — ver
-`docs/specs/09-admin-panel.md`. Ambos apuntan a la API definida en `VITE_API_URL`
-(por defecto `http://localhost:8080`).
+El `.env.example` ya incluye:
 
-## Cómo levantar el backend
+```
+# --- Fronts (apps/front, apps/admin) ---
+VITE_API_URL=http://localhost:8080
+VITE_ADMIN_URL=http://localhost:5174
 
-Implementado en `apps/api` (requiere JDK 21 en `JAVA_HOME`):
+# --- Backend (apps/api) ---
+SPRING_DATASOURCE_URL=jdbc:postgresql://localhost:5432/servitec
+SPRING_DATASOURCE_USERNAME=servitec
+SPRING_DATASOURCE_PASSWORD=cambia_esta_password
+JWT_SECRET=cambia_este_secreto_super_seguro
+```
 
-```bash
+### 2. Levantar el backend (`apps/api`, puerto 8080)
+
+Requiere **JDK 21** en `JAVA_HOME` y PostgreSQL corriendo en `:5432` con la BD `servitec`.
+
+```powershell
+$env:JAVA_HOME = "C:\Program Files\Java\jdk-21"
 cd apps/api
-./mvnw spring-boot:run    # Windows: mvnw.cmd spring-boot:run · http://localhost:8080, aplica Flyway de db/migrations
-./mvnw test               # Windows: mvnw.cmd test · P01–P13
+.\mvnw.cmd spring-boot:run   # aplica Flyway de db/migrations y deja la API en http://localhost:8080
 ```
 
-Configuración por entorno (ver `.env.example`): `SPRING_DATASOURCE_URL`,
-`SPRING_DATASOURCE_USERNAME`, `SPRING_DATASOURCE_PASSWORD`, `JWT_SECRET`.
+Verificación de pruebas (P01–P13):
+
+```powershell
+.\mvnw.cmd test
+```
+
+### 3. Levantar el front público (`apps/front`, puerto 5173)
+
+```powershell
+cd apps/front
+copy .env.example .env   # si aún no lo hiciste
+npm install              # solo la primera vez
+npm run dev              # http://localhost:5173
+```
+
+### 4. Panel de administración (`apps/admin`, puerto 5174)
+
+**No existe todavía.** Está planificado (fase F3) y especificado en `docs/specs/09-admin-panel.md`. Cuando se implemente, correrá en `:5174` apuntando a la misma API (`VITE_API_URL`).
+
+### 5. URLs finales
+
+| Servicio | URL |
+|---|---|
+| Backend API | `http://localhost:8080` |
+| Front público | `http://localhost:5173` |
+| Panel admin (planificado) | `http://localhost:5174` |
 
 ## Documentación
 
