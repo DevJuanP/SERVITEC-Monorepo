@@ -78,6 +78,33 @@
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
             </plugin>
+
+            <!--
+                Flyway desde línea de comandos, usado por tools/db-setup para aplicar
+                las migraciones sin arrancar la API:
+                    mvnw flyway:migrate -Dflyway.url=... -Dflyway.user=...
+                El plugin no se enlaza a ninguna fase, así que `mvnw test` y
+                `mvnw package` se comportan igual que antes. Desde Flyway 10 el
+                soporte de PostgreSQL vive en un módulo aparte y el driver JDBC no
+                viene incluido en el plugin: ambos se declaran aquí.
+            -->
+            <plugin>
+                <groupId>org.flywaydb</groupId>
+                <artifactId>flyway-maven-plugin</artifactId>
+                <version>${flyway.version}</version>
+                <dependencies>
+                    <dependency>
+                        <groupId>org.flywaydb</groupId>
+                        <artifactId>flyway-database-postgresql</artifactId>
+                        <version>${flyway.version}</version>
+                    </dependency>
+                    <dependency>
+                        <groupId>org.postgresql</groupId>
+                        <artifactId>postgresql</artifactId>
+                        <version>${postgresql.version}</version>
+                    </dependency>
+                </dependencies>
+            </plugin>
         </plugins>
     </build>
 </project>

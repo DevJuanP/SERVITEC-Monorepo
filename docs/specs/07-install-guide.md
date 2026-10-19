@@ -35,6 +35,16 @@ Verificar conexión:
 psql -h localhost -U servitec -d servitec -c "select 1;"
 ```
 
+> **Alternativa automatizada**: `tools/db-setup` hace esto mismo (más los `.env` y las
+> migraciones) sin necesidad de `psql` en el `PATH`:
+> ```bash
+> cd tools/db-setup
+> copy .env.example .env       # y edita las credenciales del superusuario
+> npm install
+> npm run setup
+> ```
+> Ver `tools/db-setup/README.md`.
+
 ## 3. Clonar y preparar el monorepo
 ```bash
 git clone https://github.com/DevJuanP/SERVITEC-Monorepo.git

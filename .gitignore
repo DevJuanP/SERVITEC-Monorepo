@@ -7,6 +7,9 @@ dist/
 .env
 .env.*
 !.env.example
+# Generados por tools/db-setup (contienen la contraseña de la BD)
+dev-env.ps1
+dev-env.sh
 
 # --- Java / Maven ---
 target/
